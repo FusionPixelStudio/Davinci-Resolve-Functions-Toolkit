@@ -1,1 +1,1464 @@
-{}
+{
+    /*
+        DAVINCI RESOLVE API
+    */
+
+    "Workflow Integration Setup": {
+        "prefix" : ["WorkflowIntegration", "start", "WorkflowStart", "ws", "wi"],
+        "body": ["if (process.platform === 'darwin') {\n\tWorkflowIntegration = require(path.join(__dirname, 'WorkflowIntegration_Mac.node'));\n} else {\n\tWorkflowIntegration = require(path.join(__dirname, 'WorkflowIntegration_Win.node'));\n}\n\nlet isInitialized = WorkflowIntegration.Initialize('com.${1:YourName}.${2:PluginName}');\nif (!isInitialized) {\n\tconsole.error('Failed to initialize Workflow Integration');\n}\nconst resolve = WorkflowIntegration.GetResolve();\nconst projectManager = resolve.GetProjectManager();\nconst mediaStorage = resolve.GetMediaStorage();\nconst project = projectManager.GetCurrentProject();\nconst timeline = project.GetCurrentTimeline();\nconst mediaPool = project.GetMediaPool();\nconst gallery = project.GetGallery();"],
+        "description": "The resolve object"
+    },
+    "Resolve Setup": {
+        "prefix" : ["resolve", "start", "resolveStart", "rs", "dvr"],
+        "body": ["const resolve = WorkflowIntegration.GetResolve();\nconst projectManager = resolve.GetProjectManager();\nconst mediaStorage = resolve.GetMediaStorage();\nconst project = projectManager.GetCurrentProject();\nconst timeline = project.GetCurrentTimeline();\nconst mediaPool = project.GetMediaPool();\nconst gallery = project.GetGallery();"],
+        "description": "The resolve object"
+    },
+
+    // The Resolve Object Functions
+    "Resolve": {
+        "prefix" : ["app", "app.Get", "Get", "Resolve"],
+        "body": ["WorkflowIntegration.GetResolve();"],
+        "description": "The resolve object"
+    },
+    "Media Storage": {
+        "prefix": ["Get", "Media", "MS", "GMS"],
+        "body": ["${1:resolve}.GetMediaStorage();"],
+        "description": "Resolve's Media Storage"
+    },
+    "Project Manager": {
+        "prefix": ["Get", "Project", "PM", "GetProjectManager", "GPM"],
+        "body": ["${1:resolve}.GetProjectManager();"],
+        "description": "Resolve's Project Manager"
+    },
+    "Open Page": {
+        "prefix": ["Open", "Open", "Page", "OP"],
+        "body": ["${1:resolve}.OpenPage('${2:edit}');"],
+        "description": "Open a page in Resolve"
+    },
+    "Get Current Page": {
+        "prefix": ["Get", "Current", "Page", "CP"],
+        "body": ["${1:resolve}.GetCurrentPage();"],
+        "description": "Get the open page for Resolve"
+    },
+    "Product Name": {
+        "prefix": ["Get", "Product", "Name", "GPN"],
+        "body": ["${1:resolve}.GetProductName();"],
+        "description": "Get the product name for Resolve"
+    },
+    "Resolve Version": {
+        "prefix": ["Get", "Version", "GV"],
+        "body": ["${1:resolve}.GetVersion();"],
+        "description": "Get the version of Resolve"
+    },
+    "Resolve Version String": {
+        "prefix": ["Get", "Version", "GV"],
+        "body": ["${1:resolve}.GetVersionString();"],
+        "description": "Get the version of Resolve as a string"
+    },
+    "Load Layout Preset": {
+        "prefix": ["Load", "Preset", "LoadPreset", "LLP"],
+        "body": ["${1:resolve}.LoadLayoutPreset('${2:Preset Name}');"],
+        "description": "Load a layout preset from Resolve into Resolve"
+    },
+    "Update Layout Preset": {
+        "prefix": ["Update", "Preset", "UpdatePreset", "ULP"],
+        "body": ["${1:resolve}.UpdateLayoutPreset('${2:Preset Name}');"],
+        "description": "Update a layout preset in Resolve"
+    },
+    "Export Layout Preset": {
+        "prefix": ["Export", "Preset", "ExportPreset", "ELP"],
+        "body": ["${1:resolve}.ExportLayoutPreset('${2:Preset Name}', '${3:/PATH/TO/PRESET.preset}');"],
+        "description": "Export a layout preset in Resolve to a file"
+    },
+    "Delete Layout Preset": {
+        "prefix": ["Delete", "Preset", "DeletePreset", "DLP"],
+        "body": ["${1:resolve}.DeleteLayoutPreset('${2:Preset Name}');"],
+        "description": "Delete a layout preset in Resolve"
+    },
+    "Save Layout Preset": {
+        "prefix": ["Save", "Preset", "SavePreset", "SLP"],
+        "body": ["${1:resolve}.SaveLayoutPreset('${2:Preset Name}');"],
+        "description": "Save a layout preset in Resolve"
+    },
+    "Import Layout Preset": {
+        "prefix": ["Import", "Preset", "ImportPreset", "ILP"],
+        "body": ["${1:resolve}.ImportLayoutPreset('${1:/PATH/TO/PRESET.preset}', '${3:Preset Name}');"],
+        "description": "Import a layout preset in Resolve from a file"
+    },
+    "Quit Resolve": {
+        "prefix": ["Quit", "Q", "CloseResolve"],
+        "body": ["${1:resolve}.Quit();"],
+        "description": "Close the Resolve app"
+    },
+    "Import Render Preset": {
+        "prefix": ["Import", "ImportRender", "ImportRenderPreset", "IRP"],
+        "body": ["${1:resolve}.ImportRenderPreset('${2:/PATH/TO/FILE}');"],
+        "description": "Import a preset from Preset Path and set it as current preset for rendering"
+    },
+    "Export Render Preset": {
+        "prefix": ["Export", "ExportRender", "ExportRenderPreset", "ERP"],
+        "body": ["${1:resolve}.ExportRenderPreset('${2:Preset Name}','${3:/PATH/TO/FILE}');"],
+        "description": "Export a preset to a given path if Preset Name exists."
+    },
+    "Import Burn In Preset to Resolve": {
+        "prefix": ["Import", "ImportBurnIn", "ImportBurnInPreset", "IBIP"],
+        "body": ["${1:resolve}.ImportBurnInPreset('${2:/PATH/TO/FILE}');"],
+        "description": "Import a data burn in preset from a given Preset Path"
+    },
+    "Export Burn In Preset to Resolve": {
+        "prefix": ["Export", "ExportBurnIn", "ExportBurnInPreset", "EBIP"],
+        "body": ["${1:resolve}.ExportBurnInPreset('${2:Preset Name}','${3:/PATH/TO/FILE}');"],
+        "description": "Import a data burn in preset from a given Preset Path"
+    },
+    "Get Resolve Keyframe Mode": {
+        "prefix": ["Get", "GetKeyframe", "GetKeyframeMode", "GKM"],
+        "body": ["${1:resolve}.GetKeyframeMode();"],
+        "description": "Get the currently set keyframe mode (int)"
+    },
+    "Set Resolve Keyframe Mode": {
+        "prefix": ["Set", "SetKeyframe", "SetKeyframeMode", "SKM"],
+        "body": ["${1:resolve}.SetKeyframeMode(${2:1});"],
+        "description": "Get the currently set keyframe mode (int)"
+    },// The Project Manager Object
+    "Archive Project": {
+        "prefix": ["Archive", "Project", "ArchiveProject", "AP"],
+        "body": ["${1:projectManager}.ArchiveProject('${2:Project Name}', '${3:/PATH/TO/FILE}', ${4:true}, ${5:true}, ${6:false});"],
+        "description": "Create a New project in the current folder of the project manager"
+    },
+    "Create Project": {
+        "prefix": ["Create", "Project", "CreateProject", "CP"],
+        "body": ["${1:projectManager}.CreateProject('${2:New Project Name}');"],
+        "description": "Create a New project in the current folder of the project manager"
+    },
+    "Delete Project": {
+        "prefix": ["Delete", "Project", "DeleteProject", "DP"],
+        "body": ["${1:projectManager}.DeleteProject('${2:Project Name}');"],
+        "description": "Delete a project from the project manager"
+    },
+    "Load Project": {
+        "prefix": ["Load", "Project", "LoadProject", "LP"],
+        "body": ["${1:projectManager}.LoadProject('${2:Project Name}');"],
+        "description": "Load a project from the project manager"
+    },
+    "Get Current Project": {
+        "prefix": ["Get", "Current", "Project", "CurrentProject", "CP"],
+        "body": ["${1:projectManager}.GetCurrentProject();"],
+        "description": "Get the current project"
+    },
+    "Save Project": {
+        "prefix": ["Save", "Project", "SaveProject", "SP"],
+        "body": ["${1:projectManager}.SaveProject();"],
+        "description": "Save the current project"
+    },
+    "Close Project": {
+        "prefix": ["Close", "Project", "CloseProject", "CP"],
+        "body": ["${1:projectManager}.CloseProject('${2:Project Name}');"],
+        "description": "Close a project"
+    },
+    "Create Project Folder": {
+        "prefix": ["Create", "Folder", "CreateProjectFolder", "CreateFolder", "CF"],
+        "body": ["${1:projectManager}.CreateFolder('${2:Folder Name}');"],
+        "description": "Create a Project Manager Folder in the current Database"
+    },
+    "Delete Project Folder": {
+        "prefix": ["Delete", "Folder", "DeleteProjectFolder", "DeleteFolder", "DF"],
+        "body": ["${1:projectManager}.DeleteFolder('${2:Folder Name}');"],
+        "description": "Delete a Project Manager Folder"
+    },
+    "Get Projects in Current Project Folder": {
+        "prefix": ["GetProjects", "Projects", "GetProjectList", "ProjectList", "GetP", "GPL"],
+        "body": ["${1:projectManager}.GetProjectListInCurrentFolder();"],
+        "description": "Get all Projects in current Project Manager Folder"
+    },
+    "Get Folders in Current Project Folder": {
+        "prefix": ["GetFolders", "Folders", "GetFolderList", "FolderList", "GetF", "GFL"],
+        "body": ["${1:projectManager}.GetFolderListInCurrentFolder();"],
+        "description": "Get all Folders in current Project Manager Folder"
+    },
+    "Go to Root Project Folder": {
+        "prefix": ["Root", "RootFolder", "RootProjectFolder", "MainProjectFolder", "GoTo", "GTRF"],
+        "body": ["${1:projectManager}.GotoRootFolder();"],
+        "description": "Go to root Project Manager Folder"
+    },
+    "Go to Parent Project Folder": {
+        "prefix": ["Parent", "ParentFolder", "ParentProjectFolder", "GoTo", "GTPF"],
+        "body": ["${1:projectManager}.GotoParentFolder();"],
+        "description": "Go to Parent Project Manager Folder from current folder"
+    },
+    "Get Current Project Folder": {
+        "prefix": ["Current", "Folder", "CurrentProjectFolder", "GCF"],
+        "body": ["${1:projectManager}.GetCurrentFolder();"],
+        "description": "Get the current Project Manager Folder's name"
+    },
+    "Open Project Folder": {
+        "prefix": ["Open", "Folder", "OpenProjectFolder", "OF"],
+        "body": ["${1:projectManager}.OpenFolder('${2:Folder Name}');"],
+        "description": "Open a Project Manager Folder"
+    },
+    "Import Project": {
+        "prefix": ["Import", "Project", "ImportProject", "IP"],
+        "body": ["${1:projectManager}.ImportProject('${2:/PATH/TO/PROJECT.drp}', '${3:Optional Name}');"],
+        "description": "Imports Project to Current Project Manager Folder"
+    },
+    "Export Project": {
+        "prefix": ["Export", "Project", "ExportProject", "EP"],
+        "body": ["${1:projectManager}.ExportProject('${2:Project Name}', '${3:/PATH/TO/PROJECT.drp}', ${4:Export with Luts/stills?(true/false)});"],
+        "description": "Export Project from Project Manager to file"
+    },
+    "Restore Project": {
+        "prefix": ["Restore", "Project", "RestoreProject", "EP"],
+        "body": ["${1:projectManager}.RestoreProject('${2:/PATH/TO/PROJECT.drp}');"],
+        "description": "Restores a Project to current Project Manager folder"
+    },
+    "Get Current Database": {
+        "prefix": ["Get", "GetCurrent", "Current", "CurrentDatabase", "GetCurrentDatabase", "GCD"],
+        "body": ["${1:projectManager}.GetCurrentDatabase();"],
+        "description": "Get the Current Database open in the Project Manager"
+    },
+    "Database List": {
+        "prefix": ["GetDL", "GetD", "Database", "DatabaseList", "GetDatabaseList", "GDL"],
+        "body": ["${1:projectManager}.GetDatabaseList();"],
+        "description": "Get all Databases in the Project Manager"
+    },
+    "Set Current Database": {
+        "prefix": ["Set", "SetCurrent", "SetDatabase", "SetCurrentDatabase", "SCD"],
+        "body": ["${1:projectManager}.SetCurrentDatabase({ DbType: '${2:PostgresSQL}', DbName: '${3:Db Name}', IpAddress: '${4:127.0.0.1}' });"],
+        "description": "Get all Databases in the Project Manager"
+    },
+    "Create Cloud Project": {
+        "prefix": ["Create", "CreateCloud", "CreateCloudProject", "CCP"],
+        "body": ["${1:projectManager}.CreateCloudProject({ [resolve.CLOUD_SETTING_PROJECT_NAME]: '${2:My Project}', \n\t[resolve.CLOUD_SETTING_PROJECT_MEDIA_PATH]: '${3:/PATH/TO/FOLDER/}', \n\t[resolve.CLOUD_SETTING_IS_COLLAB]: ${4:false}, \n\t[resolve.CLOUD_SETTING_SYNC_MODE]: resolve.${5:CLOUD_SYNC_NONE}, \n\t[resolve.CLOUD_SETTING_IS_CAMERA_ACCESS]: ${6:false} });"],
+        "description": "Creates a Cloud Project. Returns True if create cloud project is successful; False otherwise"
+    },
+    "Import Cloud Project": {
+        "prefix": ["Import", "ImportCloud", "ImportCloudProject", "ICP"],
+        "body": ["${1:projectManager}.CreateCloudProject('${2:/PATH/TO/FILE}', { [resolve.CLOUD_SETTING_PROJECT_NAME]: '${2:My Project}', \n\t[resolve.CLOUD_SETTING_PROJECT_MEDIA_PATH]: '${3:/PATH/TO/FOLDER/}', \n\t[resolve.CLOUD_SETTING_IS_COLLAB]: ${4:false}, \n\t[resolve.CLOUD_SETTING_SYNC_MODE]: resolve.${5:CLOUD_SYNC_NONE}, \n\t[resolve.CLOUD_SETTING_IS_CAMERA_ACCESS]: ${6:false} });"],
+        "description": "Imports a Cloud Project. Returns True if import cloud project is successful; False otherwise"
+    },
+    "Restore Cloud Project": {
+        "prefix": ["Restore", "RestoreCloud", "RestoreCloudProject", "RCP"],
+        "body": ["${1:projectManager}.RestoreCloudProject('${2:/PATH/TO/FOLDER}', { [resolve.CLOUD_SETTING_PROJECT_NAME]: '${2:My Project}', \n\t[resolve.CLOUD_SETTING_PROJECT_MEDIA_PATH]: '${3:/PATH/TO/FOLDER/}', \n\t[resolve.CLOUD_SETTING_IS_COLLAB]: ${4:false}, \n\t[resolve.CLOUD_SETTING_SYNC_MODE]: resolve.${5:CLOUD_SYNC_NONE}, \n\t[resolve.CLOUD_SETTING_IS_CAMERA_ACCESS]: ${6:false} });"],
+        "description": "Imports a Cloud Project. Returns True if import cloud project is successful; False otherwise"
+    },// The Project Object
+    "Media Pool": {
+        "prefix": ["Get", "GetMedia", "GetMediaPool", "GMP"],
+        "body": ["${1:currentProject}.GetMediaPool();"],
+        "description": "Get the Media Pool from a Project"
+    },
+    "Timeline Count": {
+        "prefix": ["Get", "GetTimeline", "GetTimelineCount", "GTC"],
+        "body": ["${1:currentProject}.GetTimelineCount();"],
+        "description": "Get the amount of timelines in a Project"
+    },
+    "Get Timeline by Index": {
+        "prefix": ["Get", "GetTimeline", "GetTimelineByIndex", "GTBI"],
+        "body": ["${1:currentProject}.GetTimelineByIndex(${2:1});"],
+        "description": "Get a timeline in a Project using the index(based on timeline count)"
+    },
+    "Get Current Timeline": {
+        "prefix": ["Get", "GetCurrent", "GetCurrentTimeline", "GCT"],
+        "body": ["${1:currentProject}.GetCurrentTimeline();"],
+        "description": "Get the current timeline in a Project"
+    },
+    "Set Current Timeline": {
+        "prefix": ["Set", "SetCurrent", "SetCurrentTimeline", "SCT"],
+        "body": ["${1:currentProject}.SetCurrentTimeline(${2:TimelineObject});"],
+        "description": "Set the current timeline in a Project"
+    },
+    "Get Gallery (Color Page)": {
+        "prefix": ["Get", "GetGallery", "GG"],
+        "body": ["${1:currentProject}.GetGallery();"],
+        "description": "Get the gallery from a Project in the Color Page"
+    },
+    "Get Project Name": {
+        "prefix": ["Get", "GetName", "GN"],
+        "body": ["${1:currentProject}.GetName();"],
+        "description": "Get the name of a Project"
+    },
+    "Set Project Name": {
+        "prefix": ["Set", "SetName", "SN"],
+        "body": ["${1:currentProject}.SetName('${2:Project Name}');"],
+        "description": "Set the name of a Project"
+    },
+    "Get Preset List": {
+        "prefix": ["Get", "GetPresets", "GP"],
+        "body": ["${1:currentProject}.GetPresetList();"],
+        "description": "Get presets and all their information for a Project"
+    },
+    "Set Preset": {
+        "prefix": ["Set", "SetPreset", "SP"],
+        "body": ["${1:currentProject}.SetPreset('${2:Preset Name}');"],
+        "description": "Set Current preset for a Project"
+    },
+    "Add Render Job": {
+        "prefix": ["Add", "Render", "AddRenderJob", "ARJ"],
+        "body": ["${1:currentProject}.AddRenderJob();"],
+        "description": "Creates new Render Job with current render settings"
+    },
+    "Delete Render Job": {
+        "prefix": ["Delete", "Render", "DeleteRenderJob", "DRJ"],
+        "body": ["${1:currentProject}.DeleteRenderJob('${2:RenderJobID}');"],
+        "description": "Deletes Render Job based on the ID"
+    },
+    "Delete ALL Render Jobs": {
+        "prefix": ["Delete", "Render", "DeleteAllRenderJobs", "DARJ"],
+        "body": ["${1:currentProject}.DeleteAllRenderJobs();"],
+        "description": "Deletes ALL Render Jobs in a project"
+    },
+    "Get Render Jobs": {
+        "prefix": ["Get", "GetRenders", "GetRenderJobList", "GRJL"],
+        "body": ["${1:currentProject}.GetRenderJobList();"],
+        "description": "Gets all Render Jobs in a project with their information"
+    },
+    "Get Render Presets": {
+        "prefix": ["Get", "GetRenders", "GetRenderPresetList", "GRPL"],
+        "body": ["${1:currentProject}.GetRenderPresetList();"],
+        "description": "Gets all Render presets in a project with their information"
+    },
+    "Start Render Job(s)": {
+        "prefix": ["Start", "StartRendering", "SR"],
+        "body": ["${1:currentProject}.StartRendering(['${2:RenderJobID 1}', '${3:RenderJobID 2}'], ${4:Enable Error Feedback in UI?(true/false)});"],
+        "description": "Starts Rendering selected jobs based on their job ID's"
+    },
+    "Start ALL Render Jobs": {
+        "prefix": ["Start", "StartRenderingAll", "SR"],
+        "body": ["${1:currentProject}.StartRendering(${2:Enable Error Feedback in UI?(true/false)});"],
+        "description": "Starts Rendering all render jobs"
+    },
+    "Stop Rendering": {
+        "prefix": ["Stop", "StopRenderingAll", "SR"],
+        "body": ["${1:currentProject}.StopRendering();"],
+        "description": "Stops Rendering all render jobs"
+    },
+    "Check if Rendering": {
+        "prefix": ["Is", "IsRendering", "IRIP"],
+        "body": ["${1:currentProject}.IsRenderingInProgress();"],
+        "description": "Checks if there's a render in progress"
+    },
+    "Load Render Preset": {
+        "prefix": ["Load", "LoadPreset", "LoadRenderPreset", "LRP"],
+        "body": ["${1:currentProject}.LoadRenderPreset('${2:Preset Name}');"],
+        "description": "Loads a render preset to be the new current"
+    },
+    "Save New Render Preset": {
+        "prefix": ["Save", "SavePreset", "SaveNewRenderPreset", "SANRP"],
+        "body": ["${1:currentProject}.SaveAsNewRenderPreset('${2:Preset Name}');"],
+        "description": "Saves a render preset from the current settings"
+    },
+    "Set Render Settings": {
+        "prefix": ["Set", "SetRender", "SetRenderSettings", "SRS"],
+        "body": ["${1:currentProject}.SetRenderSettings({ SelectAllFrames: ${2:true}, \n\tCustomName: '${3:My Movie.mov}', \n\tExportVideo: ${4:true}, \n\tExportAudio: ${5:true}, \n\tFormatWidth: ${6:1920}, \n\tFormatHeight: ${7:1080}, \n\tFrameRate: ${8:23.976} });"],
+        "description": "Set the current render settings"
+    },
+    "Get Render Job Status": {
+        "prefix": ["Get", "GetRender", "GetRenderStatus", "GRJS"],
+        "body": ["${1:currentProject}.GetRenderJobStatus('${2:RenderJobID}');"],
+        "description": "Gets the status of a chosen render job if it's rendering"
+    },
+    "Get Project Setting": {
+        "prefix": ["Get", "GetSetting", "GetProjectSetting", "GS"],
+        "body": ["${1:currentProject}.GetSetting('${2:Setting Name}');"],
+        "description": "Gets a setting from the project based on the name"
+    },
+    "Set Project Setting": {
+        "prefix": ["Set", "SetSetting", "SetProjectSetting", "SS"],
+        "body": ["${1:currentProject}.SetSetting('${2:Setting Name}', '${3:Setting Value}');"],
+        "description": "Sets a setting from the project based on the name"
+    },
+    "Get Render Formats": {
+        "prefix": ["Get", "GetRender", "GetRenderFormats", "GRF"],
+        "body": ["${1:currentProject}.GetRenderFormats();"],
+        "description": "Gets list of available render formats"
+    },
+    "Get Render Codecs": {
+        "prefix": ["Get", "GetRender", "GetRenderCodecs", "GRC"],
+        "body": ["${1:currentProject}.GetRenderCodecs('${2:MP4}');"],
+        "description": "Gets list of available render codecs for a render format"
+    },
+    "Get Current Render Format and Codec": {
+        "prefix": ["Get", "GetRender", "GetRenderFormatAndCodec", "GRC"],
+        "body": ["${1:currentProject}.GetCurrentRenderFormatAndCodec();"],
+        "description": "Gets format and codec settings for the render settings"
+    },
+    "Set Current Render Format and Codec": {
+        "prefix": ["Set", "SetRender", "SetRenderFormatAndCodec", "SRC"],
+        "body": ["${1:currentProject}.SetCurrentRenderFormatAndCodec();"],
+        "description": "Set format and codec settings for the render settings"
+    },
+    "Get Render Mode(Single/Individual Clip(s))": {
+        "prefix": ["Get", "GetRender", "GetRenderMode", "GRM"],
+        "body": ["${1:currentProject}.GetCurrentRenderMode();"],
+        "description": "Get if the render settings are set to single clip or individual clips"
+    },
+    "Set Render Mode(Single/Individual Clip(s))": {
+        "prefix": ["Set", "SetRender", "SetRenderMode", "SRM"],
+        "body": ["${1:currentProject}.SetCurrentRenderMode(${2:1});"],
+        "description": "Get if the render settings are set to single clip or individual clips"
+    },
+    "Get Render Resolutions": {
+        "prefix": ["Get", "GetRender", "GetRenderResolutions", "GRR"],
+        "body": ["${1:currentProject}.GetRenderResolutions('${2:mov}', '${3:ProRes422}');"],
+        "description": "Get list of applicable resolutions for the render format and codec"
+    },
+    "Refresh LUT List": {
+        "prefix": ["Refresh", "RefreshLUTS", "RefreshLuts", "RefreshLUTList", "RLL"],
+        "body": ["${1:currentProject}.RefreshLUTList();"],
+        "description": "Refresh the LUT List after adding to the LUT Library"
+    },
+    "Get Unique Project ID": {
+        "prefix": ["Get", "GetUnique", "GetProjectID", "GetUniqueID", "GUI"],
+        "body": ["${1:currentProject}.GetUniqueId();"],
+        "description": "Get a unique ID for the project item"
+    },
+    "Insert Audio To Current Track": {
+        "prefix": ["Insert", "InsertAudio", "InsertAudioToTrack", "InsertAudioToCurrentTrackAtPlayhead", "IATCTAP"],
+        "body": ["${1:currentProject}.InsertAudioToCurrentTrackAtPlayhead('${2:/PATH/TO/File.mp4}', ${3:StartOffset(Samples)}, ${4:Duration(Samples)});"],
+        "description": "Insert Audio from File to Current Track at Playhead in Fairlight"
+    },
+    "Load Burn In Preset into Project": {
+        "prefix": ["Load", "LoadPreset", "LoadBurnIn", "LoadBurnInPreset", "LBIP"],
+        "body": ["${1:currentProject}.LoadBurnInPreset('${2:Preset Name}');"],
+        "description": "Load user defined data burn in preset for project"
+    },
+    "Export Current Frame As Still": {
+        "prefix": ["Export", "ExportStill", "ExportFrame", "ExportCurrentFrameAsStill", "ECFAS"],
+        "body": ["${1:currentProject}.ExportCurrentFrameAsStill('${2:/PATH/TO/FILE.png}');"],
+        "description": "Export current frame as still"
+    },
+    "Get Color Groups List": {
+        "prefix": ["Get", "GetGroups", "GetColorGroups", "GetColorGroupsList", "GCGL"],
+        "body": ["${1:currentProject}.GetColorGroupsList();"],
+        "description": "Get a list of all group objects in the timeline"
+    },
+    "Add Color Group": {
+        "prefix": ["Add", "AddGroup", "AddColorGroup", "ACG"],
+        "body": ["${1:currentProject}.AddColorGroup('${2:Group Name}');"],
+        "description": "Creates a new ColorGroup. Group Name must be a unique string."
+    },
+    "Delete Color Group": {
+        "prefix": ["Delete", "DeleteGroup", "DeleteColorGroup", "DCG"],
+        "body": ["${1:currentProject}.DeleteColorGroup('${2:Group Name}');"],
+        "description": "Deletes the given color group and sets clips to ungrouped"
+    },// The Media Storage Object
+    "Get Mounted Volumes(External Storage)": {
+        "prefix": ["Get", "GetMounted", "GetMountedVolumes", "GetMountedVolumeList", "GMVL"],
+        "body": ["${1:mediaStorage}.GetMountedVolumeList();"],
+        "description": "Get a list of all Mounted Volumes(External Storage Devices) found in Media Storage"
+    },
+    "Get Sub-Folders": {
+        "prefix": ["Get", "GetSubFolders", "GetSubFolderList", "GSFL"],
+        "body": ["${1:mediaStorage}.GetSubFolderList('${2:/PATH/TO/FOLDER/}');"],
+        "description": "Get a list of all folders inside of a chosen folder"
+    },
+    "Get is Folder Stale": {
+        "prefix": ["Get", "GetFolderStale", "GetIsFolderStale", "GIFS"],
+        "body": ["${1:mediaStorage}.GetIsFolderStale('${2:/PATH/TO/FOLDER/}');"],
+        "description": "Get if a chosen folder is 'stale' in Collaboration Mode"
+    },
+    "Get File List": {
+        "prefix": ["Get", "GetFiles", "GetFileList", "GFL"],
+        "body": ["${1:mediaStorage}.GetFileList('${2:/PATH/TO/FOLDER/}');"],
+        "description": "Get a list of compatible media files in a chosen folder"
+    },
+    "Reveal in Storage": {
+        "prefix": ["Reveal", "RevealFile", "RevealFolder", "RevealInStorage", "RIS"],
+        "body": ["${1:mediaStorage}.RevealInStorage('${2:/PATH/TO/FOLDER/(or FILE.mov)}');"],
+        "description": "Opens chosen path in Resolve's Media Storage"
+    },
+    "Add Items To Media Pool": {
+        "prefix": ["Add", "AddItems", "AddFiles", "AddItemListToMediaPool", "AILTMP"],
+        "body": ["${1:mediaStorage}.AddItemListToMediaPool(['${2:/PATH/TO/FOLDER 1/(or FILE 1.mov)}', '${3:/PATH/TO/FOLDER 2/(or FILE2 .mov)}']);"],
+        "description": "Adds Files/Folders to the current Media Pool folder"
+    },
+    "Add Clip Mattes To Media Pool": {
+        "prefix": ["Add", "AddClips", "AddClipMattes", "AddClipMattesToMediaPool", "ACMTMP"],
+        "body": ["${1:mediaStorage}.AddClipMattesToMediaPool(['${2:/PATH/TO/FILE/lefteye.mov}'], '${3:left}');"],
+        "description": "Adds Clip Mattes for Stereo Clips to current Media Pool folder"
+    },
+    "Add Timeline Mattes To Media Pool": {
+        "prefix": ["Add", "AddClips", "AddClipMattes", "AddClipMattesToMediaPool", "ACMTMP"],
+        "body": ["${1:mediaStorage}.AddClipMattesToMediaPool(['${2:/PATH/TO/FILE/lefteye.mov}', '${3:/PATH/TO/FILE/righteye.mov}']);"],
+        "description": "Adds media files as Timeline Mattes in current Media Pool folder"
+    },
+    // The Media Pool Object
+    "Get Master Bin": {
+        "prefix": ["Get", "GetRoot", "GetRootBin", "RootBin", "RootFolder", "MasterBin", "GRF"],
+        "body": ["${1:mediaPool}.GetRootFolder();"],
+        "description": "Get the Master(Root) Bin/Folder of a Project's Media Pool"
+    },
+    "Add Sub-Bin": {
+        "prefix": ["Add", "AddBin", "AddSubBin", "AddSubFolder", "ASF"],
+        "body": ["${1:mediaPool}.AddSubFolder(${2:rootBin_Object}, '${3:Folder Name}');"],
+        "description": "Add a Bin/Folder to a specified Bin/Folder"
+    },
+    "Refresh Bins": {
+        "prefix": ["Refresh", "RefreshBins", "RefreshFolders", "RF"],
+        "body": ["${1:mediaPool}.RefreshFolders(${2:rootBin_Object}, '${3:Folder Name}');"],
+        "description": "Refresh Bins/Folders when in Collaboration Mode"
+    },
+    "Create Empty Timeline": {
+        "prefix": ["Create", "CreateTimeline", "CreateTML", "CET"],
+        "body": ["${1:mediaPool}.CreateEmptyTimeline('${2:Timeline Name}');"],
+        "description": "Add Empty Timeline to the current Bin/Folder"
+    },
+    "Append Media To Timeline": {
+        "prefix": ["Append", "AppendToTimeline", "AddClips", "ATT"],
+        "body": ["${1:mediaPool}.AppendToTimeline([${2:ClipObject1}, ${3:ClipObject2}]);"],
+        "description": "Add Clips to the current Timeline"
+    },
+    "Append Media To Timeline with Settings": {
+        "prefix": ["Append", "AppendToTimeline", "AddClips", "ATT"],
+        "body": ["${1:mediaPool}.AppendToTimeline({ mediaPoolItem: ${2:clipObject}, \n\tstartFrame: ${3:0}, // Start Frame in Clip \n\tendFrame: ${4:10}, // End Frame in Clip \n\tmediaType: ${5:1}, // Optional: 2(Audio Only) or 1(Video Only) \n\trecordFrame: ${6:50}, // Optional: Start Frame on Timeline \n\ttrackIndex: ${7:1} }); // Optional: 1+"],
+        "description": "Add Clips to the current Timeline with settings"
+    },
+    "Create Timeline with Clips": {
+        "prefix": ["Create", "CreateTimeline", "CreateTML", "CTFC"],
+        "body": ["${1:mediaPool}.CreateTimelineFromClips('${2:Timeline Name}', [${3:ClipObject1}, ${4:ClipObject2}]);"],
+        "description": "Create a Timeline with Specific Clips"
+    },
+    "Import Timeline": {
+        "prefix": ["Import", "ImportTimeline", "ImportTimelineFromFile", "ITFF"],
+        "body": ["${1:mediaPool}.ImportTimelineFromFile('${2:/PATH/TO/TIMELINE.aaf}', ${3:importOptionsTable});"],
+        "description": "Import a timeline from a file with import options"
+    },
+    "Delete Timelines": {
+        "prefix": ["Delete", "DeleteTimeline", "DeleteTimelines", "DT"],
+        "body": ["${1:mediaPool}.DeleteTimelines([${2:TimelineObject1}, ${3:TimelineObject2}]);"],
+        "description": "Deleted 1 or more timelines"
+    },
+    "Get Current Bin": {
+        "prefix": ["Get", "GetCurrent", "GetCurrentBin", "GetCurrentFolder", "GCF"],
+        "body": ["${1:mediaPool}.GetCurrentFolder();"],
+        "description": "Get the Active Bin/Folder"
+    },
+    "Set Current Bin": {
+        "prefix": ["Set", "SetCurrent", "SetCurrentBin", "SetCurrentFolder", "SCF"],
+        "body": ["${1:mediaPool}.SetCurrentFolder(${2:FolderObject});"],
+        "description": "Set the Active Bin/Folder"
+    },
+    "Delete Media Pool Clips": {
+        "prefix": ["Delete", "DeleteClips", "DeleteMediaPoolClips", "DC"],
+        "body": ["${1:mediaPool}.DeleteClips([${2:ClipObject1}, ${3:ClipObject2}]);"],
+        "description": "Delete Media Pool Clips or Timeline Mattes"
+    },
+    "Delete Media Pool Bins": {
+        "prefix": ["Delete", "DeleteBins", "DeleteMediaPoolBins", "DB"],
+        "body": ["${1:mediaPool}.DeleteFolders([${2:BinObject1}, ${3:BinObject2}]);"],
+        "description": "Delete Media Pool Bins/Folders"
+    },
+    "Move Media Pool Clips": {
+        "prefix": ["Move", "MoveClips", "MoveMediaPoolClips", "MC"],
+        "body": ["${1:mediaPool}.MoveClips([${2:ClipObject1}, ${3:ClipObject2}], ${4:BinObject});"],
+        "description": "Move Media Pool Clips to a different Bin/Folder"
+    },
+    "Move Media Pool Bins": {
+        "prefix": ["Move", "MoveBins", "MoveMediaPoolBins", "MB"],
+        "body": ["${1:mediaPool}.MoveFolders([${2:BinObject1}, ${3:BinObject2}], ${4:RootBinObject});"],
+        "description": "Move Media Pool Bins/Folders to a different Bin/Folder"
+    },
+    "Get Timeline Mattes": {
+        "prefix": ["Get", "GetTimeline", "GetTimelineMattes", "GTML"],
+        "body": ["${1:mediaPool}.GetTimelineMatteList(${2:RootBinObject});"],
+        "description": "Get list of timeline Mattes in a chosen Bin/Folder"
+    },
+    "Delete Clip Mattes": {
+        "prefix": ["Delete", "DeleteClips", "DeleteClipMattes", "DCM"],
+        "body": ["${1:mediaPool}.GetTimelineMatteList(${2:ClipObject}, ['${3:/PATH/TO/MATTE1.mov}', '${4:/PATH/TO/MATTE2.mov}']);"],
+        "description": "Delete Mattes based on the path, for a Media Pool Item"
+    },
+    "Relink Clips": {
+        "prefix": ["Relink", "RelinkClips", "RC"],
+        "body": ["${1:mediaPool}.RelinkClips([${2:ClipObject1}, ${3:ClipObject2}], '${4:/PATH/TO/FOLDER/}');"],
+        "description": "Relink Clips with a new folder path to search in"
+    },
+    "Unlink Clips": {
+        "prefix": ["Unlink", "UnlinkClips", "UC"],
+        "body": ["${1:mediaPool}.UnlinkClips([${2:ClipObject1}, ${3:ClipObject2}]);"],
+        "description": "Relink Clips with a new folder path to search in"
+    },
+    "Import Media": {
+        "prefix": ["Import", "ImportMedia", "IC"],
+        "body": ["${1:mediaPool}.ImportMedia(['${2:/PATH/TO/CLIP1.mov}', '${3:/PATH/TO/CLIP2.mov}']);"],
+        "description": "Import Media From a File to the Current Media Pool Bin/Folder"
+    },
+    "Import Media Sequences": {
+        "prefix": ["Import", "ImportMedia", "IC"],
+        "body": ["${1:mediaPool}.ImportMedia([ { FilePath: '${2:file_%03d.dpx}', StartIndex: ${3:1}, EndIndex: ${4:100} }, \n\t{ FilePath: '${5:file_%03d.dpx}', StartIndex: ${6:1}, EndIndex: ${7:100} } ]);"],
+        "description": "Import Media From a File to the Current Media Pool Bin/Folder as a sequence"
+    },
+    "Export Metadata": {
+        "prefix": ["Export", "ExportMetadata", "EM"],
+        "body": ["${1:mediaPool}.ExportMetadata('${2:/PATH/TO/FILE.csv}', [${3:ClipObject1}, ${4:ClipObject2}]);"],
+        "description": "Export Clip's Metadata, if no clips are chosen, then all clips' metadata is exported"
+    },
+    "Get Unique Media Pool ID": {
+        "prefix": ["Get", "GetID", "GetMediaPoolID", "GUI"],
+        "body": ["${1:mediaPool}.GetUniqueId();"],
+        "description": "Get a unique ID for the media pool"
+    },
+    "Create Stereo Clip in Media Pool": {
+        "prefix": ["Create", "CreateStereo", "CreateStereoClip", "CSC"],
+        "body": ["${1:mediaPool}.CreateStereoClip(${2:LeftMediaPoolItem}, ${3:RightMediaPoolItem});"],
+        "description": "Takes in two existing media pool items and creates a new 3D stereoscopic media pool entry replacing the input media in the media pool"
+    },
+    "Get Selected Media Pool Clips": {
+        "prefix": ["Get", "GetSelected", "GetSelectedClips", "GSC"],
+        "body": ["${1:mediaPool}.GetSelectedClips();"],
+        "description": "Get the current selected MediaPoolItems"
+    },
+    "Set Selected Media Pool Clips": {
+        "prefix": ["Set", "SetSelected", "SetSelectedClip", "SSC"],
+        "body": ["${1:mediaPool}.SetSelectedClip(${2:MediaPoolItem});"],
+        "description": "Set the selected MediaPoolItem to the given MediaPoolItem"
+    },// The Media Pool Bin/Folder Object
+    "Get Bin's Clips": {
+        "prefix": ["Get", "GetClips", "GetClipList", "GCL"],
+        "body": ["${1:mp_binObject}.GetClipList();"],
+        "description": "Get list of all media in a bin/folder"
+    },
+    "Get Bin Name": {
+        "prefix": ["Get", "GetName", "GetBinName", "GN"],
+        "body": ["${1:mp_binObject}.GetName();"],
+        "description": "Get name of a bin/folder"
+    },
+    "Get Bin Sub-Bins": {
+        "prefix": ["Get", "GetBins", "GetBinList", "GSFL"],
+        "body": ["${1:mp_binObject}.GetSubFolderList();"],
+        "description": "Get list of all bins/folders a bin/folder"
+    },
+    "Get Is Media Pool Bin Stale": {
+        "prefix": ["Get", "GetBin", "GetBinStale", "GIFS"],
+        "body": ["${1:mp_binObject}.GetIsFolderStale();"],
+        "description": "Returns true if bin/folder is stale in collaboration mode, false otherwise"
+    },
+    "Get Unique Media Pool Bin ID": {
+        "prefix": ["Get", "GetBin", "GetBinID", "GUI"],
+        "body": ["${1:mp_binObject}.GetUniqueId();"],
+        "description": "Get a unique ID for the media pool bin/folder"
+    },
+    "Export Media Pool Bin": {
+        "prefix": ["Export", "ExportBin", "E"],
+        "body": ["${1:mp_binObject}.Export('${2:/PATH/TO/FILE.drb}');"],
+        "description": "Returns true if export of DRB bin/folder to filePath is successful, false otherwise"
+    },
+    "Transcribe Media Pool Bin Clips Audio": {
+        "prefix": ["Transcribe", "TranscribeBin", "TA"],
+        "body": ["${1:mp_binObject}.TranscribeAudio();"],
+        "description": "Transcribe audio of the MediaPoolItems within the bin/folder and nested bins/folders. Returns True if successful; False otherwise"
+    },
+    "Clear Media Pool Bin Clips Transcription": {
+        "prefix": ["Clear", "ClearBinTranscription", "ClearTranscription", "CT"],
+        "body": ["${1:mp_binObject}.ClearTranscription();"],
+        "description": "Clear audio transcription of the MediaPoolItems within the bin/folder and nested bins/folders. Returns True if successful; False otherwise"
+    },
+    
+    // The Media Pool Clip/Item Object
+    "Get Media Pool Clip Name": {
+        "prefix": ["Get", "GetName", "GetClipName", "GN"],
+        "body": ["${1:mp_clipObject}.GetName();"],
+        "description": "Get a media pool clip's name"
+    },
+    "Get Media Pool Clip Metadata": {
+        "prefix": ["Get", "GetMetadata", "GetClipMetadata", "GM"],
+        "body": ["${1:mp_clipObject}.GetMetadata();"],
+        "description": "Get a media pool clip's metadata"
+    },
+    "Set Media Pool Clip Metadata": {
+        "prefix": ["Set", "SetMetadata", "SetClipMetadata", "SM"],
+        "body": ["${1:mp_clipObject}.SetMetadata(${2:MetadataType}, ${3:MetadataValue});"],
+        "description": "Set a media pool clip's metadata"
+    },
+    "Get Media Pool Clip ID": {
+        "prefix": ["Get", "GetMediaID", "GetClipID", "GMI"],
+        "body": ["${1:mp_clipObject}.GetMediaID();"],
+        "description": "Get a media pool clip's Media ID"
+    },
+    "Add Marker to Media Pool Clip": {
+        "prefix": ["Add", "AddMarker", "AddMarkerToClip", "AM"],
+        "body": ["${1:mp_clipObject}.AddMarker(${2:50}, // Start Frame \n\t'${3:Green}', // Color \n\t'${4:Marker Name}', // Name \n\t'${5:Notes}', // Notes \n\t${6:10}, // Duration \n\t'${7:Secret_Word}'); // Custom Data"],
+        "description": "Add marker to media pool clip"
+    },
+    "Get Media Pool Clip Markers": {
+        "prefix": ["Get", "GetMarkers", "GetClipMarkers", "GM"],
+        "body": ["${1:mp_clipObject}.GetMarkers();"],
+        "description": "Get a media pool clip's Markers"
+    },
+    "Get Media Pool Clip Markers by CustomData": {
+        "prefix": ["Get", "GetMarkers", "GetClipMarkers", "GMBCD"],
+        "body": ["${1:mp_clipObject}.GetMarkerByCustomData('${2:Custom Data}');"],
+        "description": "Get a media pool clip's Markers by Custom Data"
+    },
+    "Update Media Pool Clip Markers' CustomData": {
+        "prefix": ["Update", "UpdateMarkers", "UpdateClipMarkers", "UMCD"],
+        "body": ["${1:mp_clipObject}.UpdateMarkerCustomData(${2:20}, // Frame \n\t'${3:New CustomData}'); // New CustomData"],
+        "description": "Update a media pool clip's Markers' Custom Data"
+    },
+    "Get Media Pool Clip Marker's CustomData": {
+        "prefix": ["Get", "GetMarkers", "GetClipMarkers", "GMCD"],
+        "body": ["${1:mp_clipObject}.GetMarkerCustomData(${2:20}); // Frame"],
+        "description": "Get a media pool clip's Marker's Custom Data"
+    },
+    "Delete Media Pool Clip Markers By Color": {
+        "prefix": ["Delete", "DeleteMarkers", "DeleteClipMarkers", "DMBC"],
+        "body": ["${1:mp_clipObject}.DeleteMarkersByColor('${2:Red}');"],
+        "description": "Delete a media pool clip's Markers By Color"
+    },
+    "Delete Media Pool Clip Marker At Frame": {
+        "prefix": ["Delete", "DeleteMarkers", "DeleteClipMarkers", "DMAF"],
+        "body": ["${1:mp_clipObject}.DeleteMarkersAtFrame(${2:20});"],
+        "description": "Delete a media pool clip's Marker at a specified frame"
+    },
+    "Delete Media Pool Clip Marker By CustomData": {
+        "prefix": ["Delete", "DeleteMarkers", "DeleteClipMarkers", "DMBCD"],
+        "body": ["${1:mp_clipObject}.DeleteMarkerByCustomData('${2:CustomData}');"],
+        "description": "Delete the first media pool clip's Marker based on CustomData"
+    },
+    "Add Flag to Media Pool Clip": {
+        "prefix": ["Add", "AddFlag", "AddClipFlag", "AF"],
+        "body": ["${1:mp_clipObject}.AddFlag('${2:Red}');"],
+        "description": "Add a flag to a media pool clip"
+    },
+    "Get Flag List from Media Pool Clip": {
+        "prefix": ["Get", "GetFlags", "GetClipFlags", "GFL"],
+        "body": ["${1:mp_clipObject}.GetFlagList();"],
+        "description": "Get a media pool clips's Flags"
+    },
+    "Clear Flags from Media Pool Clip": {
+        "prefix": ["Clear", "ClearFlags", "ClearClipFlags", "CF"],
+        "body": ["${1:mp_clipObject}.ClearFlags('All'); // Accepts Colors, or 'All'"],
+        "description": "Remove a media pool clips's Flags"
+    },
+    "Get Media Pool Clip's Color": {
+        "prefix": ["Get", "GetColor", "GetClipColor", "GCC"],
+        "body": ["${1:mp_clipObject}.GetClipColor();"],
+        "description": "Get a media pool clips's Color"
+    },
+    "Set Media Pool Clip's Color": {
+        "prefix": ["Set", "SetColor", "SetClipColor", "SCC"],
+        "body": ["${1:mp_clipObject}.SetClipColor('${2:Red}');"],
+        "description": "Set a media pool clips's Color"
+    },
+    "Clear Media Pool Clip's Color": {
+        "prefix": ["Clear", "ClearColor", "ClearClipColor", "CCC"],
+        "body": ["${1:mp_clipObject}.ClearClipColor();"],
+        "description": "Remove a media pool clips's Color"
+    },
+    "Get Media Pool Clip's Properties": {
+        "prefix": ["Get", "GetProperties", "GetClipProperties", "GCP"],
+        "body": ["${1:mp_clipObject}.GetClipProperty('${2:File Name}'); // Keep empty to get full table"],
+        "description": "Get media pool clip properties"
+    },
+    "Set Media Pool Clip's Properties": {
+        "prefix": ["Set", "SetProperties", "SetClipProperties", "SCP"],
+        "body": ["${1:mp_clipObject}.SetClipProperty('${2:Property Name}', ${3:PropertyValue});"],
+        "description": "Set media pool clip properties"
+    },
+    "Link Media Pool Clip's Proxy": {
+        "prefix": ["Link", "LinkProxy", "LinkProxyMedia", "LPM"],
+        "body": ["${1:mp_clipObject}.LinkProxyMedia('${2:/PATH/TO/PROXY.mov}');"],
+        "description": "Link a proxy to a media pool clip"
+    },
+    "Unlink Media Pool Clip's Proxy": {
+        "prefix": ["Unlink", "UnlinkProxy", "UnlinkProxyMedia", "UPM"],
+        "body": ["${1:mp_clipObject}.UnlinkProxyMedia();"],
+        "description": "Unlink proxies from a media pool clip"
+    },
+    "Replace Media Pool Clip's Path": {
+        "prefix": ["Replace", "ReplaceClip", "ReplaceClipPath", "RP"],
+        "body": ["${1:mp_clipObject}.ReplaceClip('${2:/PATH/TO/CLIP.mov}');"],
+        "description": "Replace a media pool clip"
+    },
+    "Get Unique Media Pool Clip ID": {
+        "prefix": ["Get", "GetID", "GetUniqueID", "GetUniqueMediaPoolClipID", "GUI"],
+        "body": ["${1:mp_clipObject}.GetUniqueId();"],
+        "description": "Get a unique ID for the media pool item"
+    },
+    "Transcribe Media Pool Clip Audio": {
+        "prefix": ["Transcribe", "TranscribeClip", "TA"],
+        "body": ["${1:mp_clipObject}.TranscribeAudio();"],
+        "description": "Transcribe audio of the MediaPoolItem. Returns True if successful; False otherwise"
+    },
+    "Clear Media Pool Clip Transcription": {
+        "prefix": ["Clear", "ClearClipTranscription", "ClearTranscription", "CT"],
+        "body": ["${1:mp_clipObject}.ClearTranscription();"],
+        "description": "Clears audio transcription of the MediaPoolItem. Returns True if successful; False otherwise"
+    },
+    "Get Media Pool Clip Audio Mapping": {
+        "prefix": ["Get", "GetAudioMapping", "GetMediaPoolClipAudioMapping", "GAM"],
+        "body": ["${1:mp_clipObject}.GetAudioMapping();"],
+        "description": "Returns a JSON formatted string with MediaPoolItem's audio mapping information"
+    },// The Timeline Object
+    "Get Timeline Name": {
+        "prefix": ["Get", "GetName", "GetTimelineName", "GN"],
+        "body": ["${1:timeline}.GetName();"],
+        "description": "Get a Timeline's name"
+    },
+    "Set Timeline Name": {
+        "prefix": ["Set", "SetName", "SetTimelineName", "SN"],
+        "body": ["${1:timeline}.SetName('${2:Cool Timeline Name}');"],
+        "description": "Set a Timeline's name"
+    },
+    "Get Timeline Start Frame": {
+        "prefix": ["Get", "GetStart", "GetStartFrame", "GetTimelineStartFrame", "GSF"],
+        "body": ["${1:timeline}.GetStartFrame();"],
+        "description": "Get a Timeline's start frame"
+    },
+    "Get Timeline End Frame": {
+        "prefix": ["Get", "GetEnd", "GetEndFrame", "GetTimelineEndFrame", "GEF"],
+        "body": ["${1:timeline}.GetEndFrame();"],
+        "description": "Get a Timeline's end frame"
+    },
+    "Get Timeline Start Time": {
+        "prefix": ["Get", "GetStart", "GetStartTime", "GetTimelineStartTimecode", "GST"],
+        "body": ["${1:timeline}.GetStartTimecode();"],
+        "description": "Get a Timeline's start timecode"
+    },
+    "Set Timeline Start Time": {
+        "prefix": ["Set", "SetStart", "SetStartTime", "SetTimelineStartTimecode", "SST"],
+        "body": ["${1:timeline}.SetStartTimecode('${2:01:00:00:00}');"],
+        "description": "Set a Timeline's start timecode"
+    },
+    "Get Timeline Track Count": {
+        "prefix": ["Get", "GetTracks", "GetTrackCount", "GetTimelineTrackCount", "GTC"],
+        "body": ["${1:timeline}.GetTrackCount('${2|video,audio,subtitle|}');"],
+        "description": "Get a Timeline's track count for the type specified"
+    },
+    "Get Timeline Item List in Track": {
+        "prefix": ["Get", "GetItems", "GetTrackItems", "GetTimelineItemListInTrack", "GetClips", "ClipList", "GILIT"],
+        "body": ["${1:timeline}.GetItemListInTrack('${2|video,audio,subtitle|}', ${3:1});"],
+        "description": "Get a Timeline's track count for the type specified"
+    },
+    "Add Marker to Timeline": {
+        "prefix": ["Add", "AddMarker", "AddTimelineMarker", "AM"],
+        "body": ["${1:timeline}.AddMarker(${2:50}, // Start Frame \n\t'${3:Green}', // Color \n\t'${4:Marker Name}', // Name \n\t'${5:Notes}', // Notes \n\t${6:10}, // Duration \n\t'${7:Secret_Word}'); // Custom Data"],
+        "description": "Add a marker to the Timeline"
+    },
+    "Get Timeline Markers": {
+        "prefix": ["Get", "GetMarkers", "GetTimelineMarkers", "GM"],
+        "body": ["${1:timeline}.GetMarkers();"],
+        "description": "Get all markers on the Timeline"
+    },
+    "Get Timeline Marker by CustomData": {
+        "prefix": ["Get", "GetMarkers", "GetTimelineMarkers", "GMBCD"],
+        "body": ["${1:timeline}.GetMarkerByCustomData('${2:CustomData}');"],
+        "description": "Get markers on the Timeline with specific CustomData"
+    },
+    "Update Timeline Marker's CustomData": {
+        "prefix": ["Update", "UpdateMarkers", "UpdateTimelineMarkers", "UMCD"],
+        "body": ["${1:timeline}.UpdateMarkerCustomData(${2:20}, // Frame \n\t'${3:New CustomData}'); // New CustomData"],
+        "description": "Update a Timeline marker's CustomData"
+    },
+    "Get Timeline Marker's CustomData": {
+        "prefix": ["Get", "GetMarkers", "GetTimelineMarkers", "GMCD"],
+        "body": ["${1:timeline}.GetMarkerCustomData(${2:20});"],
+        "description": "Get a Timeline marker's CustomData"
+    },
+    "Delete Timeline Markers by Color": {
+        "prefix": ["Delete", "DeleteMarkers", "DeleteTimelineMarkers", "DMBC"],
+        "body": ["${1:timeline}.DeleteMarkersByColor('${2:Red}');"],
+        "description": "Delete a Timeline's markers by Color"
+    },
+    "Delete Timeline Marker at Frame": {
+        "prefix": ["Delete", "DeleteMarkers", "DeleteTimelineMarkers", "DMAF"],
+        "body": ["${1:timeline}.DeleteMarkersAtFrame(${2:20});"],
+        "description": "Delete a Timeline's marker at specific frame"
+    },
+    "Delete Timeline Marker by CustomData": {
+        "prefix": ["Delete", "DeleteMarkers", "DeleteTimelineMarkers", "DMBCD"],
+        "body": ["${1:timeline}.DeleteMarkersByCustomData('${2:CustomData}');"],
+        "description": "Delete a Timeline's marker by CustomData"
+    },
+    "Apply Grade from DRX to Timeline": {
+        "prefix": ["Apply", "ApplyGrade", "ApplyTimelineGradeFromDRX", "AGFD"],
+        "body": ["${1:timeline}.ApplyGradeFromDRX('${2:/PATH/TO/FILE.drx}', \n\t${3:1}, // gradeMode: 0-'No Keyframes', 1-'Source Timecode Aligned', 2-'Start Frames Aligned' \n\t[${4:TML_Clip1}, ${5:TML_Clip2}]);"],
+        "description": "Apply a grade to a Timeline from a DRX file"
+    },
+    "Get Current Timeline Timecode": {
+        "prefix": ["Get", "GetTimecode", "GetCurrentTimecode", "GCT"],
+        "body": ["${1:timeline}.GetCurrentTimecode();"],
+        "description": "Get a Timeline's Current Time at the Playhead"
+    },
+    "Set Current Timeline Timecode": {
+        "prefix": ["Set", "SetTimecode", "SetCurrentTimecode", "SCT"],
+        "body": ["${1:timeline}.SetCurrentTimecode('${2:01:00:10:00}');"],
+        "description": "Set a Timeline's Current Time at the Playhead"
+    },
+    "Get Current Timeline Video Item": {
+        "prefix": ["Get", "GetVideo", "GetCurrentVideoItem", "GCVI"],
+        "body": ["${1:timeline}.GetCurrentVideoItem();"],
+        "description": "Get a Timeline's Current Video Item Displayed in Viewport"
+    },
+    "Get Current Timeline Clip Thumbnail": {
+        "prefix": ["Get", "GetVideo", "GetCurrentClipThumbnail", "GCCTI"],
+        "body": ["${1:timeline}.GetCurrentClipThumbnailImage();"],
+        "description": "Get a Timeline's Current Video Clip's Color Page Thumbnail Image"
+    },
+    "Get Timeline Track Name": {
+        "prefix": ["Get", "GetName", "GetTimelineTrackName", "GTTN"],
+        "body": ["${1:timeline}.GetTimelineTrackName('${2|video,audio,subtitle|}', ${3:1});"],
+        "description": "Get a Timeline Track's name"
+    },
+    "Set Timeline Track Name": {
+        "prefix": ["Set", "SetName", "SetTimelineTrackName", "STTN"],
+        "body": ["${1:timeline}.SetTimelineTrackName('${2|video,audio,subtitle|}', ${3:1}, '${4:New Track Name}');"],
+        "description": "Set a Timeline Track's name"
+    },
+    "Duplicate Timeline": {
+        "prefix": ["Duplicate", "DuplicateTimeline", "DT"],
+        "body": ["${1:timeline}.DuplicateTimeline('${2:New Timeline Name}');"],
+        "description": "Duplicate a Timeline"
+    },
+    "Create Compound Clip": {
+        "prefix": ["Create", "CreateClip", "CreateCompoundClip", "CCC"],
+        "body": ["${1:timeline}.CreateCompoundClip([${2:TimelineClip1}, ${3:TimelineClip2}], \n\t{ startTimecode: '${4:00:00:00:00}', name: '${5:Compound Clip 1}' });"],
+        "description": "Create a Compound Clip with clips on the Timeline"
+    },
+    "Create Fusion Clip": {
+        "prefix": ["Create", "CreateClip", "CreateFusionClip", "CFC"],
+        "body": ["${1:timeline}.CreateFusionClip([${2:TimelineClip1}, ${3:TimelineClip2}]);"],
+        "description": "Create a Fusion Clip with clips on the Timeline"
+    },
+    "Import from AAF to Timeline": {
+        "prefix": ["Import", "ImportAAF", "ImportfromAFFtoTimeline", "IIT"],
+        "body": ["${1:timeline}.ImportIntoTimeline('${2:/PATH/TO/FILE.aaf}', \n\t{ autoImportSourceClipsIntoMediaPool: ${3:true}, \n\tignoreFileExtensionsWhenMatching: ${4:false}, \n\tlinkToSourceCameraFiles: ${5:false}, \n\tuseSizingInfo: ${6:false}, \n\timportMultiChannelAudioTracksAsLinkedGroups: ${7:false}, \n\tinsertAdditionalTracks: ${8:true}, \n\tinsertWithOffset: '${9:00:00:00:00}', \n\tsourceClipsPath: ${10:null}, \n\tsourceClipsFolders: ${11:null} });"],
+        "description": "Create a Fusion Clip with clips on the Timeline"
+    },
+    "Export Timeline": {
+        "prefix": ["Export", "ExportTimeline", "E"],
+        "body": ["${1:timeline}.Export('${2:/PATH/TO/FILE.aaf}', resolve.${3:EXPORT_AAF}, resolve.${4:EXPORT_AAF_NEW});"],
+        "description": "Export a Timeline"
+    },
+    "Set Timeline Settings": {
+        "prefix": ["Set", "SetTimelineSettings", "SetSettings", "SS"],
+        "body": ["${1:timeline}.SetSetting('${2:timelinePlaybackFrameRate}', ${3:30});"],
+        "description": "Set a Timeline's Settings"
+    },
+    "Get Timeline Settings": {
+        "prefix": ["Get", "GetTimelineSettings", "GetSettings", "GS"],
+        "body": ["${1:timeline}.GetSetting('${2:timelinePlaybackFrameRate}');"],
+        "description": "Get a Timeline's Settings"
+    },
+    "Insert Generator into Timeline": {
+        "prefix": ["Insert", "InsertGenerator", "InsertGeneratorToTimeline", "IGIT"],
+        "body": ["${1:timeline}.InsertGeneratorIntoTimeline('${2:SMPTE Color Bar}');"],
+        "description": "Insert Generator into Timeline at playhead -- NOTE: THIS WILL CUT AND MOVE CLIPS"
+    },
+    "Insert Fusion Generator into Timeline": {
+        "prefix": ["Insert", "InsertGenerator", "InsertGeneratorToTimeline", "IFGIT"],
+        "body": ["${1:timeline}.InsertFusionGeneratorIntoTimeline('${2:Noise Gradient}');"],
+        "description": "Insert Generator into Timeline at playhead -- NOTE: THIS WILL CUT AND MOVE CLIPS"
+    },
+    "Insert Fusion Composition into Timeline": {
+        "prefix": ["Insert", "InsertFusionComp", "InsertFusionCompToTimeline", "IFCIT"],
+        "body": ["${1:timeline}.InsertFusionCompositionIntoTimeline();"],
+        "description": "Insert an empty Fusion Comp into Timeline at playhead -- NOTE: THIS WILL CUT AND MOVE CLIPS"
+    },
+    "Insert OpenFX Generator into Timeline": {
+        "prefix": ["Insert", "InsertOFXGenerator", "InsertOpenFXGeneratorToTimeline", "IOFXGIT"],
+        "body": ["${1:timeline}.InsertOFXGeneratorIntoTimeline();"],
+        "description": "Insert an OpenFX Generator into Timeline at playhead -- NOTE: THIS WILL CUT AND MOVE CLIPS"
+    },
+    "Insert Title into Timeline": {
+        "prefix": ["Insert", "InsertTitle", "InsertTitleToTimeline", "ITIT"],
+        "body": ["${1:timeline}.InsertTitleIntoTimeline('${2:Text}');"],
+        "description": "Insert a plain text title into Timeline at playhead -- NOTE: THIS WILL CUT AND MOVE CLIPS"
+    },
+    "Insert Fusion Title into Timeline": {
+        "prefix": ["Insert", "InsertFusionTitle", "InsertFusionTitleToTimeline", "IFTIT"],
+        "body": ["${1:timeline}.InsertFusionTitleIntoTimeline('${2:Background Reveal}');"],
+        "description": "Insert a text+ title into Timeline at playhead -- NOTE: THIS WILL CUT AND MOVE CLIPS"
+    },
+    "Grab Still from Timeline's Active Clip": {
+        "prefix": ["Grab", "GrabStill", "GrabTimelineStill", "GS"],
+        "body": ["${1:timeline}.GrabStill();"],
+        "description": "Puts a Still in the gallery based on the current frame"
+    },
+    "Grab All Clip's Still from Timeline": {
+        "prefix": ["Grab", "GrabStills", "GrabTimelineStills", "GAS"],
+        "body": ["${1:timeline}.GrabAllStills(${2:1}); // 1-First Frame 2-Middle Frame"],
+        "description": "Puts stills in the gallery based on chosen frame for each clip"
+    },
+    "Get Unique Timeline ID": {
+        "prefix": ["Get", "GetID", "GetUniqueID", "GetUniqueTimelineID", "GUI"],
+        "body": ["${1:timeline}.GetUniqueId();"],
+        "description": "Get a unique ID for the Timeline"
+    },
+    "Create Subtitles From Timeline Audio": {
+        "prefix": ["Create", "CreateSubtitles", "CreateSubs", "CreateSubtitlesFromAudio", "CSFA"],
+        "body": ["let success = ${1:timeline}.CreateSubtitlesFromAudio({ [resolve.SUBTITLE_LANGUAGE]: resolve.${2|AUTO_CAPTION_AUTO, AUTO_CAPTION_DANISH, AUTO_CAPTION_DUTCH, AUTO_CAPTION_ENGLISH, AUTO_CAPTION_FRENCH, AUTO_CAPTION_GERMAN, AUTO_CAPTION_ITALIAN, AUTO_CAPTION_JAPANESE, AUTO_CAPTION_KOREAN, AUTO_CAPTION_MANDARIN_SIMPLIFIED, AUTO_CAPTION_MANDARIN_TRADITIONAL, AUTO_CAPTION_NORWEGIAN, AUTO_CAPTION_PORTUGUESE, AUTO_CAPTION_RUSSIAN, AUTO_CAPTION_SPANISH, AUTO_CAPTION_SWEDISH|}, \n\t[resolve.SUBTITLE_CAPTION_PRESET]: resolve.${3|AUTO_CAPTION_SUBTITLE_DEFAULT, AUTO_CAPTION_TELETEXT, AUTO_CAPTION_NETFLIX|}, \n\t[resolve.SUBTITLE_CHARS_PER_LINE]: ${4:42}, \n\t[resolve.SUBTITLE_LINE_BREAK]: resolve.${5|AUTO_CAPTION_LINE_SINGLE, AUTO_CAPTION_LINE_DOUBLE|}, \n\t[resolve.SUBTITLE_GAP]: ${6:0} });"],
+        "description": "Create subtitles from audio for the timeline"
+    },
+    "Detect Timeline Scene Cuts": {
+        "prefix": ["Detect", "DetectCuts", "DetectSceneCuts", "DetectTimelineSceneCuts", "DSC"],
+        "body": ["${1:timeline}.DetectSceneCuts();"],
+        "description": "Detect and makes scene cuts along the timeline. Returns True if successful, False otherwise"
+    },
+    "Convert Timeline To Stereo": {
+        "prefix": ["Convert", "ConvertTimeline", "ConvertTimelineToStereo", "CTTC"],
+        "body": ["${1:timeline}.ConvertTimelineToStereo();"],
+        "description": "Convert timeline to stereo. Returns True if successful; False otherwise"
+    },
+    "Get Timeline Node Graph": {
+        "prefix": ["Get", "GetNodes", "GetNodeGraph", "GNG"],
+        "body": ["${1:timeline}.GetNodeGraph();"],
+        "description": "Get the timeline's node graph object"
+    },
+    "Analyze Timeline Dolby Vision": {
+        "prefix": ["Analyze", "AnalyzeTimeline", "AnalyzeDolbyVision", "ADV"],
+        "body": ["${1:timeline}.AnalyzeDolbyVision([${2:TimelineItem_1}, ${3:TimelineItem_2}], \n\t${4:resolve.DLB_BLEND_SHOTS});"],
+        "description": "Analyze Dolby Vision for the timeline"
+    },// The Timeline Item/Clip Object
+    "Get Timeline Clip Name": {
+        "prefix": ["Get", "GetName", "GetTimelineClipName", "GN"],
+        "body": ["${1:TML_Clip}.GetName();"],
+        "description": "Get a Timeline Clip's Name"
+    },
+    "Get Timeline Clip Duration": {
+        "prefix": ["Get", "GetDuration", "GetTimelineClipDuration", "GD"],
+        "body": ["${1:TML_Clip}.GetDuration();"],
+        "description": "Get a Timeline Clip's Duration/Length"
+    },
+    "Get Timeline Clip End Frame": {
+        "prefix": ["Get", "GetEndFrame", "GetTimelineClipEnd", "GE"],
+        "body": ["${1:TML_Clip}.GetEnd();"],
+        "description": "Get a Timeline Clip's End Frame"
+    },
+    "Get Timeline Clip Fusion Comp Count": {
+        "prefix": ["Get", "GetCompCount", "GetTimelineClipFusionCompCount", "GFCC"],
+        "body": ["${1:TML_Clip}.GetFusionCompCount();"],
+        "description": "Get a Timeline Clip's Total Composition Count"
+    },
+    "Get Timeline Clip Fusion Comp by Index": {
+        "prefix": ["Get", "GetComp", "GetTimelineClipFusionCompByIndex", "GFCC"],
+        "body": ["${1:TML_Clip}.GetFusionCompByIndex(${2:1}); // 1+"],
+        "description": "Get a Timeline Clip's Fusion Comp based on the index"
+    },
+    "Get Timeline Clip Fusion Comp Name List": {
+        "prefix": ["Get", "GetComps", "GetTimelineClipFusionCompNames", "GFCNL"],
+        "body": ["${1:TML_Clip}.GetFusionCompNameList();"],
+        "description": "Get a Timeline Clip's Fusion Comp's Names"
+    },
+    "Get Timeline Clip Fusion Comp by Name": {
+        "prefix": ["Get", "GetComp", "GetTimelineClipFusionCompByName", "GFCBN"],
+        "body": ["${1:TML_Clip}.GetFusionCompByName('${2:Composition 1}');"],
+        "description": "Get a Timeline Clip's Fusion Comp by its Name"
+    },
+    "Get Timeline Clip Left Offset": {
+        "prefix": ["Get", "GetLeftOffset", "GetTimelineClipLeftOffset", "GLO"],
+        "body": ["${1:TML_Clip}.GetLeftOffset();"],
+        "description": "Get a Timeline Clip's Left Offset"
+    },
+    "Get Timeline Clip Right Offset": {
+        "prefix": ["Get", "GetRightOffset", "GetTimelineClipRightOffset", "GRO"],
+        "body": ["${1:TML_Clip}.GetRightOffset();"],
+        "description": "Get a Timeline Clip's Right Offset"
+    },
+    "Get Timeline Clip Start Frame": {
+        "prefix": ["Get", "GetStart", "GetTimelineClipStart", "GS"],
+        "body": ["${1:TML_Clip}.GetStart();"],
+        "description": "Get a Timeline Clip's Start Frame on the Timeline"
+    },
+    "Set Timeline Clip Properties": {
+        "prefix": ["Set", "SetProperties", "SetTimelineClipProperties", "SP"],
+        "body": ["${1:TML_Clip}.SetProperty('${2:ZoomX}', ${3:2});"],
+        "description": "Set a Timeline Clip's Properties"
+    },
+    "Get Timeline Clip Properties": {
+        "prefix": ["Get", "GetProperties", "GetTimelineClipProperties", "GP"],
+        "body": ["${1:TML_Clip}.GetProperty('${2:ZoomX}'); // Leave Blank to get list of all"],
+        "description": "Get a Timeline Clip's Properties"
+    },
+    "Add Marker to Timeline Clip": {
+        "prefix": ["Add", "AddMarker", "AddMarkerToTimelineClip", "AM"],
+        "body": ["${1:TML_Clip}.AddMarker(${2:50}, // Start Frame \n\t'${3:Green}', // Color \n\t'${4:Marker Name}', // Name \n\t'${5:Notes}', // Notes \n\t${6:10}, // Duration \n\t'${7:Secret_Word}'); // Custom Data"],
+        "description": "Add a marker to a Timeline Clip"
+    },
+    "Get Timeline Clip Markers": {
+        "prefix": ["Get", "GetMarkers", "GetTimelineClipMarkers", "GM"],
+        "body": ["${1:TML_Clip}.GetMarkers();"],
+        "description": "Get all Timeline Clip's Markers"
+    },
+    "Get Timeline Clip Marker By CustomData": {
+        "prefix": ["Get", "GetMarker", "GetTimelineClipMarkerByCustomData", "GMBCD"],
+        "body": ["${1:TML_Clip}.GetMarkerByCustomData();"],
+        "description": "Get a Timeline Clip's Marker based on CustomData"
+    },
+    "Update Timeline Clip Marker's CustomData": {
+        "prefix": ["Update", "UpdateMarker", "UpdateTimelineClipMarkerCustomData", "UMCD"],
+        "body": ["${1:TML_Clip}.UpdateMarkerCustomData(${2:20}, '${3:New Custom Data}');"],
+        "description": "Update a Timeline Clip's Marker's CustomData"
+    },
+    "Get Timeline Clip Marker's CustomData": {
+        "prefix": ["Get", "GetMarker", "GetTimelineClipMarkerCustomData", "GMCD"],
+        "body": ["${1:TML_Clip}.GetMarkerCustomData(${2:20});"],
+        "description": "Get a Timeline Clip's Marker's CustomData"
+    },
+    "Delete Timeline Clip Markers by Color": {
+        "prefix": ["Delete", "DeleteMarkers", "DeleteTimelineClipMarkersByColor", "DMBC"],
+        "body": ["${1:TML_Clip}.DeleteMarkersByColor('${2:Red}');"],
+        "description": "Delete a Timeline Clip's Markers based on color"
+    },
+    "Delete Timeline Clip Marker at Frame": {
+        "prefix": ["Delete", "DeleteMarker", "DeleteTimelineClipMarkerAtFrame", "DMAF"],
+        "body": ["${1:TML_Clip}.DeleteMarkerAtFrame(${2:20});"],
+        "description": "Delete a Timeline Clip's Marker at a specific frame"
+    },
+    "Delete Timeline Clip Marker By CustomData": {
+        "prefix": ["Delete", "DeleteMarker", "DeleteTimelineClipMarkerByCustomData", "DMBCD"],
+        "body": ["${1:TML_Clip}.DeleteMarkerByCustomData('${2:Custom Data}');"],
+        "description": "Delete a Timeline Clip's Marker based on CustomData"
+    },
+    "Add Flag to Timeline Clip": {
+        "prefix": ["Add", "AddFlag", "AddTimelineClipFlag", "AF"],
+        "body": ["${1:TML_Clip}.AddFlag('${2:Red}');"],
+        "description": "Add a Flag to a Timeline Clip"
+    },
+    "Get Timeline Clip Flags": {
+        "prefix": ["Get", "GetFlags", "GetTimelineClipFlags", "GFL"],
+        "body": ["${1:TML_Clip}.GetFlagList();"],
+        "description": "Get a Timeline Clip Flag List"
+    },
+    "Clear Timeline Clip Flags": {
+        "prefix": ["Clear", "ClearFlags", "ClearTimelineClipFlags", "GFL"],
+        "body": ["${1:TML_Clip}.ClearFlags('${2:All}'); // Accepts Colors or 'All'"],
+        "description": "Remove a Timeline Clip Flags based on color"
+    },
+    "Get Timeline Clip Color": {
+        "prefix": ["Get", "GetColor", "GetTimelineClipColor", "GCC"],
+        "body": ["${1:TML_Clip}.GetClipColor();"],
+        "description": "Get a Timeline Clip's Color"
+    },
+    "Set Timeline Clip Color": {
+        "prefix": ["Set", "SetColor", "SetTimelineClipColor", "SCC"],
+        "body": ["${1:TML_Clip}.SetClipColor('${2:Red}');"],
+        "description": "Set a Timeline Clip's Color"
+    },
+    "Clear Timeline Clip Color": {
+        "prefix": ["Clear", "ClearColor", "ClearTimelineClipColor", "CCC"],
+        "body": ["${1:TML_Clip}.ClearClipColor();"],
+        "description": "Remove a Timeline Clip's Color"
+    },
+    "Add Fusion Comp to Timeline Clip": {
+        "prefix": ["Add", "AddComp", "AddTimelineClipFusionComp", "AFC"],
+        "body": ["${1:TML_Clip}.AddFusionComp();"],
+        "description": "Add a Fusion Composition to a Timeline Clip"
+    },
+    "Import Fusion Comp to Timeline Clip From File": {
+        "prefix": ["Add", "AddComp", "AddTimelineClipFusionComp", "IFC"],
+        "body": ["${1:TML_Clip}.ImportFusionComp('${2:/PATH/TO/FILE.comp}');"],
+        "description": "Add a Fusion Composition to a Timeline Clip from a file"
+    },
+    "Export Timeline Clip's Fusion Comp": {
+        "prefix": ["Export", "ExportComp", "ExportTimelineClipFusionComp", "EFC"],
+        "body": ["${1:TML_Clip}.ExportFusionComp('${2:/PATH/TO/FILE.comp}', ${3:1}); // (Path, CompIndex)"],
+        "description": "Export a Timeline Clip's Fusion Composition to file"
+    },
+    "Delete Timeline Clip's Fusion Comp by Name": {
+        "prefix": ["Delete", "DeleteComp", "DeleteTimelineClipFusionComp", "DFCBN"],
+        "body": ["${1:TML_Clip}.DeleteFusionCompByName('${2:Composition 1}');"],
+        "description": "Delete a Timeline Clip's Fusion Composition based on name"
+    },
+    "Load Timeline Clip's Fusion Comp by Name": {
+        "prefix": ["Load", "LoadComp", "LoadTimelineClipFusionComp", "LFCBN"],
+        "body": ["${1:TML_Clip}.LoadFusionCompByName('${2:Composition 1}');"],
+        "description": "Load a Timeline Clip's Fusion Composition based on name"
+    },
+    "Rename Timeline Clip's Fusion Comp by Name": {
+        "prefix": ["Rename", "RenameComp", "RenameTimelineClipFusionComp", "RFCBN"],
+        "body": ["${1:TML_Clip}.RenameFusionCompByName('${2:Composition 1}', '${3:Composition 2}'); // (oldName, newName)"],
+        "description": "Rename a Timeline Clip's Fusion Composition based on name"
+    },
+    "Add Version to Timeline Clip": {
+        "prefix": ["Add", "AddVersion", "AddTimelineClipVersion", "AV"],
+        "body": ["${1:TML_Clip}.AddVersion('${2:My Version}', '${3:Composition 2}'); // (Version Name, Version Type - 0-Local 1-Remote)"],
+        "description": "Add a Timeline Clip Version"
+    },
+    "Get Current Timeline Clip Version": {
+        "prefix": ["Get", "GetVersion", "GetTimelineClipVersion", "GCV"],
+        "body": ["${1:TML_Clip}.GetCurrentVersion();"],
+        "description": "Get a Timeline Clip's Current Version"
+    },
+    "Delete Timeline Clip Version by Name": {
+        "prefix": ["Delete", "DeleteVersion", "DeleteTimelineClipVersion", "DVBN"],
+        "body": ["${1:TML_Clip}.DeleteVersionByName('${2:My Version}', ${3:0}); // (Version Name, Version Type - 0-Local 1-Remote)"],
+        "description": "Delete a Timeline Clip Version"
+    },
+    "Load Timeline Clip Version by Name": {
+        "prefix": ["Load", "LoadVersion", "LoadTimelineClipVersion", "LVBN"],
+        "body": ["${1:TML_Clip}.LoadVersionByName('${2:My Version}', ${3:0}); // (Version Name, Version Type - 0-Local 1-Remote)"],
+        "description": "Load a Timeline Clip Version"
+    },
+    "Rename Timeline Clip Version by Name": {
+        "prefix": ["Rename", "RenameVersion", "RenameTimelineClipVersion", "RVBN"],
+        "body": ["${1:TML_Clip}.RenameVersionByName('${2:My Version}', '${3:My New Version}', ${4:0}); // (Version Name, New Version Name, Version Type - 0-Local 1-Remote)"],
+        "description": "Rename a Timeline Clip Version"
+    },
+    "Get Timeline Clip Version Names": {
+        "prefix": ["Get", "GetVersions", "GetTimelineClipVersionNames", "GVNL"],
+        "body": ["${1:TML_Clip}.GetVersionNameList(${2:0}); // Version Type - 0-Local 1-Remote"],
+        "description": "Get a Timeline Clip's Version Names"
+    },
+    "Get Timeline Clip's Media Pool Item": {
+        "prefix": ["Get", "GetMPItem", "GetTimelineClipMediaPoolItem", "GMPI"],
+        "body": ["${1:TML_Clip}.GetMediaPoolItem();"],
+        "description": "Get a Timeline Clip's Media Pool Item Object"
+    },
+    "Get Timeline Clip's Stereo Convergence Values": {
+        "prefix": ["Get", "GetConvergence", "GetTimelineClipConvergenceValues", "GSCV"],
+        "body": ["${1:TML_Clip}.GetStereoConvergenceValues();"],
+        "description": "Get a Timeline Clip's Stereo Convergence Values"
+    },
+    "Get Timeline Clip's Stereo Left Params": {
+        "prefix": ["Get", "GetLeftParams", "GetTimelineClipLeftParams", "GSLFWP"],
+        "body": ["${1:TML_Clip}.GetStereoLeftFloatingWindowParams();"],
+        "description": "Get a Timeline Clip's Stereo Left Floating Window Params"
+    },
+    "Get Timeline Clip's Stereo Right Params": {
+        "prefix": ["Get", "GetRightParams", "GetTimelineClipRightParams", "GSRFWP"],
+        "body": ["${1:TML_Clip}.GetStereoRightFloatingWindowParams();"],
+        "description": "Get a Timeline Clip's Stereo Right Floating Window Params"
+    },
+    "Set Timeline Clip's LUT": {
+        "prefix": ["Set", "SetLUT", "SetTimelineClipLUT", "SLUT"],
+        "body": ["${1:TML_Clip}.SetLUT(${2:1}, '${3:/PATH/TO/FILE.3dl}');"],
+        "description": "Set a Timeline Clip's LUT"
+    },
+    "Set Timeline Clip's CDL": {
+        "prefix": ["Set", "SetCDL", "SetTimelineClipCDL", "SCDL"],
+        "body": ["${1:TML_Clip}.SetCDL({ NodeIndex: '${2:1}', Slope: '${3:0.5 0.4 0.2}', Offset: '${4:0.4 0.3 0.2}', Power: '${5:0.6 0.7 0.8}', Saturation: '${6:0.65}' });"],
+        "description": "Set a Timeline Clip's CDL"
+    },
+    "Add Timeline Clip Take": {
+        "prefix": ["Add", "AddTake", "AddTimelineClipTake", "AT"],
+        "body": ["${1:TML_Clip}.AddTake(${2:mediaPoolClip}, \n\t${3:0}, // Optional: Start Frame \n\t${4:50}); // Optional: End Frame"],
+        "description": "Add a Timeline Clip Take"
+    },
+    "Get Timeline Clip Selected Take Index": {
+        "prefix": ["Get", "GetTake", "GetTimelineClipTake", "GSTI"],
+        "body": ["${1:TML_Clip}.GetSelectedTakeIndex();"],
+        "description": "Get a Timeline Clip's Selected Take"
+    },
+    "Get Timeline Clip Take Count": {
+        "prefix": ["Get", "GetTakes", "GetTimelineClipTakeCount", "GTC"],
+        "body": ["${1:TML_Clip}.GetTakesCount();"],
+        "description": "Get a Timeline Clip's Take Count"
+    },
+    "Get Timeline Clip Take By Index": {
+        "prefix": ["Get", "GetTake", "GetTimelineClipTakeByIndex", "GTBI"],
+        "body": ["${1:TML_Clip}.GetTakeByIndex(${2:1});"],
+        "description": "Get a Timeline Clip's Take based on the index"
+    },
+    "Delete Timeline Clip Take By Index": {
+        "prefix": ["Delete", "DeleteTake", "DeleteTimelineClipTakeByIndex", "DTBI"],
+        "body": ["${1:TML_Clip}.DeleteTakeByIndex(${2:1});"],
+        "description": "Delete a Timeline Clip's Take based on the index"
+    },
+    "Select Timeline Clip Take By Index": {
+        "prefix": ["Select", "SelectTake", "SelectTimelineClipTakeByIndex", "STBI"],
+        "body": ["${1:TML_Clip}.SelectTakeByIndex(${2:1});"],
+        "description": "Select a Timeline Clip's Take based on the index"
+    },
+    "Finalize Timeline Clip Take": {
+        "prefix": ["Finalize", "FinalizeTake", "FinalizeTimelineClipTake", "FT"],
+        "body": ["${1:TML_Clip}.FinalizeTake();"],
+        "description": "Finalize a Timeline Clip's Take"
+    },
+    "Copy Timeline Clip Grades": {
+        "prefix": ["Copy", "CopyGrades", "CopyTimelineClipGrades", "CG"],
+        "body": ["${1:TML_Clip}.CopyGrades([${2:TML_Clip_1}, ${3:TML_Clip_2}]); // Copies Current Grade to Timeline Items in List"],
+        "description": "Copy a Timeline Clip Grade to a list of Timeline Clips"
+    },
+    "Set Timeline Clip Enabled": {
+        "prefix": ["Set", "SetEnable", "SetDisable", "SetTimelineClipEnabled", "SCE"],
+        "body": ["${1:TML_Clip}.SetClipEnabled(${2:true});"],
+        "description": "Set if a Timeline Clip is Enabled (true) or Disabled (false)"
+    },
+    "Get if Timeline Clip Enabled": {
+        "prefix": ["Get", "GetEnable", "GetDisable", "GetTimelineClipEnabled", "GCE"],
+        "body": ["${1:TML_Clip}.GetClipEnabled();"],
+        "description": "Get if a Timeline Clip is Enabled (true) or Disabled (false)"
+    },
+    "Update Timeline Clip Sidecar": {
+        "prefix": ["Update", "UpdateSidecar", "UpdateTimelineClipSidecar", "US"],
+        "body": ["${1:TML_Clip}.UpdateSidecar();"],
+        "description": "Update a Timeline Clip's Sidecar for BRAW/BMD/R3D clips"
+    },
+    "Get Unique Timeline Clip ID": {
+        "prefix": ["Get", "GetID", "GetUniqueID", "GetUniqueTimelineClipID", "GUI"],
+        "body": ["${1:TML_Clip}.GetUniqueId();"],
+        "description": "Get a unique ID for the Timeline Clip"
+    },
+    "Load Burn In Preset into Timeline Clip": {
+        "prefix": ["Load", "LoadPreset", "LoadBurnIn", "LoadBurnInPreset", "LBIP"],
+        "body": ["${1:TML_Clip}.LoadBurnInPreset('${2:Preset Name}');"],
+        "description": "Load user-defined data burn-in preset for the timeline"
+    },
+    "Create Timeline Clip Magic Mask": {
+        "prefix": ["Create", "CreateMask", "CreateMagicMask", "CreateTimelineMagicMask", "CMM"],
+        "body": ["${1:TML_Clip}.CreateMagicMask('${2:F}'); // Mode: F-Forward, B-Backward, BI-Bidirectional"],
+        "description": "Returns True if magic mask was created successfully, False otherwise"
+    },
+    "Regenerate Timeline Clip Magic Mask": {
+        "prefix": ["Regenerate", "RegenerateMask", "RegenerateMagicMask", "RegenerateTimelineMagicMask", "RMM"],
+        "body": ["${1:TML_Clip}.RegenerateMagicMask();"],
+        "description": "Returns True if magic mask was regenerated successfully, False otherwise"
+    },
+    "Stabilize Timeline Clip": {
+        "prefix": ["Stabilize", "StabilizeTimelineClip", "S"],
+        "body": ["${1:TML_Clip}.Stabilize();"],
+        "description": "Returns True if stabilization was successful, False otherwise"
+    },
+    "Smart Reframe Timeline Clip": {
+        "prefix": ["Smart", "SmartReframe", "SmartReframeTimelineClip", "SR"],
+        "body": ["${1:TML_Clip}.SmartReframe();"],
+        "description": "Performs Smart Reframe. Returns True if successful, False otherwise"
+    },
+    "Get Timeline Clip Node Graph": {
+        "prefix": ["Get", "GetNodes", "GetNodeGraph", "GetTimelineClipNodeGraph", "GNG"],
+        "body": ["${1:TML_Clip}.GetNodeGraph(${2:1}); // Layer Index"],
+        "description": "Get the clip's node graph object at layerIdx (optional). Returns the first layer if layerIdx is skipped"
+    },
+    "Get Timeline Clip Color Group": {
+        "prefix": ["Get", "GetGroup", "GetColorGroup", "GetTimelineClipColorGroup", "GCG"],
+        "body": ["${1:TML_Clip}.GetColorGroup();"],
+        "description": "Get the clip's color group if one exists"
+    },
+    "Assign Timeline Clip to Color Group": {
+        "prefix": ["Assign", "AssignGroup", "AssignColorGroup", "AssignTimelineClipColorGroup", "ATCG"],
+        "body": ["${1:TML_Clip}.AssignToColorGroup(${2:ColorGroup});"],
+        "description": "Returns True if Timeline Item is successfully assigned to given ColorGroup. ColorGroup must be an existing group in the current project"
+    },
+    "Remove Timeline Clip's Color Group": {
+        "prefix": ["Remove", "RemoveGroup", "RemoveColorGroup", "RemoveTimelineClipColorGroup", "RCG"],
+        "body": ["${1:TML_Clip}.RemoveColorGroup();"],
+        "description": "Returns True if the Timeline Item is successfully removed from the ColorGroup it is in"
+    },
+    "Export Timeline Clip LUT": {
+        "prefix": ["Export", "ExportLUT", "ExportTimelineClipLUT", "ELUT"],
+        "body": ["${1:TML_Clip}.ExportLUT(resolve.${2:EXPORT_LUT_17PTCUBE}, '${3:/PATH/TO/FILE}');"],
+        "description": "Export LUTs from Timeline Item referring to value passed in 'exportType' (enum) for LUT size"
+    },
+    "Get Linked Timeline Clip Items": {
+        "prefix": ["Get", "GetLinked", "GetLinkedItems", "GLI"],
+        "body": ["${1:TML_Clip}.GetLinkedItems();"],
+        "description": "Get a list of linked timeline items"
+    },
+    "Get Timeline Clip Track Type and Index": {
+        "prefix": ["Get", "GetTrack", "GetTrackType", "GetTrackIndex", "GetTrackTypeAndIndex", "GRRAI"],
+        "body": ["${1:TML_Clip}.GetTrackTypeAndIndex();"],
+        "description": "Get a list of two values that correspond to the TimelineItem's trackType (string) and trackIndex (int) respectively"
+    },
+    "Get Timeline Clip Source Audio Channel Mapping": {
+        "prefix": ["Get", "GetAudio", "GetSourceAudio", "GetSourceAudioMapping", "GetSourceAudioChannelMapping", "GSACM"],
+        "body": ["${1:TML_Clip}.GetSourceAudioChannelMapping();"],
+        "description": "Get a string with Timeline Item's audio mapping information"
+    },// The Gallery Object
+    "Get Gallery Album Name": {
+        "prefix": ["Get", "GetAlbum", "GetGalleryAlbumName", "GAN"],
+        "body": ["${1:gallery}.GetGalleryAlbumName(${2:StillAlbum});"],
+        "description": "Get a Gallery Album Name"
+    },
+    "Set Gallery Album Name": {
+        "prefix": ["Set", "SetAlbum", "SetGalleryAlbumName", "SAN"],
+        "body": ["${1:gallery}.SetGalleryAlbumName(${2:StillAlbum}, '${3:New Album Name}');"],
+        "description": "Set a Gallery Album Name"
+    },
+    "Get Current Gallery Album": {
+        "prefix": ["Get", "GetAlbum", "GetGalleryCurrentAlbum", "GCSA"],
+        "body": ["${1:gallery}.GetCurrentStillAlbum();"],
+        "description": "Get the Gallery's Current Still Album"
+    },
+    "Set Current Gallery Album": {
+        "prefix": ["Set", "SetAlbum", "SetGalleryCurrentAlbum", "SCSA"],
+        "body": ["${1:gallery}.SetCurrentStillAlbum(${2:StillAlbum});"],
+        "description": "Set the Gallery's Current Still Album"
+    },
+    "Get All Gallery Albums": {
+        "prefix": ["Get", "GetAlbums", "GetGalleryStillAlbums", "GGSA"],
+        "body": ["${1:gallery}.GetGalleryStillAlbums();"],
+        "description": "Get all Gallery Still Albums"
+    },
+    // The Gallery Still Album Object
+    "Get Gallery Album Stills": {
+        "prefix": ["Get", "GetStills", "GetStillAlbumsStills", "GS"],
+        "body": ["${1:stillsAlbum}.GetStills();"],
+        "description": "Get all Gallery Still Album Stills"
+    },
+    "Get Gallery Album Still Label": {
+        "prefix": ["Get", "GetLabel", "GetStillAlbumsLabel", "GL"],
+        "body": ["${1:stillsAlbum}.GetLabel(${2:GalleryStill});"],
+        "description": "Get a Gallery Still Album Still's Label"
+    },
+    "Set Gallery Album Still Label": {
+        "prefix": ["Set", "SetLabel", "SetStillAlbumsLabel", "SL"],
+        "body": ["${1:stillsAlbum}.SetLabel(${2:GalleryStill}, '${3:New Label}');"],
+        "description": "Set a Gallery Still Album Still's Label"
+    },
+    "Export Gallery Album Stills": {
+        "prefix": ["Export", "ExportStills", "ExportStillAlbumsStills", "ES"],
+        "body": ["${1:stillsAlbum}.ExportStills([${2:GalleryStill_1}, ${3:GalleryStill_2}], '${4:/PATH/TO/FOLDER/}', '${5:filePrefix}', '${6:png}');"],
+        "description": "Export Gallery Still Album Stills"
+    },
+    "Delete Gallery Album Stills": {
+        "prefix": ["Delete", "DeleteStills", "DeleteStillAlbumsStills", "DS"],
+        "body": ["${1:stillsAlbum}.DeleteStills([${2:GalleryStill_1}, ${3:GalleryStill_2}]);"],
+        "description": "Delete Gallery Still Album Stills"
+    },
+    // The Node Graph Object
+    "Get Number of Nodes in Graph": {
+        "prefix": ["Get", "GetNodes", "GetNumberOfNodes", "GNN"],
+        "body": ["${1:nodeGraph}.GetNumNodes();"],
+        "description": "Get the number of nodes in the graph"
+    },
+    "Set LUT on Node in Node Graph": {
+        "prefix": ["Set", "SetLUT", "SetNodeLUT", "SLUT"],
+        "body": ["${1:nodeGraph}.SetLUT(${2:1}, '${3:/PATH/TO/FILE.3dl}');"],
+        "description": "Set LUT on the node mapping the node index provided"
+    },
+    "Get LUT on Node in Node Graph": {
+        "prefix": ["Get", "GetLUT", "GetNodeLUT", "GLUT"],
+        "body": ["${1:nodeGraph}.GetLUT(${2:1});"],
+        "description": "Get relative LUT path based on the node index provided"
+    },
+    "Get Node Label in Node Graph": {
+        "prefix": ["Get", "GetLabel", "GetNodeLabel", "GNL"],
+        "body": ["${1:nodeGraph}.GetNodeLabel(${2:1});"],
+        "description": "Get the label of the node at nodeIndex"
+    },
+    "Get Tools in Node in Node Graph": {
+        "prefix": ["Get", "GetTools", "GetToolsInNode", "GTIN"],
+        "body": ["${1:nodeGraph}.GetToolsInNode(${2:1});"],
+        "description": "Get toolsList (list of strings) of the tools used in the node indicated by given nodeIndex (int)"
+    },
+    "Set Enable of Node in Node Graph": {
+        "prefix": ["Set", "SetEnabled", "SetNodeEnabled", "SNE"],
+        "body": ["${1:nodeGraph}.SetNodeEnabled(${2:1}, ${3:true});"],
+        "description": "Set the node at the given nodeIndex (int) to isEnabled (bool)"
+    },
+    // The Color Group Object
+    "Get Color Group Name": {
+        "prefix": ["Get", "GetName", "GetColorGroupName", "GN"],
+        "body": ["${1:colorGroup}.GetName();"],
+        "description": "Get the name (string) of the ColorGroup"
+    },
+    "Set Color Group Name": {
+        "prefix": ["Set", "SetName", "SetColorGroupName", "SN"],
+        "body": ["${1:colorGroup}.SetName('${2:My Group Name}');"],
+        "description": "Set the name (string) of the ColorGroup"
+    },
+    "Get Color Group Clips in Timeline": {
+        "prefix": ["Get", "GetClips", "GetColorGroupClips", "GCIT"],
+        "body": ["${1:colorGroup}.GetClipsInTimeline(${2:Timeline_Item}); // Leave blank to do CurrentTimeline"],
+        "description": "Get a list of TimelineItem that are in colorGroup in the given Timeline"
+    },
+    "Get Color Group Pre Clip Node Graph": {
+        "prefix": ["Get", "GetPreClips", "GetPreClipNodeGraph", "GPCNG"],
+        "body": ["${1:colorGroup}.GetPreClipNodeGraph();"],
+        "description": "Get the ColorGroup Pre-clip graph"
+    },
+    "Get Color Group Post Clip Node Graph": {
+        "prefix": ["Get", "GetPostClips", "GetPostClipNodeGraph", "GPCNG"],
+        "body": ["${1:colorGroup}.GetPostClipNodeGraph();"],
+        "description": "Get the ColorGroup Post-clip graph"
+    }    
+}
