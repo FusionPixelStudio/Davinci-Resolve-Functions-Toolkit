@@ -30,6 +30,7 @@ This extension contributes the following settings:
 - Missing Fusion API
 - Finding Correct Functions sometimes difficult
 - Making Workflow Integration requires an open folder and will not make a new folder for you
+- Missing JS Snippets
 
 ## Release Notes
 
