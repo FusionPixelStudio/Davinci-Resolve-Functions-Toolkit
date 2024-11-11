@@ -1,0 +1,112 @@
+{
+  "name": "davinci-resolve-function-toolkit",
+  "displayName": "Davinci Resolve Function Toolkit",
+  "description": "The MOST in depth Davinci Resolve Scripting Toolkit for Lua, Python, and JavaScript. Includes the Davinci Resolve API, Fusion API, BMD Function Library, Fusion UI System, and more!",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.95.1"
+  },
+  "categories": [
+    "Snippets",
+    "Other",
+    "Programming Languages"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "main",
+          "title": "Davinci Resolve Toolkit",
+          "icon": "resources/davinci.svg"
+        }
+      ]
+    },
+    "views": {
+      "main": [
+        {
+          "id": "main-workflow",
+          "name": "Workflow Integrations"
+        },
+        {
+          "id": "main-scripts",
+          "name": "Scripts"
+        },
+        {
+          "id": "main-resolve-api",
+          "name": "Resolve API"
+        },
+        {
+          "id": "main-fusion-api",
+          "name": "Fusion API"
+        },
+        {
+          "id": "main-help",
+          "name": "Get Help"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "main-workflow",
+        "contents": "[Create Project](command:davinci-resolve-function-toolkit.createWorkflow)\n[Open WI Folder](command:davinci-resolve-function-toolkit.openWIFolder)\n[Open Curr Folder](command:davinci-resolve-function-toolkit.openCurrFolder)"
+      },
+      {
+        "view": "main-scripts",
+        "contents": "[Create Project](command:davinci-resolve-function-toolkit.createScript)\n[Open User Folder](command:davinci-resolve-function-toolkit.openScriptsUserFolder)\n[Open Global Folder](command:davinci-resolve-function-toolkit.openScriptsGlobalFolder)"
+      },
+      {
+        "view": "main-resolve-api",
+        "contents": "[View ReadMe](https://gist.github.com/X-Raym/2f2bf453fc481b9cca624d7ca0e19de8)"
+      },
+      {
+        "view": "main-fusion-api",
+        "contents": "[View PDF](https://documents.blackmagicdesign.com/UserManuals/Fusion8_Scripting_Guide.pdf)"
+      },
+      {
+        "view": "main-help",
+        "contents": "[Discord](https://discord.gg/JyWcmYN3jS)\n[Dev Website](https://bit.ly/AR-Web)\n[YouTube](https://www.youtube.com/channel/UC_OnaF0lKfexzEL9Yminymw/)"
+      }
+    ],
+    "commands": [
+      {
+        "command": "davinci-resolve-function-toolkit.createWorkflow",
+        "title": "Create Workflow Integration"
+      },
+      {
+        "command": "davinci-resolve-function-toolkit.createScript",
+        "title": "Create Script"
+      },
+      {
+        "command": "davinci-resolve-function-toolkit.openScriptsUserFolder",
+        "title": "Open User's Scripts Folder"
+      },
+      {
+        "command": "davinci-resolve-function-toolkit.openScriptsGlobalFolder",
+        "title": "Open Global Scripts Folder"
+      },
+      {
+        "command": "davinci-resolve-function-toolkit.openWIFolder",
+        "title": "Open WorkflowIntegrations Folder"
+      },
+      {
+        "command": "davinci-resolve-function-toolkit.openCurrFolder",
+        "title": "Open Current Folder"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "lua",
+        "path": "./snippets/lua_snippets.code-snippets"
+      },
+      {
+        "language": "python",
+        "path": "./snippets/py_snippets.code-snippets"
+      },
+      {
+        "language": "javascript",
+        "path": "./snippets/js_snippets.code-snippets"
+      }
+    ]
+  }
+}

@@ -1,0 +1,2584 @@
+{
+    /*
+		DAVINCI RESOLVE API
+	*/
+
+	
+    "Resolve Setup": {
+        "prefix": ["resolve", "start", "resolveStart", "rs", "dvr"],
+        "body": ["#!/usr/bin/env python\nresolve = bmd.scriptapp('Resolve')\nproject_manager = resolve.GetProjectManager()\nmedia_storage = resolve.GetMediaStorage()\nproject = project_manager.GetCurrentProject()\ntimeline = project.GetCurrentTimeline()\nmedia_pool = project.GetMediaPool()\ngallery = project.GetGallery()"],
+        "description": "The resolve object"
+    },
+
+    // The Resolve Object Functions
+    "Resolve": {
+        "prefix": ["app", "app:Get", "Get", "Resolve"],
+        "body": ["bmd.scriptapp('Resolve')"],
+        "description": "The resolve object"
+    },
+    "Fusion from Resolve": {
+        "prefix": ["Fu", "Fusion", "Get"],
+        "body": ["${1:resolve}.Fusion()"],
+        "description": "The fusion object"
+    },
+    "Fusion from app": {
+        "prefix": ["app", "app:Get", "Get", "Fu", "Fusion"],
+        "body": ["bmd.scriptapp('Fusion')"],
+        "description": "The fusion object"
+    },
+    "Media Storage": {
+        "prefix": ["Get", "Media", "MS", "GMS"],
+        "body": ["${1:resolve}.GetMediaStorage()"],
+        "description": "Resolve's Media Storage"
+    },
+    "Project Manager": {
+        "prefix": ["Get", "Project", "PM", "GetProjectManager", "GPM"],
+        "body": ["${1:resolve}.GetProjectManager()"],
+        "description": "Resolve's Project Manager"
+    },
+    "Open Page": {
+        "prefix": ["Open", "Open", "Page", "OP"],
+        "body": ["${1:resolve}.OpenPage('${2:edit}')"],
+        "description": "Open a page in Resolve"
+    },
+    "Get Current Page": {
+        "prefix": ["Get", "Current", "Page", "CP"],
+        "body": ["${1:resolve}.GetCurrentPage()"],
+        "description": "Get the open page for Resolve"
+    },
+    "Product Name": {
+        "prefix": ["Get", "Product", "Name", "GPN"],
+        "body": ["${1:resolve}.GetProductName()"],
+        "description": "Get the product name for Resolve"
+    },
+    "Resolve Version": {
+        "prefix": ["Get", "Version", "GV"],
+        "body": ["${1:resolve}.GetVersion()"],
+        "description": "Get the version of Resolve"
+    },
+    "Resolve Version String": {
+        "prefix": ["Get", "Version", "GV"],
+        "body": ["${1:resolve}.GetVersionString()"],
+        "description": "Get the version of Resolve as a string"
+    },
+    "Load Layout Preset": {
+        "prefix": ["Load", "Preset", "LoadPreset", "LLP"],
+        "body": ["${1:resolve}.LoadLayoutPreset('${2:Preset Name}')"],
+        "description": "Load a layout preset from Resolve into Resolve"
+    },
+    "Update Layout Preset": {
+        "prefix": ["Update", "Preset", "UpdatePreset", "ULP"],
+        "body": ["${1:resolve}.UpdateLayoutPreset('${2:Preset Name}')"],
+        "description": "Update a layout preset in Resolve"
+    },
+    "Export Layout Preset": {
+        "prefix": ["Export", "Preset", "ExportPreset", "ELP"],
+        "body": ["${1:resolve}.ExportLayoutPreset('${2:Preset Name}', '${3:/PATH/TO/PRESET.preset}')"],
+        "description": "Export a layout preset in Resolve to a file"
+    },
+    "Delete Layout Preset": {
+        "prefix": ["Delete", "Preset", "DeletePreset", "DLP"],
+        "body": ["${1:resolve}.DeleteLayoutPreset('${2:Preset Name}')"],
+        "description": "Delete a layout preset in Resolve"
+    },
+    "Save Layout Preset": {
+        "prefix": ["Save", "Preset", "SavePreset", "SLP"],
+        "body": ["${1:resolve}.SaveLayoutPreset('${2:Preset Name}')"],
+        "description": "Save a layout preset in Resolve"
+    },
+    "Import Layout Preset": {
+        "prefix": ["Import", "Preset", "ImportPreset", "ILP"],
+        "body": ["${1:resolve}.ImportLayoutPreset('${1:/PATH/TO/PRESET.preset}', '${3:Preset Name}')"],
+        "description": "Import a layout preset in Resolve from a file"
+    },
+    "Quit Resolve": {
+        "prefix": ["Quit", "Q", "CloseResolve"],
+        "body": ["${1:resolve}.Quit()"],
+        "description": "Close the Resolve app"
+    },
+    "Import Render Preset": {
+        "prefix": ["Import", "ImportRender", "ImportRenderPreset", "IRP"],
+        "body": ["${1:resolve}.ImportRenderPreset('${2:/PATH/TO/FILE}')"],
+        "description": "Import a preset from Preset Path and set it as current preset for rendering"
+    },
+    "Export Render Preset": {
+        "prefix": ["Export", "ExportRender", "ExportRenderPreset", "ERP"],
+        "body": ["${1:resolve}.ExportRenderPreset('${2:Preset Name}','${3:/PATH/TO/FILE}')"],
+        "description": "Export a preset to a given path if Preset Name exists."
+    },
+    "Import Burn In Preset to Resolve": {
+        "prefix": ["Import", "ImportBurnIn", "ImportBurnInPreset", "IBIP"],
+        "body": ["${1:resolve}.ImportBurnInPreset('${2:/PATH/TO/FILE}')"],
+        "description": "Import a data burn in preset from a given Preset Path"
+    },
+    "Export Burn In Preset to Resolve": {
+        "prefix": ["Export", "ExportBurnIn", "ExportBurnInPreset", "EBIP"],
+        "body": ["${1:resolve}.ExportBurnInPreset('${2:Preset Name}','${3:/PATH/TO/FILE}')"],
+        "description": "Import a data burn in preset from a given Preset Path"
+    },
+    "Get Resolve Keyframe Mode": {
+        "prefix": ["Get", "GetKeyframe", "GetKeyframeMode", "GKM"],
+        "body": ["${1:resolve}.GetKeyframeMode()"],
+        "description": "Get the currently set keyframe mode (int)"
+    },
+    "Set Resolve Keyframe Mode": {
+        "prefix": ["Set", "SetKeyframe", "SetKeyframeMode", "SKM"],
+        "body": ["${1:resolve}.SetKeyframeMode(${2:1})"],
+        "description": "Get the currently set keyframe mode (int)"
+    },
+    // The Project Manager Object
+    "Archive Project": {
+        "prefix": ["Archive", "Project", "ArchiveProject", "AP"],
+        "body": ["${1:projectManager}.ArchiveProject('${2:Project Name}', '${3:/PATH/TO/FILE}', ${4:true}, ${5:true}, ${6:false})"],
+        "description": "Create a New project in the current folder of the project manager"
+    },
+    "Create Project": {
+        "prefix": ["Create", "Project", "CreateProject", "CP"],
+        "body": ["${1:projectManager}.CreateProject('${2:New Project Name}')"],
+        "description": "Create a New project in the current folder of the project manager"
+    },
+    "Delete Project": {
+        "prefix": ["Delete", "Project", "DeleteProject", "DP"],
+        "body": ["${1:projectManager}.DeleteProject('${2:Project Name}')"],
+        "description": "Delete a project from the project manager"
+    },
+    "Load Project": {
+        "prefix": ["Load", "Project", "LoadProject", "LP"],
+        "body": ["${1:projectManager}.LoadProject('${2:Project Name}')"],
+        "description": "Load a project from the project manager"
+    },
+    "Get Current Project": {
+        "prefix": ["Get", "Current", "Project", "CurrentProject", "CP"],
+        "body": ["${1:projectManager}.GetCurrentProject()"],
+        "description": "Get the current project"
+    },
+    "Save Project": {
+        "prefix": ["Save", "Project", "SaveProject", "SP"],
+        "body": ["${1:projectManager}.SaveProject()"],
+        "description": "Save the current project"
+    },
+    "Close Project": {
+        "prefix": ["Close", "Project", "CloseProject", "CP"],
+        "body": ["${1:projectManager}.CloseProject('${2:Project Name}')"],
+        "description": "Close a project"
+    },
+    "Create Project Folder": {
+        "prefix": ["Create", "Folder", "CreateProjectFolder", "CreateFolder", "CF"],
+        "body": ["${1:projectManager}.CreateFolder('${2:Folder Name}')"],
+        "description": "Create a Project Manager Folder in the current Database"
+    },
+    "Delete Project Folder": {
+        "prefix": ["Delete", "Folder", "DeleteProjectFolder", "DeleteFolder", "DF"],
+        "body": ["${1:projectManager}.DeleteFolder('${2:Folder Name}')"],
+        "description": "Delete a Project Manager Folder"
+    },
+    "Get Projects in Current Project Folder": {
+        "prefix": ["GetProjects", "Projects", "GetProjectList", "ProjectList", "GetP", "GPL"],
+        "body": ["${1:projectManager}.GetProjectListInCurrentFolder()"],
+        "description": "Get all Projects in current Project Manager Folder"
+    },
+    "Get Folders in Current Project Folder": {
+        "prefix": ["GetFolders", "Folders", "GetFolderList", "FolderList", "GetF", "GFL"],
+        "body": ["${1:projectManager}.GetFolderListInCurrentFolder()"],
+        "description": "Get all Folders in current Project Manager Folder"
+    },
+    "Go to Root Project Folder": {
+        "prefix": ["Root", "RootFolder", "RootProjectFolder", "MainProjectFolder", "GoTo", "GTRF"],
+        "body": ["${1:projectManager}.GotoRootFolder()"],
+        "description": "Go to root Project Manager Folder"
+    },
+    "Go to Parent Project Folder": {
+        "prefix": ["Parent", "ParentFolder", "ParentProjectFolder", "GoTo", "GTPF"],
+        "body": ["${1:projectManager}.GotoParentFolder()"],
+        "description": "Go to Parent Project Manager Folder from current folder"
+    },
+    "Get Current Project Folder": {
+        "prefix": ["Current", "Folder", "CurrentProjectFolder", "GCF"],
+        "body": ["${1:projectManager}.GetCurrentFolder()"],
+        "description": "Get the current Project Manager Folder's name"
+    },
+    "Open Project Folder": {
+        "prefix": ["Open", "Folder", "OpenProjectFolder", "OF"],
+        "body": ["${1:projectManager}.OpenFolder('${2:Folder Name}')"],
+        "description": "Open a Project Manager Folder"
+    },
+    "Import Project": {
+        "prefix": ["Import", "Project", "ImportProject", "IP"],
+        "body": ["${1:projectManager}.ImportProject('${2:/PATH/TO/PROJECT.drp}', '${3:Optional Name}')"],
+        "description": "Imports Project to Current Project Manager Folder"
+    },
+    "Export Project": {
+        "prefix": ["Export", "Project", "ExportProject", "EP"],
+        "body": ["${1:projectManager}.ExportProject('${2:Project Name}','${3:/PATH/TO/PROJECT.drp}', ${4:Export with Luts/stills?(true/false)})"],
+        "description": "Export Project from Project Manager to file"
+    },
+    "Restore Project": {
+        "prefix": ["Restore", "Project", "RestoreProject", "EP"],
+        "body": ["${1:projectManager}.RestoreProject('${2:/PATH/TO/PROJECT.drp}')"],
+        "description": "Restores a Project to current Project Manager folder"
+    },
+    "Get Current Database": {
+        "prefix": ["Get", "GetCurrent", "Current", "CurrentDatabase", "GetCurrentDatabase", "GCD"],
+        "body": ["${1:projectManager}.GetCurrentDatabase()"],
+        "description": "Get the Current Database open in the Project Manager"
+    },
+    "Database List": {
+        "prefix": ["GetDL", "GetD", "Database", "DatabaseList", "GetDatabaseList", "GDL"],
+        "body": ["${1:projectManager}.GetDatabaseList()"],
+        "description": "Get all Databases in the Project Manager"
+    },
+    "Set Current Database": {
+        "prefix": ["Set", "SetCurrent", "SetDatabase", "SetCurrentDatabase", "SCD"],
+        "body": ["${1:projectManager}.SetCurrentDatabase({DbType = '${2:PostgresSQL}', DbName = '${3:Db Name}', IpAddress = '${4:127.0.0.1}'})"],
+        "description": "Get all Databases in the Project Manager"
+    },
+    "Create Cloud Project": {
+        "prefix": ["Create", "CreateCloud", "CreateCloudProject", "CCP"],
+        "body": ["${1:projectManager}.CreateCloudProject({ resolve.CLOUD_SETTING_PROJECT_NAME: '${2:My Project}', \n\t\t\t\t\t\t\t\t\tresolve.CLOUD_SETTING_PROJECT_MEDIA_PATH: '${3:/PATH/TO/FOLDER/}', \n\t\t\t\t\t\t\t\t\tresolve.CLOUD_SETTING_IS_COLLAB: ${4:false}, \n\t\t\t\t\t\t\t\t\tresolve.CLOUD_SETTING_SYNC_MODE: resolve.${5:CLOUD_SYNC_NONE}, \n\t\t\t\t\t\t\t\t\tresolve.CLOUD_SETTING_IS_CAMERA_ACCESS: ${6:false}})"],
+        "description": "Creates a Cloud Project. Returns True if create cloud project is successful; False otherwise"
+    },
+    "Import Cloud Project": {
+        "prefix": ["Import", "ImportCloud", "ImportCloudProject", "ICP"],
+        "body": ["${1:projectManager}.CreateCloudProject('${2:/PATH/TO/FILE}', { resolve.CLOUD_SETTING_PROJECT_NAME: '${2:My Project}', \n\t\t\t\t\t\t\t\t\tresolve.CLOUD_SETTING_PROJECT_MEDIA_PATH: '${3:/PATH/TO/FOLDER/}', \n\t\t\t\t\t\t\t\t\tresolve.CLOUD_SETTING_IS_COLLAB: ${4:false}, \n\t\t\t\t\t\t\t\t\tresolve.CLOUD_SETTING_SYNC_MODE: resolve.${5:CLOUD_SYNC_NONE}, \n\t\t\t\t\t\t\t\t\tresolve.CLOUD_SETTING_IS_CAMERA_ACCESS: ${6:false}})"],
+        "description": "Imports a Cloud Project. Returns True if import cloud project is successful; False otherwise"
+    },
+    "Restore Cloud Project": {
+        "prefix": ["Restore", "RestoreCloud", "RestoreCloudProject", "RCP"],
+        "body": ["${1:projectManager}.RestoreCloudProject('${2:/PATH/TO/FOLDER}', { resolve.CLOUD_SETTING_PROJECT_NAME: '${2:My Project}', \n\t\t\t\t\t\t\t\t\tresolve.CLOUD_SETTING_PROJECT_MEDIA_PATH: '${3:/PATH/TO/FOLDER/}', \n\t\t\t\t\t\t\t\t\tresolve.CLOUD_SETTING_IS_COLLAB: ${4:false}, \n\t\t\t\t\t\t\t\t\tresolve.CLOUD_SETTING_SYNC_MODE: resolve.${5:CLOUD_SYNC_NONE}, \n\t\t\t\t\t\t\t\t\tresolve.CLOUD_SETTING_IS_CAMERA_ACCESS: ${6:false}})"],
+        "description": "Imports a Cloud Project. Returns True if import cloud project is successful; False otherwise"
+    },
+    // The Project Object
+    "Media Pool": {
+        "prefix": ["Get", "GetMedia", "GetMediaPool", "GMP"],
+        "body": ["${1:currentProject}.GetMediaPool()"],
+        "description": "Get the Media Pool from a Project"
+    },
+    "Timeline Count": {
+        "prefix": ["Get", "GetTimeline", "GetTimelineCount", "GTC"],
+        "body": ["${1:currentProject}.GetTimelineCount()"],
+        "description": "Get the amount of timelines in a Project"
+    },
+    "Get Timeline by Index": {
+        "prefix": ["Get", "GetTimeline", "GetTimelineByIndex", "GTBI"],
+        "body": ["${1:currentProject}.GetTimelineByIndex(${2:1})"],
+        "description": "Get a timeline in a Project using the index(based on timeline count)"
+    },
+    "Get Current Timeline": {
+        "prefix": ["Get", "GetCurrent", "GetCurrentTimeline", "GCT"],
+        "body": ["${1:currentProject}.GetCurrentTimeline()"],
+        "description": "Get the current timeline in a Project"
+    },
+    "Set Current Timeline": {
+        "prefix": ["Set", "SetCurrent", "SetCurrentTimeline", "SCT"],
+        "body": ["${1:currentProject}.SetCurrentTimeline(${2:TimelineObject})"],
+        "description": "Set the current timeline in a Project"
+    },
+    "Get Gallery (Color Page)": {
+        "prefix": ["Get", "GetGallery", "GG"],
+        "body": ["${1:currentProject}.GetGallery()"],
+        "description": "Get the gallery from a Project in the Color Page"
+    },
+    "Get Project Name": {
+        "prefix": ["Get", "GetName", "GN"],
+        "body": ["${1:currentProject}.GetName()"],
+        "description": "Get the name of a Project"
+    },
+    "Set Project Name": {
+        "prefix": ["Set", "SetName", "SN"],
+        "body": ["${1:currentProject}.SetName('${2:Project Name}')"],
+        "description": "Set the name of a Project"
+    },
+    "Get Preset List": {
+        "prefix": ["Get", "GetPresets", "GP"],
+        "body": ["${1:currentProject}.GetPresetList()"],
+        "description": "Get presets and all their information for a Project"
+    },
+    "Set Preset": {
+        "prefix": ["Set", "SetPreset", "SP"],
+        "body": ["${1:currentProject}.SetPreset('${2:Preset Name}')"],
+        "description": "Set Current preset for a Project"
+    },
+    "Add Render Job": {
+        "prefix": ["Add", "Render", "AddRenderJob", "ARJ"],
+        "body": ["${1:currentProject}.AddRenderJob()"],
+        "description": "Creates new Render Job with current render settings"
+    },
+    "Delete Render Job": {
+        "prefix": ["Delete", "Render", "DeleteRenderJob", "DRJ"],
+        "body": ["${1:currentProject}.DeleteRenderJob('${2:RenderJobID}')"],
+        "description": "Deletes Render Job based on the ID"
+    },
+    "Delete ALL Render Jobs": {
+        "prefix": ["Delete", "Render", "DeleteAllRenderJobs", "DARJ"],
+        "body": ["${1:currentProject}.DeleteAllRenderJobs()"],
+        "description": "Deletes ALL Render Jobs in a project"
+    },
+    "Get Render Jobs": {
+        "prefix": ["Get", "GetRenders", "GetRenderJobList", "GRJL"],
+        "body": ["${1:currentProject}.GetRenderJobList()"],
+        "description": "Gets all Render Jobs in a project with their information"
+    },
+    "Get Render Presets": {
+        "prefix": ["Get", "GetRenders", "GetRenderPresetList", "GRPL"],
+        "body": ["${1:currentProject}.GetRenderPresetList()"],
+        "description": "Gets all Render presets in a project with their information"
+    },
+    "Start Render Job(s)": {
+        "prefix": ["Start", "StartRendering", "SR"],
+        "body": ["${1:currentProject}.StartRendering(['${2:RenderJobID 1}', '${3:RenderJobID 2}'], ${4:Enable Error Feedback in UI?(true/false)})"],
+        "description": "Starts Rendering selected jobs based on their job ID's"
+    },
+    "Start ALL Render Jobs": {
+        "prefix": ["Start", "StartRenderingAll", "SR"],
+        "body": ["${1:currentProject}.StartRendering(${2:Enable Error Feedback in UI?(true/false)})"],
+        "description": "Starts Rendering all render jobs"
+    },
+    "Stop Rendering": {
+        "prefix": ["Stop", "StopRenderingAll", "SR"],
+        "body": ["${1:currentProject}.StopRendering()"],
+        "description": "Stops Rendering all render jobs"
+    },
+    "Check if Rendering": {
+        "prefix": ["Is", "IsRendering", "IRIP"],
+        "body": ["${1:currentProject}.IsRenderingInProgress()"],
+        "description": "Checks if there's a render in progress"
+    },
+    "Load Render Preset": {
+        "prefix": ["Load", "LoadPreset", "LoadRenderPreset", "LRP"],
+        "body": ["${1:currentProject}.LoadRenderPreset('${2:Preset Name}')"],
+        "description": "Loads a render preset to be the new current"
+    },
+    "Save New Render Preset": {
+        "prefix": ["Save", "SavePreset", "SaveNewRenderPreset", "SANRP"],
+        "body": ["${1:currentProject}.SaveAsNewRenderPreset('${2:Preset Name}')"],
+        "description": "Saves a render preset from the current settings"
+    },
+    "Set Render Settings": {
+        "prefix": ["Set", "SetRender", "SetRenderSettings", "SRS"],
+        "body": ["${1:currentProject}.SetRenderSettings({ 'SelectAllFrames': ${2:true}, \n\t\t\t\t\t\t\t\t'CustomName': '${3:My Movie.mov}', \n\t\t\t\t\t\t\t\t'ExportVideo': ${4:true}, \n\t\t\t\t\t\t\t\t'ExportAudio': ${5:true}, \n\t\t\t\t\t\t\t\t'FormatWidth': ${6:1920}, \n\t\t\t\t\t\t\t\t'FormatHeight': ${7:1080}, \n\t\t\t\t\t\t\t\t'FrameRate': ${8:23.976} })"],
+        "description": "Set the current render settings"
+    },
+    "Get Render Job Status": {
+        "prefix": ["Get", "GetRender", "GetRenderStatus", "GRJS"],
+        "body": ["${1:currentProject}.GetRenderJobStatus('${2:RenderJobID}')"],
+        "description": "Gets the status of a chosen render job if it's rendering"
+    },
+    "Get Project Setting": {
+        "prefix": ["Get", "GetSetting", "GetProjectSetting", "GS"],
+        "body": ["${1:currentProject}.GetSetting('${2:Setting Name}')"],
+        "description": "Gets a setting from the project based on the name"
+    },
+    "Set Project Setting": {
+        "prefix": ["Set", "SetSetting", "SetProjectSetting", "SS"],
+        "body": ["${1:currentProject}.SetSetting('${2:Setting Name}', '${3:Setting Value}')"],
+        "description": "Sets a setting from the project based on the name"
+    },
+    "Get Render Formats": {
+        "prefix": ["Get", "GetRender", "GetRenderFormats", "GRF"],
+        "body": ["${1:currentProject}.GetRenderFormats()"],
+        "description": "Gets list of available render formats"
+    },
+    "Get Render Codecs": {
+        "prefix": ["Get", "GetRender", "GetRenderCodecs", "GRC"],
+        "body": ["${1:currentProject}.GetRenderCodecs('${2:MP4}')"],
+        "description": "Gets list of available render codecs for a render format"
+    },
+    "Get Current Render Format and Codec": {
+        "prefix": ["Get", "GetRender", "GetRenderFormatAndCodec", "GRC"],
+        "body": ["${1:currentProject}.GetCurrentRenderFormatAndCodec()"],
+        "description": "Gets format and codec settings for the render settings"
+    },
+    "Set Current Render Format and Codec": {
+        "prefix": ["Set", "SetRender", "SetRenderFormatAndCodec", "SRC"],
+        "body": ["${1:currentProject}.SetCurrentRenderFormatAndCodec()"],
+        "description": "Set format and codec settings for the render settings"
+    },
+    "Get Render Mode(Single/Indvidual Clip(s))": {
+        "prefix": ["Get", "GetRender", "GetRenderMode", "GRM"],
+        "body": ["${1:currentProject}.GetCurrentRenderMode()"],
+        "description": "Get if the render settings are set to single clip or individual clips"
+    },
+    "Set Render Mode(Single/Indvidual Clip(s))": {
+        "prefix": ["Set", "SetRender", "SetRenderMode", "SRM"],
+        "body": ["${1:currentProject}.SetCurrentRenderMode(${2:1})"],
+        "description": "Get if the render settings are set to single clip or individual clips"
+    },
+    "Get Render Resolutions": {
+        "prefix": ["Get", "GetRender", "GetRenderResolutions", "GRR"],
+        "body": ["${1:currentProject}.GetRenderResolutions('${2:mov}', '${3:ProRes422}')"],
+        "description": "Get list of applicable resolutions for the render format and codec"
+    },
+    "Refresh LUT List": {
+        "prefix": ["Refresh", "RefreshLUTS", "RefreshLuts", "RefreshLUTList", "RLL"],
+        "body": ["${1:currentProject}.RefreshLUTList()"],
+        "description": "Refresh the LUT List after adding to the LUT Library"
+    },
+    "Get Unique Project ID": {
+        "prefix": ["Get", "GetUnique", "GetProjectID", "GetUniqueID", "GUI"],
+        "body": ["${1:currentProject}.GetUniqueId()"],
+        "description": "Get a unique ID for the project item"
+    },
+    "Insert Audio To Current Track": {
+        "prefix": ["Insert", "InsertAudio", "InsertAudioToTrack", "InsertAudioToCurrentTrackAtPlayhead", "IATCTAP"],
+        "body": ["${1:currentProject}.InsertAudioToCurrentTrackAtPlayhead('${2:/PATH/TO/File.mp4}', ${3:StartOffset(Samples)}, ${4:Duration(Samples)})"],
+        "description": "Insert Audio from File to Current Track at Playhead in Fairlight"
+    },
+    "Load Burn In Preset into Project": {
+        "prefix": ["Load", "LoadPreset", "LoadBurnIn", "LoadBurnInPreset", "LBIP"],
+        "body": ["${1:currentProject}.LoadBurnInPreset('${2:Preset Name}')"],
+        "description": "Load user defined data burn in preset for project"
+    },
+    "Export Current Frame As Still": {
+        "prefix": ["Export", "ExportStill", "ExportFrame", "ExportCurrentFrameAsStill", "ECFAS"],
+        "body": ["${1:currentProject}.ExportCurrentFrameAsStill('${2:/PATH/TO/FILE.png}')"],
+        "description": "Export current frame as still"
+    },
+    "Get Color Groups List": {
+        "prefix": ["Get", "GetGroups", "GetColorGroups", "GetColorGroupsList", "GCGL"],
+        "body": ["${1:currentProject}.GetColorGroupsList()"],
+        "description": "Get a list of all group objects in the timeline"
+    },
+    "Add Color Group": {
+        "prefix": ["Add", "AddGroup", "AddColorGroup", "ACG"],
+        "body": ["${1:currentProject}.AddColorGroup('${2:Group Name}')"],
+        "description": "Creates a new ColorGroup. Group Name must be a unique string."
+    },
+    "Delete Color Group": {
+        "prefix": ["Delete", "DeleteGroup", "DeleteColorGroup", "DCG"],
+        "body": ["${1:currentProject}.DeleteColorGroup('${2:Group Name}')"],
+        "description": "Deletes the given color group and sets clips to ungrouped"
+    },
+    // The Media Storage Object
+    "Get Mounted Volumes(External Storage)": {
+        "prefix": ["Get", "GetMounted", "GetMountedVolumes", "GetMountedVolumeList", "GMVL"],
+        "body": ["${1:mediaStorage}.GetMountedVolumeList()"],
+        "description": "Get a list of all Mounted Volumes(External Storage Devices) found in Media Storage"
+    },
+    "Get Sub-Folders": {
+        "prefix": ["Get", "GetSubFolders", "GetSubFolderList", "GSFL"],
+        "body": ["${1:mediaStorage}.GetSubFolderList('${2:/PATH/TO/FOLDER/}')"],
+        "description": "Get a list of all folders inside of a chosen folder"
+    },
+    "Get is Folder Stale": {
+        "prefix": ["Get", "GetFolderStale", "GetIsFolderStale", "GIFS"],
+        "body": ["${1:mediaStorage}.GetIsFolderStale('${2:/PATH/TO/FOLDER/}')"],
+        "description": "Get if a chosen folder is 'stale' in Collaboration Mode"
+    },
+    "Get File List": {
+        "prefix": ["Get", "GetFiles", "GetFileList", "GFL"],
+        "body": ["${1:mediaStorage}.GetFileList('${2:/PATH/TO/FOLDER/}')"],
+        "description": "Get a list of compatible media files in a chosen folder"
+    },
+    "Reveal in Storage": {
+        "prefix": ["Reveal", "RevealFile", "RevealFolder", "RevealInStorage", "RIS"],
+        "body": ["${1:mediaStorage}.RevealInStorage('${2:/PATH/TO/FOLDER/(or FILE.mov)}')"],
+        "description": "Opens chosen path in Resolve's Media Storage"
+    },
+    "Add Items To Media Pool": {
+        "prefix": ["Add", "AddItems", "AddFiles", "AddItemListToMediaPool", "AILTMP"],
+        "body": ["${1:mediaStorage}.AddItemListToMediaPool(['${2:/PATH/TO/FOLDER 1/(or FILE 1.mov)}', '${3:/PATH/TO/FOLDER 2/(or FILE2 .mov)}'])"],
+        "description": "Adds Files/Folders to the current Media Pool folder"
+    },
+    "Add Clip Mattes To Media Pool": {
+        "prefix": ["Add", "AddClips", "AddClipMattes", "AddClipMattesToMediaPool", "ACMTMP"],
+        "body": ["${1:mediaStorage}.AddClipMattesToMediaPool(['${2:/PATH/TO/FILE/lefteye.mov}'], '${3:left}')"],
+        "description": "Adds Clip Mattes for Stereo Clips to current Media Pool folder"
+    },
+    "Add Timeline Mattes To Media Pool": {
+        "prefix": ["Add", "AddClips", "AddClipMattes", "AddClipMattesToMediaPool", "ACMTMP"],
+        "body": ["${1:mediaStorage}.AddClipMattesToMediaPool(['${2:/PATH/TO/FILE/lefteye.mov}', '${3:/PATH/TO/FILE/righteye.mov}'])"],
+        "description": "Adds media files as Timeline Mattes in current Media Pool folder"
+    },
+    // The Media Pool Object
+    "Get Master Bin": {
+        "prefix": ["Get", "GetRoot", "GetRootBin", "RootBin", "RootFolder", "MasterBin", "GRF"],
+        "body": ["${1:mediaPool}.GetRootFolder()"],
+        "description": "Get the Master(Root) Bin/Folder of a Project's Media Pool"
+    },
+    "Add Sub-Bin": {
+        "prefix": ["Add", "AddBin", "AddSubBin", "AddSubFolder", "ASF"],
+        "body": ["${1:mediaPool}.AddSubFolder(${2:rootBin_Object}, '${3:Folder Name}')"],
+        "description": "Add a Bin/Folder to a specified Bin/Folder"
+    },
+    "Refresh Bins": {
+        "prefix": ["Refresh", "RefreshBins", "RefreshFolders", "RF"],
+        "body": ["${1:mediaPool}.RefreshFolders(${2:rootBin_Object}, '${3:Folder Name}')"],
+        "description": "Refresh Bins/Folders when in Collaboration Mode"
+    },
+    "Create Empty Timeline": {
+        "prefix": ["Create", "CreateTimeline", "CreateTML", "CET"],
+        "body": ["${1:mediaPool}.CreateEmptyTimeline('${2:Timeline Name}')"],
+        "description": "Add Empty Timeline to the current Bin/Folder"
+    },
+    "Append Media To Timeline": {
+        "prefix": ["Append", "AppendToTimeline", "AddClips", "ATT"],
+        "body": ["${1:mediaPool}.AppendToTimeline([${2:ClipObject1}, ${3:ClipObject2}])"],
+        "description": "Add Clips to the current Timeline"
+    },
+    "Append Media To Timeline with Settings": {
+        "prefix": ["Append", "AppendToTimeline", "AddClips", "ATT"],
+        "body": ["${1:mediaPool}.AppendToTimeline({ 'mediaPoolItem': ${2:clipObject}, \n\t\t\t\t\t\t\t'startFrame': ${3:0}, --Start Frame in Clip \n\t\t\t\t\t\t\t'endFrame': ${4:10}, --End Frame in Clip \n\t\t\t\t\t\t\t'mediaType': ${5:1}, --Optional: 2(Audio Only) or 1(Video Only) \n\t\t\t\t\t\t\t'recordFrame': ${6:50}, --Optional: Start Frame on Timeline \n\t\t\t\t\t\t\t'trackIndex': ${7:1} })"],
+        "description": "Add Clips to the current Timeline with settings"
+    },
+    "Create Timeline with Clips": {
+        "prefix": ["Create", "CreateTimeline", "CreateTML", "CTFC"],
+        "body": ["${1:mediaPool}.CreateTimelineFromClips('${2:Timeline Name}', [${3:ClipObject1}, ${4:ClipObject2}])"],
+        "description": "Create a Timeline with Specific Clips"
+    },
+    "Import Timeline": {
+        "prefix": ["Import", "ImportTimeline", "ImportTimelineFromFile", "ITFF"],
+        "body": ["${1:mediaPool}.ImportTimelineFromFile('${2:/PATH/TO/TIMELINE.aaf}', ${3:importOptionsTable})"],
+        "description": "Import a timeline from a file with import options"
+    },
+    "Delete Timelines": {
+        "prefix": ["Delete", "DeleteTimeline", "DeleteTimelines", "DT"],
+        "body": ["${1:mediaPool}.DeleteTimelines([${2:TimelineObject1}, ${3:TimelineObject2}])"],
+        "description": "Deleted 1 or more timelines"
+    },
+    "Get Current Bin": {
+        "prefix": ["Get", "GetCurrent", "GetCurrentBin", "GetCurrentFolder", "GCF"],
+        "body": ["${1:mediaPool}.GetCurrentFolder()"],
+        "description": "Get the Active Bin/Folder"
+    },
+    "Set Current Bin": {
+        "prefix": ["Set", "SetCurrent", "SetCurrentBin", "SetCurrentFolder", "SCF"],
+        "body": ["${1:mediaPool}.SetCurrentFolder(${2:FolderObject})"],
+        "description": "Set the Active Bin/Folder"
+    },
+    "Delete Media Pool Clips": {
+        "prefix": ["Delete", "DeleteClips", "DeleteMediaPoolClips", "DC"],
+        "body": ["${1:mediaPool}.DeleteClips([${2:ClipObject1}, ${3:ClipObject2}])"],
+        "description": "Delete Media Pool Clips or Timeline Mattes"
+    },
+    "Delete Media Pool Bins": {
+        "prefix": ["Delete", "DeleteBins", "DeleteMediaPoolBins", "DB"],
+        "body": ["${1:mediaPool}.DeleteFolders([${2:BinObject1}, ${3:BinObject2}])"],
+        "description": "Delete Media Pool Bins/Folders"
+    },
+    "Move Media Pool Clips": {
+        "prefix": ["Move", "MoveClips", "MoveMediaPoolClips", "MC"],
+        "body": ["${1:mediaPool}.MoveClips([${2:ClipObject1}, ${3:ClipObject2}], ${4:BinObject})"],
+        "description": "Move Media Pool Clips to a different Bin/Folder"
+    },
+    "Move Media Pool Bins": {
+        "prefix": ["Move", "MoveBins", "MoveMediaPoolBins", "MB"],
+        "body": ["${1:mediaPool}.MoveFolders([${2:BinObject1}, ${3:BinObject2}], ${4:RootBinObject})"],
+        "description": "Move Media Pool Bins/Folders to a different Bin/Folder"
+    },
+    "Get Timeline Mattes": {
+        "prefix": ["Get", "GetTimeline", "GetTimelineMattes", "GTML"],
+        "body": ["${1:mediaPool}.GetTimelineMatteList(${2:RootBinObject})"],
+        "description": "Get list of timeline Mattes in a chosen Bin/Folder"
+    },
+    "Delete Clip Mattes": {
+        "prefix": ["Delete", "DeleteClips", "DeleteClipMattes", "DCM"],
+        "body": ["${1:mediaPool}.DeleteClipMattes(${2:ClipObject}, [ '${3:/PATH/TO/MATTE1.mov}', '${4:/PATH/TO/MATTE2.mov}' ])"],
+        "description": "Delete Mattes based on the path, for a Media Pool Item"
+    },
+    "Relink Clips": {
+        "prefix": ["Relink", "RelinkClips", "RC"],
+        "body": ["${1:mediaPool}.RelinkClips([ ${2:ClipObject1}, ${3:ClipObject2} ], '${4:/PATH/TO/FOLDER/}')"],
+        "description": "Relink Clips with a new folder path to search in"
+    },
+    "Unlink Clips": {
+        "prefix": ["Unlink", "UnlinkClips", "UC"],
+        "body": ["${1:mediaPool}.UnlinkClips([ ${2:ClipObject1}, ${3:ClipObject2} ])"],
+        "description": "Unlink Clips"
+    },
+    "Import Media": {
+        "prefix": ["Import", "ImportMedia", "IC"],
+        "body": ["${1:mediaPool}.ImportMedia([ '${2:/PATH/TO/CLIP1.mov}', '${3:/PATH/TO/CLIP2.mov}' ])"],
+        "description": "Import Media From a File to the Current Media Pool Bin/Folder"
+    },
+    "Import Media Sequences": {
+        "prefix": ["Import", "ImportMedia", "IC"],
+        "body": ["${1:mediaPool}.ImportMedia([ { 'FilePath': '${2:file_%03d.dpx}', 'StartIndex': ${3:1}, 'EndIndex': ${4:100} }, \n\t\t\t\t\t\t{ 'FilePath': '${5:file_%03d.dpx}', 'StartIndex': ${6:1}, 'EndIndex': ${7:100} } ])"],
+        "description": "Import Media From a File to the Current Media Pool Bin/Folder as a sequence"
+    },
+    "Export Metadata": {
+        "prefix": ["Export", "ExportMetadata", "EM"],
+        "body": ["${1:mediaPool}.ExportMetadata('${2:/PATH/TO/FILE.csv}', [ ${3:ClipObject1}, ${4:ClipObject2} ])"],
+        "description": "Export Clip's Metadata, if no clips are chosen, then all clips' metadata is exported"
+    },
+    "Get Unique Media Pool ID": {
+        "prefix": ["Get", "GetID", "GetMediaPoolID", "GUI"],
+        "body": ["${1:mediaPool}.GetUniqueId()"],
+        "description": "Get a unique ID for the media pool"
+    },
+    "Create Stereo Clip in Media Pool": {
+        "prefix": ["Create", "CreateStereo", "CreateStereoClip", "CSC"],
+        "body": ["${1:mediaPool}.CreateStereoClip(${2:LeftMediaPoolItem}, ${3:RightMediaPoolItem})"],
+        "description": "Takes in two existing media pool items and creates a new 3D stereoscopic media pool entry replacing the input media in the media pool"
+    },
+    "Get Selected Media Pool Clips": {
+        "prefix": ["Get", "GetSelected", "GetSelectedClips", "GSC"],
+        "body": ["${1:mediaPool}.GetSelectedClips()"],
+        "description": "Get the current selected MediaPoolItems"
+    },
+    "Set Selected Media Pool Clips": {
+        "prefix": ["Set", "SetSelected", "SetSelectedClip", "SSC"],
+        "body": ["${1:mediaPool}.SetSelectedClip(${2:MediaPoolItem})"],
+        "description": "Set the selected MediaPoolItem to the given MediaPoolItem"
+    },
+    // The Media Pool Bin/Folder Object
+    "Get Bin's Clips": {
+        "prefix": ["Get", "GetClips", "GetClipList", "GCL"],
+        "body": ["${1:mp_binObject}.GetClipList()"],
+        "description": "Get list of all media in a bin/folder"
+    },
+    "Get Bin Name": {
+        "prefix": ["Get", "GetName", "GetBinName", "GN"],
+        "body": ["${1:mp_binObject}.GetName()"],
+        "description": "Get name of a bin/folder"
+    },
+    "Get Bin Sub-Bins": {
+        "prefix": ["Get", "GetBins", "GetBinList", "GSFL"],
+        "body": ["${1:mp_binObject}.GetSubFolderList()"],
+        "description": "Get list of all bins/folders a bin/folder"
+    },
+    "Get Is Media Pool Bin Stale": {
+        "prefix": ["Get", "GetBin", "GetBinStale", "GIFS"],
+        "body": ["${1:mp_binObject}.GetIsFolderStale()"],
+        "description": "Returns true if bin/folder is stale in collaboration mode, false otherwise"
+    },
+    "Get Unique Media Pool Bin ID": {
+        "prefix": ["Get", "GetBin", "GetBinID", "GUI"],
+        "body": ["${1:mp_binObject}.GetUniqueId()"],
+        "description": "Get a unique ID for the media pool bin/folder"
+    },
+    "Export Media Pool Bin": {
+        "prefix": ["Export", "ExportBin", "E"],
+        "body": ["${1:mp_binObject}.Export('${2:/PATH/TO/FILE.drb}')"],
+        "description": "Returns true if export of DRB bin/folder to filePath is successful, false otherwise"
+    },
+    "Transcribe Media Pool Bin Clips Audio": {
+        "prefix": ["Transcribe", "TranscribeBin", "TA"],
+        "body": ["${1:mp_binObject}.TranscribeAudio()"],
+        "description": "Transcribe audio of the MediaPoolItems within the bin/folder and nested bins/folders. Returns True if successful; False otherwise"
+    },
+    "Clear Media Pool Bin Clips Transcription": {
+        "prefix": ["Clear", "ClearBinTranscription", "ClearTranscription", "CT"],
+        "body": ["${1:mp_binObject}.ClearTranscripton()"],
+        "description": "Clear audio transcription of the MediaPoolItems within the bin/folder and nested bins/folders. Returns True if successful; False otherwise"
+    },
+    // The Media Pool Clip/Item Object
+    "Get Media Pool Clip Name": {
+        "prefix": ["Get", "GetName", "GetClipName", "GN"],
+        "body": ["${1:mp_clipObject}.GetName()"],
+        "description": "Get a media pool clip's name"
+    },
+    "Get Media Pool Clip Metadata": {
+        "prefix": ["Get", "GetMetadata", "GetClipMetadata", "GM"],
+        "body": ["${1:mp_clipObject}.GetMetadata()"],
+        "description": "Get a media pool clip's metadata"
+    },
+    "Set Media Pool Clip Metadata": {
+        "prefix": ["Set", "SetMetadata", "SetClipMetadata", "SM"],
+        "body": ["${1:mp_clipObject}.SetMetadata(${2:MetadataType}, ${3:MetadataValue})"],
+        "description": "Set a media pool clip's metadata"
+    },
+    "Get Media Pool Clip ID": {
+        "prefix": ["Get", "GetMediaID", "GetClipID", "GMI"],
+        "body": ["${1:mp_clipObject}.GetMediaID()"],
+        "description": "Get a media pool clip's Media ID"
+    },
+    "Add Marker to Media Pool Clip": {
+        "prefix": ["Add", "AddMarker", "AddMarkerToClip", "AM"],
+        "body": ["${1:mp_clipObject}.AddMarker(${2:50}, '${3:Green}', '${4:Marker Name}', '${5:Notes}', ${6:10}, '${7:Secret_Word}')"],
+        "description": "Add marker to media pool clip"
+    },
+    "Get Media Pool Clip Markers": {
+        "prefix": ["Get", "GetMarkers", "GetClipMarkers", "GM"],
+        "body": ["${1:mp_clipObject}.GetMarkers()"],
+        "description": "Get a media pool clip's Markers"
+    },
+    "Get Media Pool Clip Markers by CustomData": {
+        "prefix": ["Get", "GetMarkers", "GetClipMarkers", "GMBCD"],
+        "body": ["${1:mp_clipObject}.GetMarkerByCustomData('${2:Custom Data}')"],
+        "description": "Get a media pool clip's Markers by Custom Data"
+    },
+    "Update Media Pool Clip Markers' CustomData": {
+        "prefix": ["Update", "UpdateMarkers", "UpdateClipMarkers", "UMCD"],
+        "body": ["${1:mp_clipObject}.UpdateMarkerCustomData(${2:20}, '${3:New CustomData}')"],
+        "description": "Update a media pool clip's Markers' Custom Data"
+    },
+    "Get Media Pool Clip Marker's CustomData": {
+        "prefix": ["Get", "GetMarkers", "GetClipMarkers", "GMCD"],
+        "body": ["${1:mp_clipObject}.GetMarkerCustomData(${2:20})"],
+        "description": "Get a media pool clip's Marker's Custom Data"
+    },
+    "Delete Media Pool Clip Markers By Color": {
+        "prefix": ["Delete", "DeleteMarkers", "DeleteClipMarkers", "DMBC"],
+        "body": ["${1:mp_clipObject}.DeleteMarkersByColor('${2:Red}')"],
+        "description": "Delete a media pool clip's Markers By Color"
+    },
+    "Delete Media Pool Clip Marker At Frame": {
+        "prefix": ["Delete", "DeleteMarkers", "DeleteClipMarkers", "DMAF"],
+        "body": ["${1:mp_clipObject}.DeleteMarkersAtFrame(${2:20})"],
+        "description": "Delete a media pool clip's Marker at a specified frame"
+    },
+    "Delete Media Pool Clip Marker By CustomData": {
+        "prefix": ["Delete", "DeleteMarkers", "DeleteClipMarkers", "DMBCD"],
+        "body": ["${1:mp_clipObject}.DeleteMarkerByCustomData('${2:CustomData}')"],
+        "description": "Delete the first media pool clip's Marker based on CustomData"
+    },
+    "Add Flag to Media Pool Clip": {
+        "prefix": ["Add", "AddFlag", "AddClipFlag", "AF"],
+        "body": ["${1:mp_clipObject}.AddFlag('${2:Red}')"],
+        "description": "Add a flag to a media pool clip"
+    },
+    "Get Flag List from Media Pool Clip": {
+        "prefix": ["Get", "GetFlags", "GetClipFlags", "GFL"],
+        "body": ["${1:mp_clipObject}.GetFlagList()"],
+        "description": "Get a media pool clips's Flags"
+    },
+    "Clear Flags from Media Pool Clip": {
+        "prefix": ["Clear", "ClearFlags", "ClearClipFlags", "CF"],
+        "body": ["${1:mp_clipObject}.ClearFlags('All')"],
+        "description": "Remove a media pool clips's Flags"
+    },
+    "Get Media Pool Clip's Color": {
+        "prefix": ["Get", "GetColor", "GetClipColor", "GCC"],
+        "body": ["${1:mp_clipObject}.GetClipColor()"],
+        "description": "Get a media pool clips's Color"
+    },
+    "Set Media Pool Clip's Color": {
+        "prefix": ["Set", "SetColor", "SetClipColor", "SCC"],
+        "body": ["${1:mp_clipObject}.SetClipColor('${2:Red}')"],
+        "description": "Set a media pool clips's Color"
+    },
+    "Clear Media Pool Clip's Color": {
+        "prefix": ["Clear", "ClearColor", "ClearClipColor", "CCC"],
+        "body": ["${1:mp_clipObject}.ClearClipColor()"],
+        "description": "Remove a media pool clips's Color"
+    },
+    "Get Media Pool Clip's Properties": {
+        "prefix": ["Get", "GetProperties", "GetClipProperties", "GCP"],
+        "body": ["${1:mp_clipObject}.GetClipProperty('${2:File Name}')"],
+        "description": "Get media pool clip properties"
+    },
+    "Set Media Pool Clip's Properties": {
+        "prefix": ["Set", "SetProperties", "SetClipProperties", "SCP"],
+        "body": ["${1:mp_clipObject}.SetClipProperty('${2:Property Name}', ${3:PropertyValue})"],
+        "description": "Set media pool clip properties"
+    },
+    "Link Media Pool Clip's Proxy": {
+        "prefix": ["Link", "LinkProxy", "LinkProxyMedia", "LPM"],
+        "body": ["${1:mp_clipObject}.LinkProxyMedia('${2:/PATH/TO/PROXY.mov}')"],
+        "description": "Link a proxy to a media pool clip"
+    },
+    "Unlink Media Pool Clip's Proxy": {
+        "prefix": ["Unlink", "UnlinkProxy", "UnlinkProxyMedia", "UPM"],
+        "body": ["${1:mp_clipObject}.UnlinkProxyMedia()"],
+        "description": "Unlink proxies from a media pool clip"
+    },
+    "Replace Media Pool Clip's Path": {
+        "prefix": ["Replace", "ReplaceClip", "ReplaceClipPath", "RP"],
+        "body": ["${1:mp_clipObject}.ReplaceClip('${2:/PATH/TO/CLIP.mov}')"],
+        "description": "Replace a media pool clip"
+    },
+    "Get Unique Media Pool Clip ID": {
+        "prefix": ["Get", "GetID", "GetUniqueID", "GetUniqueMediaPoolClipID", "GUI"],
+        "body": ["${1:mp_clipObject}.GetUniqueId()"],
+        "description": "Get a unique ID for the media pool item"
+    },
+    "Transcribe Media Pool Clip Audio": {
+        "prefix": ["Transcribe", "TranscribeClip", "TA"],
+        "body": ["${1:mp_clipObject}.TranscribeAudio()"],
+        "description": "Transcribe audio of the MediaPoolItem. Returns True if successful; False otherwise"
+    },
+    "Clear Media Pool Clip Transcription": {
+        "prefix": ["Clear", "ClearClipTranscription", "ClearTranscription", "CT"],
+        "body": ["${1:mp_clipObject}.ClearTranscripton()"],
+        "description": "Clears audio transcription of the MediaPoolItem. Returns True if successful; False otherwise"
+    },
+    "Get Media Pool Clip Audio Mapping": {
+        "prefix": ["Get", "GetAudioMapping", "GetMediaPoolClipAudioMapping", "GAM"],
+        "body": ["${1:mp_clipObject}.GetAudioMapping()"],
+        "description": "Returns a JSON-formatted string with MediaPoolItem's audio mapping information"
+    },
+    // The Timeline Object
+    "Get Timeline Name": {
+        "prefix": ["Get", "GetName", "GetTimelineName", "GN"],
+        "body": ["${1:timeline}.GetName()"],
+        "description": "Get a Timeline's name"
+    },
+    "Set Timeline Name": {
+        "prefix": ["Set", "SetName", "SetTimelineName", "SN"],
+        "body": ["${1:timeline}.SetName('${2:Cool Timeline Name}')"],
+        "description": "Set a Timeline's name"
+    },
+    "Get Timeline Start Frame": {
+        "prefix": ["Get", "GetStart", "GetStartFrame", "GetTimelineStartFrame", "GSF"],
+        "body": ["${1:timeline}.GetStartFrame()"],
+        "description": "Get a Timeline's start frame"
+    },
+    "Get Timeline End Frame": {
+        "prefix": ["Get", "GetEnd", "GetEndFrame", "GetTimelineEndFrame", "GEF"],
+        "body": ["${1:timeline}.GetEndFrame()"],
+        "description": "Get a Timeline's end frame"
+    },
+    "Get Timeline Start Time": {
+        "prefix": ["Get", "GetStart", "GetStartTime", "GetTimelineStartTimecode", "GST"],
+        "body": ["${1:timeline}.GetStartTimecode()"],
+        "description": "Get a Timeline's start timecode"
+    },
+    "Set Timeline Start Time": {
+        "prefix": ["Set", "SetStart", "SetStartTime", "SetTimelineStartTimecode", "SST"],
+        "body": ["${1:timeline}.SetStartTimecode('${2:01:00:00:00}')"],
+        "description": "Set a Timeline's start timecode"
+    },
+    "Get Timeline Track Count": {
+        "prefix": ["Get", "GetTracks", "GetTrackCount", "GetTimelineTrackCount", "GTC"],
+        "body": ["${1:timeline}.GetTrackCount('${2|video,audio,subtitle|}')"],
+        "description": "Get a Timeline's track count for the type specified"
+    },
+    "Get Timeline Item List in Track": {
+        "prefix": ["Get", "GetItems", "GetTrackItems", "GetTimelineItemListInTrack", "GetClips", "ClipList", "GILIT"],
+        "body": ["${1:timeline}.GetItemListInTrack('${2|video,audio,subtitle|}', ${3:1})"],
+        "description": "Get a Timeline's track count for the type specified"
+    },
+    "Add Marker to Timeline": {
+        "prefix": ["Add", "AddMarker", "AddTimelineMarker", "AM"],
+        "body": ["${1:timeline}.AddMarker(${2:50}, '${3:Green}', '${4:Marker Name}', '${5:Notes}', ${6:10}, '${7:Secret_Word}')"],
+        "description": "Add a marker to the Timeline"
+    },
+    "Get Timeline Markers": {
+        "prefix": ["Get", "GetMarkers", "GetTimelineMarkers", "GM"],
+        "body": ["${1:timeline}.GetMarkers()"],
+        "description": "Get all markers on the Timeline"
+    },
+    "Get Timeline Marker by CustomData": {
+        "prefix": ["Get", "GetMarkers", "GetTimelineMarkers", "GMBCD"],
+        "body": ["${1:timeline}.GetMarkerByCustomData('${2:CustomData}')"],
+        "description": "Get markers on the Timeline with specific CustomData"
+    },
+    "Update Timeline Marker's CustomData": {
+        "prefix": ["Update", "UpdateMarkers", "UpdateTimelineMarkers", "UMCD"],
+        "body": ["${1:timeline}.UpdateMarkerCustomData(${2:20}, '${3:New CustomData}')"],
+        "description": "Update a Timeline marker's CustomData"
+    },
+    "Get Timeline Marker's CustomData": {
+        "prefix": ["Get", "GetMarkers", "GetTimelineMarkers", "GMCD"],
+        "body": ["${1:timeline}.GetMarkerCustomData(${2:20})"],
+        "description": "Get a Timeline marker's CustomData"
+    },
+    "Delete Timeline Markers by Color": {
+        "prefix": ["Delete", "DeleteMarkers", "DeleteTimelineMarkers", "DMBC"],
+        "body": ["${1:timeline}.DeleteMarkersByColor('${2:Red}')"],
+        "description": "Delete a Timeline's markers by Color"
+    },
+    "Delete Timeline Marker at Frame": {
+        "prefix": ["Delete", "DeleteMarkers", "DeleteTimelineMarkers", "DMAF"],
+        "body": ["${1:timeline}.DeleteMarkersAtFrame(${2:20})"],
+        "description": "Delete a Timeline's marker at specific frame"
+    },
+    "Delete Timeline Marker by CustomData": {
+        "prefix": ["Delete", "DeleteMarkers", "DeleteTimelineMarkers", "DMBCD"],
+        "body": ["${1:timeline}.DeleteMarkersByCustomData('${2:CustomData}')"],
+        "description": "Delete a Timeline's marker by CustomData"
+    },
+    "Apply Grade from DRX to Timeline": {
+        "prefix": ["Apply", "ApplyGrade", "ApplyTimelineGradeFromDRX", "AGFD"],
+        "body": ["${1:timeline}.ApplyGradeFromDRX('${2:/PATH/TO/FILE.drx}', ${3:1}, [${4:TML_Clip1}, ${5:TML_Clip2}])"],
+        "description": "Apply a grade to a Timeline from a DRX file"
+    },
+    "Get Current Timeline Timecode": {
+        "prefix": ["Get", "GetTimecode", "GetCurrentTimecode", "GCT"],
+        "body": ["${1:timeline}.GetCurrentTimecode()"],
+        "description": "Get a Timeline's Current Time at the Playhead"
+    },
+    "Set Current Timeline Timecode": {
+        "prefix": ["Set", "SetTimecode", "SetCurrentTimecode", "SCT"],
+        "body": ["${1:timeline}.SetCurrentTimecode('${2:01:00:10:00}')"],
+        "description": "Set a Timeline's Current Time at the Playhead"
+    },
+    "Get Current Timeline Video Item": {
+        "prefix": ["Get", "GetVideo", "GetCurrentVideoItem", "GCVI"],
+        "body": ["${1:timeline}.GetCurrentVideoItem()"],
+        "description": "Get a Timeline's Current Video Item Displayed in Viewport"
+    },
+    "Get Current Timeline Clip Thumbnail": {
+        "prefix": ["Get", "GetVideo", "GetCurrentClipThumbnail", "GCCTI"],
+        "body": ["${1:timeline}.GetCurrentClipThumbnailImage()"],
+        "description": "Get a Timeline's Current Video Clip's Color Page Thumbnail Image"
+    },
+    "Get Timeline Track Name": {
+        "prefix": ["Get", "GetName", "GetTimelineTrackName", "GTTN"],
+        "body": ["${1:timeline}.GetTimelineTrackName('${2|video,audio,subtitle|}', ${3:1})"],
+        "description": "Get a Timeline Track's name"
+    },
+    "Set Timeline Track Name": {
+        "prefix": ["Set", "SetName", "SetTimelineTrackName", "STTN"],
+        "body": ["${1:timeline}.SetTimelineTrackName('${2|video,audio,subtitle|}', ${3:1}, '${4:New Track Name}')"],
+        "description": "Set a Timeline Track's name"
+    },
+    "Duplicate Timeline": {
+        "prefix": ["Duplicate", "DuplicateTimeline", "DT"],
+        "body": ["${1:timeline}.DuplicateTimeline('${2:New Timeline Name}')"],
+        "description": "Duplicate a Timeline"
+    },
+    "Create Compound Clip": {
+        "prefix": ["Create", "CreateClip", "CreateCompoundClip", "CCC"],
+        "body": ["${1:timeline}.CreateCompoundClip([${2:TimelineClip1}, ${3:TimelineClip2}], {'startTimecode': '${4:00:00:00:00}', 'name': '${5:Compound Clip 1}'})"],
+        "description": "Create a Compound Clip with clips on the Timeline"
+    },
+    "Create Fusion Clip": {
+        "prefix": ["Create", "CreateClip", "CreateFusionClip", "CFC"],
+        "body": ["${1:timeline}.CreateFusionClip([${2:TimelineClip1}, ${3:TimelineClip2}])"],
+        "description": "Create a Fusion Clip with clips on the Timeline"
+    },
+    "Import from AAF to Timeline": {
+        "prefix": ["Import", "ImportAAF", "ImportfromAFFtoTimeline", "IIT"],
+        "body": ["${1:timeline}.ImportIntoTimeline('${2:/PATH/TO/FILE.aaf}', {'autoImportSourceClipsIntoMediaPool': ${3:true}, 'ignoreFileExtensionsWhenMatching': ${4:false}, 'linkToSourceCameraFiles': ${5:false}, 'useSizingInfo': ${6:false}, 'importMultiChannelAudioTracksAsLinkedGroups': ${7:false}, 'insertAdditionalTracks': ${8:true}, 'insertWithOffset': '${9:00:00:00:00}', 'sourceClipsPath': ${10:nil}, 'sourceClipsFolders': ${11:nil}})"],
+        "description": "Create a Fusion Clip with clips on the Timeline"
+    },
+    "Export Timeline": {
+        "prefix": ["Export", "ExportTimeline", "E"],
+        "body": ["${1:timeline}.Export('${2:/PATH/TO/FILE.aaf}', resolve.${3:EXPORT_AAF}, resolve.${4:EXPORT_AAF_NEW})"],
+        "description": "Export a Timeline"
+    },
+    "Set Timeline Settings": {
+        "prefix": ["Set", "SetTimelineSettings", "SetSettings", "SS"],
+        "body": ["${1:timeline}.SetSetting('${2:timelinePlaybackFrameRate}', ${3:30})"],
+        "description": "Set a Timeline's Settings"
+    },
+    "Get Timeline Settings": {
+        "prefix": ["Get", "GetTimelineSettings", "GetSettings", "GS"],
+        "body": ["${1:timeline}.GetSetting('${2:timelinePlaybackFrameRate}')"],
+        "description": "Get a Timeline's Settings"
+    },
+    "Insert Generator into Timeline": {
+        "prefix": ["Insert", "InsertGenerator", "InsertGeneratorToTimeline", "IGIT"],
+        "body": ["${1:timeline}.InsertGeneratorIntoTimeline('${2:SMPTE Color Bar}')"],
+        "description": "Insert Generator into Timeline at playhead -- NOTE: THIS WILL CUT AND MOVE CLIPS"
+    },
+    "Insert Fusion Generator into Timeline": {
+        "prefix": ["Insert", "InsertGenerator", "InsertGeneratorToTimeline", "IFGIT"],
+        "body": ["${1:timeline}.InsertFusionGeneratorIntoTimeline('${2:Noise Gradient}')"],
+        "description": "Insert Generator into Timeline at playhead -- NOTE: THIS WILL CUT AND MOVE CLIPS"
+    },
+    "Insert Fusion Composition into Timeline": {
+        "prefix": ["Insert", "InsertFusionComp", "InsertFusionCompToTimeline", "IFCIT"],
+        "body": ["${1:timeline}.InsertFusionCompositionIntoTimeline()"],
+        "description": "Insert an empty Fusion Comp into Timeline at playhead -- NOTE: THIS WILL CUT AND MOVE CLIPS"
+    },
+    "Insert OpenFX Generator into Timeline": {
+        "prefix": ["Insert", "InsertOFXGenerator", "InsertOpenFXGeneratorToTimeline", "IOFXGIT"],
+        "body": ["${1:timeline}.InsertOFXGeneratorIntoTimeline()"],
+        "description": "Insert an OpenFX Generator into Timeline at playhead -- NOTE: THIS WILL CUT AND MOVE CLIPS"
+    },
+    "Insert Title into Timeline": {
+        "prefix": ["Insert", "InsertTitle", "InsertTitleToTimeline", "ITIT"],
+        "body": ["${1:timeline}.InsertTitleIntoTimeline('${2:Text}')"],
+        "description": "Insert a plain text title into Timeline at playhead -- NOTE: THIS WILL CUT AND MOVE CLIPS"
+    },
+    "Insert Fusion Title into Timeline": {
+        "prefix": ["Insert", "InsertFusionTitle", "InsertFusionTitleToTimeline", "IFTIT"],
+        "body": ["${1:timeline}.InsertFusionTitleIntoTimeline('${2:Background Reveal}')"],
+        "description": "Insert a text+ title into Timeline at playhead -- NOTE: THIS WILL CUT AND MOVE CLIPS"
+    },
+    "Grab Still from Timeline's Active Clip": {
+        "prefix": ["Grab", "GrabStill", "GrabTimelineStill", "GS"],
+        "body": ["${1:timeline}.GrabStill()"],
+        "description": "Puts a Still in the gallery based on the current frame"
+    },
+    "Grab All Clip's Still from Timeline": {
+        "prefix": ["Grab", "GrabStills", "GrabTimelineStills", "GAS"],
+        "body": ["${1:timeline}.GrabAllStills(${2:1})"],
+        "description": "Puts stills in the gallery based chosen frame for each clip"
+    },
+    "Get Unique Timeline ID": {
+        "prefix": ["Get", "GetID", "GetUniqueID", "GetUniqueTimelineID", "GUI"],
+        "body": ["${1:timeline}.GetUniqueId()"],
+        "description": "Get a unique ID for the Timeline"
+    },
+    "Create Subtitles From Timeline Audio": {
+        "prefix": ["Create", "CreateSubtitles", "CreateSubs", "CreateSubtitlesFromAudio", "CSFA"],
+        "body": ["${1:timeline}.CreateSubtitlesFromAudio({ 'resolve.SUBTITLE_LANGUAGE': resolve.${2|AUTO_CAPTION_AUTO, AUTO_CAPTION_DANISH, AUTO_CAPTION_DUTCH, AUTO_CAPTION_ENGLISH, AUTO_CAPTION_FRENCH, AUTO_CAPTION_GERMAN, AUTO_CAPTION_ITALIAN, AUTO_CAPTION_JAPANESE, AUTO_CAPTION_KOREAN, AUTO_CAPTION_MANDARIN_SIMPLIFIED, AUTO_CAPTION_MANDARIN_TRADITIONAL, AUTO_CAPTION_NORWEGIAN, AUTO_CAPTION_PORTUGUESE, AUTO_CAPTION_RUSSIAN, AUTO_CAPTION_SPANISH, AUTO_CAPTION_SWEDISH|}, 'resolve.SUBTITLE_CAPTION_PRESET': resolve.${3|AUTO_CAPTION_SUBTITLE_DEFAULT, AUTO_CAPTION_TELETEXT, AUTO_CAPTION_NETFLIX|}, 'resolve.SUBTITLE_CHARS_PER_LINE': ${4:42}, 'resolve.SUBTITLE_LINE_BREAK': resolve.${5|AUTO_CAPTION_LINE_SINGLE, AUTO_CAPTION_LINE_DOUBLE|}, 'resolve.SUBTITLE_GAP': ${6:0} })"],
+        "description": "Create subtitles from audio for the timeline"
+    },
+    "Detect Timeline Scene Cuts": {
+        "prefix": ["Detect", "DetectCuts", "DetectSceneCuts", "DetectTimelineSceneCuts", "DSC"],
+        "body": ["${1:timeline}.DetectSceneCuts()"],
+        "description": "Detect and makes scene cuts along the timeline. Returns True if successful, False otherwise"
+    },
+    "Convert Timeline To Stereo": {
+        "prefix": ["Convert", "ConvertTimeline", "ConvertTimelineToStereo", "CTTC"],
+        "body": ["${1:timeline}.ConvertTimelineToStereo()"],
+        "description": "Convert timeline to stereo. Returns True if successful; False otherwise"
+    },
+    "Get Timeline Node Graph": {
+        "prefix": ["Get", "GetNodes", "GetNodeGraph", "GNG"],
+        "body": ["${1:timeline}.GetNodeGraph()"],
+        "description": "Get the timeline's node graph object"
+    },
+    "Analyze Timeline Dolby Vision": {
+        "prefix": ["Analyze", "AnalyzeTimeline", "AnalyzeDolbyVision", "ADV"],
+        "body": ["${1:timeline}.AnalyzeDolbyVision([${2:TimelineItem_1}, ${3:TimelineItem_2}], ${4:resolve.DLB_BLEND_SHOTS})"],
+        "description": "Analyze Dolby Vision on the timeline"
+    },
+    // The Timeline Item/Clip Object
+    "Get Timeline Clip Name": {
+        "prefix": ["Get", "GetName", "GetTimelineClipName", "GN"],
+        "body": ["${1:TML_Clip}.GetName()"],
+        "description": "Get a Timeline Clip's Name"
+    },
+    "Get Timeline Clip Duration": {
+        "prefix": ["Get", "GetDuration", "GetTimelineClipDuration", "GD"],
+        "body": ["${1:TML_Clip}.GetDuration()"],
+        "description": "Get a Timeline Clip's Duration/Length"
+    },
+    "Get Timeline Clip End Frame": {
+        "prefix": ["Get", "GetEndFrame", "GetTimelineClipEnd", "GE"],
+        "body": ["${1:TML_Clip}.GetEnd()"],
+        "description": "Get a Timeline Clip's End Frame"
+    },
+    "Get Timeline Clip Fusion Comp Count": {
+        "prefix": ["Get", "GetCompCount", "GetTimelineClipFusionCompCount", "GFCC"],
+        "body": ["${1:TML_Clip}.GetFusionCompCount()"],
+        "description": "Get a Timeline Clip's Total Composition Count"
+    },
+    "Get Timeline Clip Fusion Comp by Index": {
+        "prefix": ["Get", "GetComp", "GetTimelineClipFusionCompByIndex", "GFCC"],
+        "body": ["${1:TML_Clip}.GetFusionCompByIndex(${2:1})"],
+        "description": "Get a Timeline Clip's Fusion Comp based on the index"
+    },
+    "Get Timeline Clip Fusion Comp Name List": {
+        "prefix": ["Get", "GetComps", "GetTimelineClipFusionCompNames", "GFCNL"],
+        "body": ["${1:TML_Clip}.GetFusionCompNameList()"],
+        "description": "Get a Timeline Clip's Fusion Comp's Names"
+    },
+    "Get Timeline Clip Fusion Comp by Name": {
+        "prefix": ["Get", "GetComp", "GetTimelineClipFusionCompByName", "GFCBN"],
+        "body": ["${1:TML_Clip}.GetFusionCompByName('${2:Composition 1}')"],
+        "description": "Get a Timeline Clip's Fusion Comp by its Name"
+    },
+    "Get Timeline Clip Left Offset": {
+        "prefix": ["Get", "GetLeftOffset", "GetTimelineClipLeftOffset", "GLO"],
+        "body": ["${1:TML_Clip}.GetLeftOffset()"],
+        "description": "Get a Timeline Clip's Left Offset"
+    },
+    "Get Timeline Clip Right Offset": {
+        "prefix": ["Get", "GetRightOffset", "GetTimelineClipRightOffset", "GRO"],
+        "body": ["${1:TML_Clip}.GetRightOffset()"],
+        "description": "Get a Timeline Clip's Right Offset"
+    },
+    "Get Timeline Clip Start Frame": {
+        "prefix": ["Get", "GetStart", "GetTimelineClipStart", "GS"],
+        "body": ["${1:TML_Clip}.GetStart()"],
+        "description": "Get a Timeline Clip's Start Frame on the Timeline"
+    },
+    "Set Timeline Clip Properties": {
+        "prefix": ["Set", "SetProperties", "SetTimelineClipProperties", "SP"],
+        "body": ["${1:TML_Clip}.SetProperty('${2:ZoomX}', ${3:2})"],
+        "description": "Set a Timeline Clip's Properties"
+    },
+    "Get Timeline Clip Properties": {
+        "prefix": ["Get", "GetProperties", "GetTimelineClipProperties", "GP"],
+        "body": ["${1:TML_Clip}.GetProperty('${2:ZoomX}')"],
+        "description": "Get a Timeline Clip's Properties"
+    },
+    "Add Marker to Timeline Clip": {
+        "prefix": ["Add", "AddMarker", "AddMarkerToTimelineClip", "AM"],
+        "body": ["${1:TML_Clip}.AddMarker(${2:50}, '${3:Green}', '${4:Marker Name}', '${5:Notes}', ${6:10}, '${7:Secret_Word}')"],
+        "description": "Add a marker to a Timeline Clip"
+    },
+    "Get Timeline Clip Markers": {
+        "prefix": ["Get", "GetMarkers", "GetTimelineClipMarkers", "GM"],
+        "body": ["${1:TML_Clip}.GetMarkers()"],
+        "description": "Get all Timeline Clip's Markers"
+    },
+    "Get Timeline Clip Marker By CustomData": {
+        "prefix": ["Get", "GetMarker", "GetTimelineClipMarkerByCustomData", "GMBCD"],
+        "body": ["${1:TML_Clip}.GetMarkerByCustomData('${2:Custom Data}')"],
+        "description": "Get a Timeline Clip's Marker based on CustomData"
+    },
+    "Update Timeline Clip Marker's CustomData": {
+        "prefix": ["Update", "UpdateMarker", "UpdateTimelineClipMarkerCustomData", "UMCD"],
+        "body": ["${1:TML_Clip}.UpdateMarkerCustomData(${2:20}, '${3:New Custom Data}')"],
+        "description": "Update a Timeline Clip's Marker's CustomData"
+    },
+    "Delete Timeline Clip Markers by Color": {
+        "prefix": ["Delete", "DeleteMarkers", "DeleteTimelineClipMarkersByColor", "DMBC"],
+        "body": ["${1:TML_Clip}.DeleteMarkersByColor('${2:Red}')"],
+        "description": "Delete a Timeline Clip's Markers based on color"
+    },
+    "Add Flag to Timeline Clip": {
+        "prefix": ["Add", "AddFlag", "AddTimelineClipFlag", "AF"],
+        "body": ["${1:TML_Clip}.AddFlag('${2:Red}')"],
+        "description": "Add a Flag to a Timeline Clip"
+    },
+    "Clear Timeline Clip Flags": {
+        "prefix": ["Clear", "ClearFlags", "ClearTimelineClipFlags", "CF"],
+        "body": ["${1:TML_Clip}.ClearFlags('${2:All}')"],
+        "description": "Remove Timeline Clip Flags based on color"
+    },
+    "Get Timeline Clip Color": {
+        "prefix": ["Get", "GetColor", "GetTimelineClipColor", "GCC"],
+        "body": ["${1:TML_Clip}.GetClipColor()"],
+        "description": "Get a Timeline Clip's Color"
+    },
+    "Set Timeline Clip Color": {
+        "prefix": ["Set", "SetColor", "SetTimelineClipColor", "SCC"],
+        "body": ["${1:TML_Clip}.SetClipColor('${2:Red}')"],
+        "description": "Set a Timeline Clip's Color"
+    },
+    // The Gallery Object
+    "Get Gallery Album Name": {
+        "prefix": ["Get", "GetAlbum", "GetGalleryAlbumName", "GAN"],
+        "body": ["${1:gallery}.GetGalleryAlbumName(${2:StillAlbum})"],
+        "description": "Get a Gallery Album Name"
+    },
+    "Set Gallery Album Name": {
+        "prefix": ["Set", "SetAlbum", "SetGalleryAlbumName", "SAN"],
+        "body": ["${1:gallery}.SetGalleryAlbumName(${2:StillAlbum}, '${3:New Album Name}')"],
+        "description": "Set a Gallery Album Name"
+    },
+    "Get Current Gallery Album": {
+        "prefix": ["Get", "GetAlbum", "GetGalleryCurrentAlbum", "GCSA"],
+        "body": ["${1:gallery}.GetCurrentStillAlbum()"],
+        "description": "Get the Gallery's Current Still Album"
+    },
+    "Set Current Gallery Album": {
+        "prefix": ["Set", "SetAlbum", "SetGalleryCurrentAlbum", "SCSA"],
+        "body": ["${1:gallery}.SetCurrentStillAlbum(${2:StillAlbum})"],
+        "description": "Set the Gallery's Current Still Album"
+    },
+    // The Node Graph Object
+    "Get Number of Nodes in Graph": {
+        "prefix": ["Get", "GetNodes", "GetNumberOfNodes", "GNN"],
+        "body": ["${1:nodeGraph}.GetNumNodes()"],
+        "description": "Get the number of nodes in the graph"
+    },
+    "Set LUT on Node in Node Graph": {
+        "prefix": ["Set", "SetLUT", "SetNodeLUT", "SLUT"],
+        "body": ["${1:nodeGraph}.SetLUT(${2:1}, '${3:/PATH/TO/FILE.3dl}')"],
+        "description": "Set LUT on the node mapping the node index provided"
+    },
+    "Get Node Label in Node Graph": {
+        "prefix": ["Get", "GetLabel", "GetNodeLabel", "GNL"],
+        "body": ["${1:nodeGraph}.GetNodeLabel(${2:1})"],
+        "description": "Get the label of the node at nodeIndex"
+    },
+    "Set Enable of Node in Node Graph": {
+        "prefix": ["Set", "SetEnabled", "SetNodeEnabled", "SNE"],
+        "body": ["${1:nodeGraph}.SetNodeEnabled(${2:1}, ${3:true})"],
+        "description": "Set the node at the given nodeIndex (int) to isEnabled (bool)"
+    },
+    // The Color Group Object
+    "Get Color Group Name": {
+        "prefix": ["Get", "GetName", "GetColorGroupName", "GN"],
+        "body": ["${1:colorGroup}.GetName()"],
+        "description": "Get the name (string) of the ColorGroup"
+    },
+    "Set Color Group Name": {
+        "prefix": ["Set", "SetName", "SetColorGroupName", "SN"],
+        "body": ["${1:colorGroup}.SetName('${2:My Group Name}')"],
+        "description": "Set the name (string) of the ColorGroup"
+    },
+    "Get Color Group Clips in Timeline": {
+        "prefix": ["Get", "GetClips", "GetColorGroupClips", "GCIT"],
+        "body": ["${1:colorGroup}.GetClipsInTimeline(${2:Timeline_Item})"],
+        "description": "Get a list of TimelineItems in the colorGroup within the specified Timeline"
+    },
+    "Get Color Group Pre Clip Node Graph": {
+        "prefix": ["Get", "GetPreClips", "GetPreClipNodeGraph", "GPCNG"],
+        "body": ["${1:colorGroup}.GetPreClipNodeGraph()"],
+        "description": "Get the ColorGroup Pre-clip graph"
+    },
+    "Get Color Group Post Clip Node Graph": {
+        "prefix": ["Get", "GetPostClips", "GetPostClipNodeGraph", "GPCNG"],
+        "body": ["${1:colorGroup}.GetPostClipNodeGraph()"],
+        "description": "Get the ColorGroup Post-clip graph"
+    },
+    
+    /*
+        FUSION API
+    */
+
+    "Fusion Setup": {
+        "prefix": ["Fusion", "Start", "Setup", "FusionSetup", "F"],
+        "body": ["fu = fu or bmd.scriptapp('Fusion')\ncomp = fu.CurrentComp"],
+        "description": "Setup for all Fusion Scripts"
+    },
+
+    /*
+        FUSION GUI API
+    */
+
+    "UI Window Setup": {
+        "prefix": ["FusionUI", "Setup", "makeWindow", "window", "ui"],
+        "body": [
+            "fu = fu or bmd.scriptapp('Fusion')\nui = fu.UIManager\n",
+            "disp = bmd.UIDispatcher(ui)\n\n",
+            "${1:window} = disp.AddWindow({",
+            "\t'ID': '${2:myWindow}',",
+            "\t'WindowTitle': '${3:My Window}'",
+            "},",
+            "[ui.VGroup({ 'ID': 'root' }, [${4}])])\n\n",
+            "winItms = ${1:window}.GetItems()\n",
+            "${1:window}.On.${2:myWindow}.Close = disp.ExitLoop\n",
+            "${1:window}.RecalcLayout()\n",
+            "${1:window}.Show()\n",
+            "disp.RunLoop()\n",
+            "${1:window}.Hide()"
+        ],
+        "description": "Setup for all windows"
+    },
+    "Fixed UI Window Setup": {
+        "prefix": ["FusionUI", "fixedSetup", "makeWindow", "fixedwindow", "fui"],
+        "body": [
+            "fu = fu or bmd.scriptapp('Fusion')\nui = fu.UIManager\n",
+            "disp = bmd.UIDispatcher(ui)\n\n",
+            "${1:window} = disp.AddWindow({",
+            "\t'ID': '${2:myWindow}',",
+            "\t'WindowTitle': '${3:My Window}'",
+            "},",
+            "[ui.VGroup({ 'ID': 'root', 'FixedSize': [${4:w}, ${5:h}] }, [${6}])])\n\n",
+            "winItms = ${1:window}.GetItems()\n",
+            "${1:window}.On.${2:myWindow}.Close = disp.ExitLoop\n",
+            "${1:window}.RecalcLayout()\n",
+            "${1:window}.Show()\n",
+            "disp.RunLoop()\n",
+            "${1:window}.Hide()"
+        ],
+        "description": "Setup for all windows"
+    },
+    // UI Sections
+    "UI Vertical Group": {
+        "prefix": ["FusionUI", "Group", "VerticalGroup", "VGroup", "uiVGroup"],
+        "body": ["ui.VGroup({}, [\n\t${1}\n]),"],
+        "description": "Add a VGroup to the UI"
+    },
+    "UI Horizontal Group": {
+        "prefix": ["FusionUI", "Group", "HorizontalGroup", "HGroup", "uiHGroup"],
+        "body": ["ui.HGroup({}, [\n\t${1}\n]),"],
+        "description": "Add a HGroup to the UI"
+    },
+    "UI Group": {
+        "prefix": ["FusionUI", "Group", "uiGroup"],
+        "body": ["ui.Group({}, [\n\t${1}\n]),"],
+        "description": "Add a Basic Group to the UI"
+    },
+    "UI Stack": {
+        "prefix": ["FusionUI", "Stack", "uiStack"],
+        "body": ["ui.Stack({}, [\n\t${1}\n]),"],
+        "description": "Add a Stack to the UI. Allows for Specific Placements of UI Items. Used as 'Pages' for Tab Menus"
+    },
+    // UI Items
+    "UI Label": {
+        "prefix": ["FusionUI", "Label", "makelabel", "advancedlabel", "uiLabel"],
+        "body": [
+            "ui.Label({",
+            "\t'ID': '${1:Label1}',",
+            "\t'Text': '${2:This is a Label}',",
+            "\t'WordWrap': True,",
+            "\t'Alignment': {'AlignCenter': True},",
+            "\t'Weight': 1,",
+            "\t'StyleSheet': 'color: white; font-size: 20px; font-weight: 500; font-family: Arial;'",
+            "}),"
+        ],
+        "description": "A quick label setup"
+    },
+    "UI Button": {
+        "prefix": ["FusionUI", "Button", "makeButton", "advancedButton", "uiButton"],
+        "body": [
+            "ui.Button({",
+            "\t'ID': '${1:Butt1}',",
+            "\t'Text': '${2:Click Me}',",
+            "\t'Flat': False,",
+            "\t'Icon': ui.Icon({'File': '/PATH/TO/ICON.png'}),",
+            "\t'IconSize': [${3:h}, ${4:w}],",
+            "\t'Checkable': False,",
+            "\t'Weight': 0,",
+            "\t'StyleSheet': 'color: white; font-size: 20px; font-weight: 500; font-family: Arial;'",
+            "}),"
+        ],
+        "description": "A quick button setup"
+    },
+    "UI Check Box": {
+        "prefix": ["FusionUI", "CheckBox", "makeCheckBox", "advancedCheckBox", "uiCheckBox"],
+        "body": [
+            "ui.CheckBox({",
+            "\t'ID': '${1:Check1}',",
+            "\t'Text': '${2:My Toggle}',",
+            "\t'Checkable': True,",
+            "\t'Checked': True,",
+            "\t'Tristate': False,",
+            "\t'Weight': 0,",
+            "\t'StyleSheet': 'color: white; font-size: 20px; font-weight: 500; font-family: Arial;'",
+            "}),"
+        ],
+        "description": "A quick check box setup"
+    },
+    "UI Combo Box": {
+        "prefix": ["FusionUI", "ComboBox", "makeComboBox", "advancedComboBox", "uiComboBox"],
+        "body": [
+            "ui.ComboBox({",
+            "\t'ID': '${1:Combo1}',",
+            "\t'CurrentIndex': 0,",
+            "\t'Editable': False,",
+            "\t'Weight': 0,",
+            "\t'StyleSheet': 'color: white; font-size: 20px; font-weight: 500; font-family: Arial;'",
+            "}),"
+        ],
+        "description": "A quick combo box setup"
+    },
+    "UI Spin Box": {
+        "prefix": ["FusionUI", "SpinBox", "makeSpinBox", "advancedSpinBox", "uiSpinBox"],
+        "body": [
+            "ui.SpinBox({",
+            "\t'ID': '${1:Spin1}',",
+            "\t'Value': 10,",
+            "\t'Minumum': 0,",
+            "\t'Maximum': 100,",
+            "\t'SingleStep': 1,",
+            "\t'Prefix': 'Item ',",
+            "\t'Suffix': ' out of 100',",
+            "\t'Wrapping': True,",
+            "\t'ReadOnly': False,",
+            "\t'Alignment': {'AlignCenter': True},",
+            "\t'Weight': 0,",
+            "\t'StyleSheet': 'color: white; font-size: 20px; font-weight: 500; font-family: Arial;'",
+            "}),"
+        ],
+        "description": "A quick spin box setup"
+    },
+    "UI Slider": {
+        "prefix": ["FusionUI", "Slider", "makeSlider", "advancedSlider", "uiSlider"],
+        "body": [
+            "ui.Slider({",
+            "\t'ID': '${1:Slider1}',",
+            "\t'Text': '${2:My Slider}',",
+            "\t'Value': 10,",
+            "\t'Minumum': 0,",
+            "\t'Maximum': 100,",
+            "\t'SingleStep': 1,",
+            "\t'PageStep': 2,",
+            "\t'Orientation': 'Horizontal',",
+            "\t'Tracking': True,",
+            "\t'ReadOnly': False,",
+            "\t'Alignment': {'AlignCenter': True},",
+            "\t'Weight': 0,",
+            "\t'StyleSheet': 'color: white; font-size: 20px; font-weight: 500; font-family: Arial;'",
+            "}),"
+        ],
+        "description": "A quick slider setup"
+    },
+    "UI Line Edit": {
+        "prefix": ["FusionUI", "LineEdit", "makeLineEdit", "advancedLineEdit", "uiLineEdit"],
+        "body": [
+            "ui.LineEdit({",
+            "\t'ID': '${1:Line1}',",
+            "\t'Text': '${2:Your Text}',",
+            "\t'PlaceholderText': '${3:Your Placeholder}',",
+            "\t'MaxLength': 999,",
+            "\t'ClearButtonEnabled': True,",
+            "\t'ReadOnly': False,",
+            "\t'Alignment': {'AlignCenter': True},",
+            "\t'Weight': 0,",
+            "\t'StyleSheet': 'color: white; font-size: 20px; font-weight: 500; font-family: Arial;'",
+            "}),"
+        ],
+        "description": "A quick line edit setup"
+    },
+    "UI Text Box": {
+        "prefix": ["FusionUI", "TextEdit", "makeTextEdit", "advancedTextEdit", "uiTextEdit"],
+        "body": [
+            "ui.TextEdit({",
+            "\t'ID': '${1:Text1}',",
+            "\t'HTML': '${2:<center><h1>My Text!</h1></center>}',",
+            "\t'PlaceholderText': '${3:Your Placeholder}',",
+            "\t'TabStopWidth': 0.5,",
+            "\t'Lexer': 'html',",
+            "\t'ReadOnly': False,",
+            "\t'Alignment': {'AlignCenter': True},",
+            "\t'Weight': 0,",
+            "\t'StyleSheet': 'color: white; font-size: 20px; font-weight: 500; font-family: Arial;'",
+            "}),"
+        ],
+        "description": "A quick text box setup"
+    },
+    "UI ColorPicker": {
+        "prefix": ["FusionUI", "ColorPicker", "makeColorPicker", "advancedColorPicker", "uiColorPicker"],
+        "body": [
+            "ui.ColorPicker({",
+            "\t'ID': '${1:Color1}',",
+            "\t'Text': '${2:Color Picker}',",
+            "\t'Color': {'R': 1, 'G': 1, 'B': 1},",
+            "\t'DoAlpha': True,",
+            "\t'Alignment': {'AlignCenter': True},",
+            "\t'Weight': 0,",
+            "\t'StyleSheet': 'color: white; font-size: 20px; font-weight: 500; font-family: Arial;'",
+            "}),"
+        ],
+        "description": "A quick color picker setup"
+    },
+    "UI Tab Bar": {
+        "prefix": ["FusionUI", "TabBar", "makeTabBar", "advancedTabBar", "uiTabBar"],
+        "body": [
+            "ui.TabBar({",
+            "\t'ID': '${1:tabBar1}',",
+            "\t'CurrentIndex': 1,",
+            "\t'TabsClosable': False,",
+            "\t'Expanding': False,",
+            "\t'AutoHide': False,",
+            "\t'Movable': False,",
+            "\t'DrawBase': True,",
+            "\t'UsesScrollButtons': True,",
+            "\t'DocumentMode': True,",
+            "\t'ChangeCurrentOnDrag': False,",
+            "\t'Alignment': {'AlignCenter': True},",
+            "\t'Weight': 0,",
+            "\t'StyleSheet': 'color: white; font-size: 20px; font-weight: 500; font-family: Arial;'",
+            "}),"
+        ],
+        "description": "A quick tab bar setup"
+    },
+    "UI Tree": {
+        "prefix": ["FusionUI", "Tree", "makeTree", "advancedTree", "uiTree"],
+        "body": [
+            "ui.Tree({",
+            "\t'ID': '${1:Tree1}',",
+            "\t'ColumnCount': 2,",
+            "\t'SortingEnabled': False,",
+            "\t'ItemsExpandable': False,",
+            "\t'ExpandsOnDoubleClick': False,",
+            "\t'HeaderHidden': False,",
+            "\t'RootIsDecorated': True,",
+            "\t'Icon': ui.Icon({'File': '/PATH/TO/ICON.png'}),",
+            "\t'IconSize': [${2:h}, ${3:w}],",
+            "\t'Animated': True,",
+            "\t'AllColumnsShowFocus': False,",
+            "\t'WordWrap': True,",
+            "\t'TreePosition': 'center',",
+            "\t'SelectionMode': 'ExtendedSelection',",
+            "\t'UniformRowHeights': True,",
+            "\t'Indentation': False,",
+            "\t'AutoScroll': True,",
+            "\t'TabKeyNavigation': True,",
+            "\t'AlternatingRowColors': True,",
+            "\t'FrameStyle': 3,",
+            "\t'LineWidth': 5,",
+            "\t'FrameRect': True,",
+            "\t'FrameShadow': True,",
+            "\t'Alignment': {'AlignCenter': True},",
+            "\t'Weight': 0,",
+            "\t'StyleSheet': 'color: white; font-size: 20px; font-weight: 500; font-family: Arial;'",
+            "}),"
+        ],
+        "description": "A quick tree setup"
+    },
+    "UI Line": {
+        "prefix": ["FusionUI", "Line", "makeline", "DividerLine", "uiLine"],
+        "body": ["ui.Label({'FrameStyle': 4, 'Weight': 0}),"],
+        "description": "A quick divider line setup"
+    },
+    "UI Gap": {
+        "prefix": ["FusionUI", "Gap", "makeGap", "uiGap"],
+        "body": ["ui.Gap(1),"],
+        "description": "A quick gap setup"
+    },
+    // UI Functions
+    // UI Labels Funcs
+    "UI Set Label Selection": {
+        "prefix": ["FusionUI", "Set", "SetSelection", "Selection", "uiSetSelection"],
+        "body": ["${1:Label1}.SetSelection(${2:0}, ${3:10})"],
+        "description": "Set a label's selection"
+    },
+    "UI Check if Label Selection": {
+        "prefix": ["FusionUI", "Check", "HasSelection", "Selection", "uiHasSelection"],
+        "body": ["${1:Label1}.HasSelection()"],
+        "description": "Check if a label has selected text"
+    },
+    "UI Get a Label's Selected Text": {
+        "prefix": ["FusionUI", "Get", "GetSelection", "Selection", "uiSelectedText"],
+        "body": ["${1:Label1}.SelectedText()"],
+        "description": "Get the selected text from a label"
+    },
+    "UI Get the Label Selection Start Number": {
+        "prefix": ["FusionUI", "Get", "GetSelection", "Selection", "uiSelectionStart"],
+        "body": ["${1:Label1}.SelectionStart()"],
+        "description": "Get the Label Selection Start Number"
+    },
+
+    // UI Buttons Funcs
+    "UI Simulate a Button Click": {
+        "prefix": ["FusionUI", "Click", "ClickButton", "SimulateButton", "uiClick"],
+        "body": ["${1:Button1}.Click()"],
+        "description": "Simulate a button click"
+    },
+    "UI Toggle Button State": {
+        "prefix": ["FusionUI", "Toggle", "ToggleButton", "SimulateButton", "uiToggle"],
+        "body": ["${1:Button1}.Toggle()"],
+        "description": "Toggle the state of a button"
+    },
+    "UI Animate Button State Change": {
+        "prefix": ["FusionUI", "Animate", "AnimateButton", "SimulateButton", "uiAnimate"],
+        "body": ["${1:Button1}.AnimateClick()"],
+        "description": "Animate Button State Change"
+    },
+
+    // UI Checkboxes Funcs
+    "UI Simulate a Checkbox Click": {
+        "prefix": ["FusionUI", "Click", "ClickCheckBox", "SimulateCheckBox", "uiClick"],
+        "body": ["${1:Checkbox1}.AnimateClick()"],
+        "description": "Simulate a Checkbox click"
+    },
+    "UI Toggle Checkbox State": {
+        "prefix": ["FusionUI", "Toggle", "ToggleCheckbox", "SimulateCheckbox", "uiToggle"],
+        "body": ["${1:Checkbox1}.Toggle()"],
+        "description": "Toggle the state of a Checkbox"
+    },
+    "UI Animate Checkbox State Change": {
+        "prefix": ["FusionUI", "Animate", "AnimateCheckbox", "SimulateCheckbox", "uiAnimate"],
+        "body": ["${1:Checkbox1}.AnimateClick()"],
+        "description": "Animate Checkbox State Change"
+    },
+
+    // UI ComboBox Funcs
+    "UI Add Combobox Item": {
+        "prefix": ["FusionUI", "Add", "AddItem", "AddComboBoxItem", "uiAddItem"],
+        "body": ["${1:Combobox1}.AddItem('${2:My Combo}')"],
+        "description": "Add a Combo to a ComboBox"
+    },
+    "UI Insert Combobox Item": {
+        "prefix": ["FusionUI", "Insert", "InsertItem", "InsertComboBoxItem", "uiInsertItem"],
+        "body": ["${1:Combobox1}.InsertItem(${2:1}, '${3:My Combo}')"],
+        "description": "Insert a Combo to a ComboBox at an index"
+    },
+    "UI Add Combobox Items": {
+        "prefix": ["FusionUI", "Add", "AddItems", "AddComboBoxItems", "uiAddItems"],
+        "body": ["${1:Combobox1}.AddItems([ '${2:My Combo 1}', '${3:My Combo 2}' ])"],
+        "description": "Add Combos to a ComboBox in order"
+    },
+    "UI Insert Combobox Items": {
+        "prefix": ["FusionUI", "Insert", "InsertItems", "InsertComboBoxItems", "uiInsertItems"],
+        "body": ["${1:Combobox1}.AddItems(${2:1}, [ '${3:My Combo 1}', '${4:My Combo 2}' ])"],
+        "description": "Inserts Combos to a ComboBox in order at an index"
+    },
+    "UI Insert Combobox Line": {
+        "prefix": ["FusionUI", "Insert", "InsertSeparator", "InsertComboBoxSeparator", "ComboBoxLine", "Line", "AddLine", "uiInsertSeparator"],
+        "body": ["${1:Combobox1}.InsertSeparator(${2:1})"],
+        "description": "Inserts a Separator Line to a ComboBox at an index"
+    },
+    "UI Remove Combobox Item": {
+        "prefix": ["FusionUI", "Remove", "RemoveItem", "RemoveComboBoxItem",  "uiRemoveItem"],
+        "body": ["${1:Combobox1}.RemoveItem(${2:1})"],
+        "description": "Removes an Item from a ComboBox at an index"
+    },
+    "UI Clear Combobox": {
+        "prefix": ["FusionUI", "Clear", "ClearItems", "ClearComboBoxItems",  "uiClear"],
+        "body": ["${1:Combobox1}.Clear()"],
+        "description": "Clears all Items from a ComboBox"
+    },
+    "UI Set Combobox Edit Text": {
+        "prefix": ["FusionUI", "Set", "SetText", "SetComboBoxEditText",  "uiSetEditText"],
+        "body": ["${1:Combobox1}.SetEditText('${2:My Text}')"],
+        "description": "Set the editable text for a combo box in editable mode"
+    },
+    "UI Clear Combobox Edit Text": {
+        "prefix": ["FusionUI", "Clear", "ClearText", "ClearComboBoxEditText",  "uiClearEditText"],
+        "body": ["${1:Combobox1}.ClearEditText()"],
+        "description": "Clear the editable text for a combo box in editable mode"
+    },
+    "UI Combobox Item Count": {
+        "prefix": ["FusionUI", "Count", "CountItems", "CountComboBoxItems",  "uiCount"],
+        "body": ["${1:Combobox1}.Count()"],
+        "description": "Get Number of Items in a Combo Box"
+    },
+    "UI Show Combobox Popup": {
+        "prefix": ["FusionUI", "Show", "ShowPopup", "ShowComboboxPopup",  "uiShowPopup"],
+        "body": ["${1:Combobox1}.ShowPopup()"],
+        "description": "Show the popup with all items in a combo box"
+    },
+    "UI Hide Combobox Popup": {
+        "prefix": ["FusionUI", "Hide", "HidePopup", "HideComboboxPopup",  "uiHidePopup"],
+        "body": ["${1:Combobox1}.HidePopup()"],
+        "description": "Hide the popup with all items in a combo box"
+    },
+
+    // UI SpinBoxes Funcs
+    "UI Update Spinbox Range": {
+        "prefix": ["FusionUI", "Update", "Set", "SetRange", "SetSpinboxRange", "uiSetRange"],
+        "body": ["${1:Combobox1}.SetRange(${2:0}, ${3:10})"],
+        "description": "Change Spin Box's Min and Max Number Range"
+    },
+    "UI Increase Spinbox by...": {
+        "prefix": ["FusionUI", "StepBy", "Increase", "Step", "StepSpinboxBy", "uiStepBy"],
+        "body": ["${1:Combobox1}.StepBy(${2:3})"],
+        "description": "Increase spin box by specified amount"
+    },
+    "UI Increase Spinbox": {
+        "prefix": ["FusionUI", "StepUp", "Increase", "Step", "StepSpinboxUp", "uiStepUp"],
+        "body": ["${1:Combobox1}.StepUp()"],
+        "description": "Increase spin box by 1"
+    },
+    "UI Decrease Spinbox": {
+        "prefix": ["FusionUI", "StepDown", "Increase", "Step", "StepSpinboxDown", "uiStepDown"],
+        "body": ["${1:Combobox1}.StepDown()"],
+        "description": "Decrease spin box by 1"
+    },
+    "UI Select All Spinbox Numbers": {
+        "prefix": ["FusionUI", "Select", "SelectAll", "SelectAllSpinboxNumbers", "uiSelectAll"],
+        "body": ["${1:Combobox1}.SelectAll()"],
+        "description": "Select All Numbers in a spin box"
+    },
+    "UI Clear Spinbox": {
+        "prefix": ["FusionUI", "Clear", "ClearSpinboxNumbers", "uiClear"],
+        "body": ["${1:Combobox1}.Clear()"],
+        "description": "Clear a spin box"
+    },
+
+    // UI Sliders Funcs
+    "UI Update Slider Range": {
+        "prefix": ["FusionUI", "Update", "Set", "SetRange", "UpdateRange", "UpdateSliderRange", "SetSliderRange", "uiSetRange"],
+        "body": ["${1:Slider1}.SetRange(${2:0}, ${3:10})"],
+        "description": "Change Slider's Min and Max Number Range"
+    },
+    "UI Slider Trigger": {
+        "prefix": ["FusionUI", "Trigger", "TriggerAction", "TriggerSliderAction", "uiTriggerAction"],
+        "body": ["${1:Slider1}.TriggerAction('${2:Something}')"],
+        "description": "Effects Unknown"
+    },
+
+    // UI Line Edits Funcs
+    "UI Set LineEdit Selection": {
+        "prefix": ["FusionUI", "Set", "SetSelection", "Selection", "uiSetSelection"],
+        "body": ["${1:LineEdit1}.SetSelection(${2:0}, ${3:10})"],
+        "description": "Set a LineEdit's selection"
+    },
+    "UI Check if LineEdit Selection": {
+        "prefix": ["FusionUI", "Check", "HasSelection", "Selection", "uiHasSelection"],
+        "body": ["${1:LineEdit1}.HasSelection()"],
+        "description": "Check if a LineEdit has selected text"
+    },
+    "UI Get a LineEdit's Selected Text": {
+        "prefix": ["FusionUI", "Get", "GetSelection", "Selection", "uiSelectedText"],
+        "body": ["${1:LineEdit1}.SelectedText()"],
+        "description": "Get the selected text from a LineEdit"
+    },
+    "UI Get the LineEdit Selection Start Number": {
+        "prefix": ["FusionUI", "Get", "GetSelection", "Selection", "uiSelectionStart"],
+        "body": ["${1:LineEdit1}.SelectionStart()"],
+        "description": "Get the LineEdit Selection Start Number"
+    },
+    "UI Select All LineEdit Text": {
+        "prefix": ["FusionUI", "Select", "SetSelect", "Selection", "uiSelectAll"],
+        "body": ["${1:LineEdit1}.SelectAll()"],
+        "description": "Select all Line edit text"
+    },
+    "UI Clear All LineEdit Text": {
+        "prefix": ["FusionUI", "Clear", "ClearText", "uiClear"],
+        "body": ["${1:LineEdit1}.Clear()"],
+        "description": "Remove all Text in a line edit"
+    },
+    "UI Cut Selected LineEdit Text": {
+        "prefix": ["FusionUI", "Cut", "CutText", "uiCut"],
+        "body": ["${1:LineEdit1}.Cut()"],
+        "description": "Cuts Text from Line Edit, if Selection"
+    },
+    "UI Copy Selected LineEdit Text": {
+        "prefix": ["FusionUI", "Copy", "CopyText", "uiCopy"],
+        "body": ["${1:LineEdit1}.Copy()"],
+        "description": "Copies Text from Line Edit, if Selection"
+    },
+    "UI Paste to LineEdit Text": {
+        "prefix": ["FusionUI", "Paste", "PasteText", "uiPaste"],
+        "body": ["${1:LineEdit1}.Paste()"],
+        "description": "Pastes Text to Line Edit from clipboard"
+    },
+    "UI Undo LineEdit Change": {
+        "prefix": ["FusionUI", "Undo", "UndoText", "UndoLineEdit", "uiUndo"],
+        "body": ["${1:LineEdit1}.Undo()"],
+        "description": "Undo a Line Edit Change"
+    },
+    "UI Redo LineEdit Change": {
+        "prefix": ["FusionUI", "Redo", "RedoText", "RedoLineEdit", "uiRedo"],
+        "body": ["${1:LineEdit1}.Redo()"],
+        "description": "Redo a Line Edit Change"
+    },
+    "UI Deselect LineEdit Text": {
+        "prefix": ["FusionUI", "Deselect", "DeselectText", "DeselectLineEdit", "uiDeselect"],
+        "body": ["${1:LineEdit1}.Deselect()"],
+        "description": "Deselect all line edit text"
+    },
+    "UI Insert Text into LineEdit": {
+        "prefix": ["FusionUI", "Insert", "InsertText", "InsertLineEdit", "uiInsert"],
+        "body": ["${1:LineEdit1}.Insert('${2:Text To Insert}')"],
+        "description": "Insert Text into LineEdit at cursor"
+    },
+    "UI Backspace Text in LineEdit": {
+        "prefix": ["FusionUI", "Backspace", "BackspaceText", "BackspaceLineEdit", "uiBackspace"],
+        "body": ["${1:LineEdit1}.Backspace()"],
+        "description": "Backspace Text in LineEdit at cursor (Remove character to the left)"
+    },
+    "UI Del Text in LineEdit": {
+        "prefix": ["FusionUI", "Del", "DelText", "DelLineEdit", "uiDel"],
+        "body": ["${1:LineEdit1}.Del()"],
+        "description": "Del Text in LineEdit at cursor (Remove character to the right)"
+    },
+
+    // UI Text Edits Funcs
+    "UI Insert Plain Text in Text Box": {
+        "prefix": ["FusionUI", "PlainText", "Insert", "InsertPlainText", "uiInsertPlainText"],
+        "body": ["${1:TextBox1}.InsertPlainText('${2:Text to Insert}')"],
+        "description": "Inserts Text into Text Edit At Cursor"
+    },
+    "UI Insert HTML in Text Box": {
+        "prefix": ["FusionUI", "HTML", "Insert", "InsertHTML", "uiInsertHTML"],
+        "body": ["${1:TextBox1}.InsertHTML('${2:<h1>HTML to Insert</h1>}')"],
+        "description": "Inserts HTML into Text Edit At Cursor"
+    },
+    "UI Append Text in Text Box": {
+        "prefix": ["FusionUI", "Text", "Append", "AppendText", "uiAppend"],
+        "body": ["${1:TextBox1}.Append('${2:Text to Append}')"],
+        "description": "Append Text into Text Edit On Next Line"
+    },
+    "UI Select All Text in Text Box": {
+        "prefix": ["FusionUI", "Select", "SelectAll", "SelectAllTextBox", "uiSelectAll"],
+        "body": ["${1:TextBox1}.SelectAll()"],
+        "description": "Selects all text in a text box"
+    },
+    "UI Clear All Text Box Text": {
+        "prefix": ["FusionUI", "Clear", "ClearText", "uiClear"],
+        "body": ["${1:TextBox1}.Clear()"],
+        "description": "Remove all Text in a Text Box"
+    },
+    "UI Cut Selected Text Box Text": {
+        "prefix": ["FusionUI", "Cut", "CutText", "uiCut"],
+        "body": ["${1:TextBox1}.Cut()"],
+        "description": "Cuts Text from Text Box, if Selection"
+    },
+    "UI Copy Selected Text Box Text": {
+        "prefix": ["FusionUI", "Copy", "CopyText", "uiCopy"],
+        "body": ["${1:TextBox1}.Copy()"],
+        "description": "Copies Text from Text Box, if Selection"
+    },
+    "UI Paste to Text Box Text": {
+        "prefix": ["FusionUI", "Paste", "PasteText", "uiPaste"],
+        "body": ["${1:TextBox1}.Paste()"],
+        "description": "Pastes Text to Text Box from clipboard"
+    },
+    "UI Undo Text Box Change": {
+        "prefix": ["FusionUI", "Undo", "UndoText", "UndoTextBox", "uiUndo"],
+        "body": ["${1:TextBox1}.Undo()"],
+        "description": "Undo a Text Box Change"
+    },
+    "UI Redo Text Box Change": {
+        "prefix": ["FusionUI", "Redo", "RedoText", "RedoTextBox", "uiRedo"],
+        "body": ["${1:TextBox1}.Redo()"],
+        "description": "Redo a Text Box Change"
+    },
+    "UI Text Box Scroll to Anchor": {
+        "prefix": ["FusionUI", "Scroll", "Anchor", "ScrollToAnchor", "TextBoxScrollToAnchor", "uiScrollToAnchor"],
+        "body": ["${1:TextBox1}.ScrollToAnchor('${2:Anchor Text}')"],
+        "description": "Scroll to an Anchor in a Text box"
+    },
+    "UI Text Box Zoom In": {
+        "prefix": ["FusionUI", "Zoom", "ZoomIn", "TextBoxZoomIn", "uiZoomIn"],
+        "body": ["${1:TextBox1}.ZoomIn(${2:ptSize})"],
+        "description": "Zoom in a Text box"
+    },
+    "UI Text Box Zoom Out": {
+        "prefix": ["FusionUI", "Zoom", "ZoomOut", "TextBoxZoomOut", "uiZoomOut"],
+        "body": ["${1:TextBox1}.ZoomOut(${2:ptSize})"],
+        "description": "Zoom out a Text box"
+    },
+    "UI Text Box Show Mouse": {
+        "prefix": ["FusionUI", "Mouse", "ShowMouse", "TextBoxEnsureCursorVisible", "uiEnsureCursorVisible"],
+        "body": ["${1:TextBox1}.EnsureCursorVisible(${2:true})"],
+        "description": "Change if the cursor is visible in a Text box"
+    },
+    "UI Text Box Move Mouse": {
+        "prefix": ["FusionUI", "Mouse", "MoveMouse", "TextBoxMoveCursor", "uiMoveCursor"],
+        "body": ["${1:TextBox1}.MoveCursor(${2:moveOperation}, ${3:moveMode})"],
+        "description": "Move the cursor in a Text box -- Usage Unknown"
+    },
+    "UI Text Box Change if Paste": {
+        "prefix": ["FusionUI", "Paste", "CanPaste", "TextBoxCanPaste", "uiCanPaste"],
+        "body": ["${1:TextBox1}.CanPaste(${2:true})"],
+        "description": "Change if the user can paste in a Text box -- Usage Unknown"
+    },
+    "UI Text Box Make Anchor": {
+        "prefix": ["FusionUI", "Anchor", "AnchorAt", "TextBoxAnchorAt", "uiAnchorAt"],
+        "body": ["${1:TextBox1}.AnchorAt(${2:pointInBox})"],
+        "description": "Make an anchor in a Text box -- Usage Unknown"
+    },
+    "UI Text Box Find Text": {
+        "prefix": ["FusionUI", "Find", "FindText", "TextBoxFind", "uiFind"],
+        "body": ["${1:TextBox1}.Find('${2:Search Word}', {${3:Flags}})"],
+        "description": "Find Text Position in a Text box -- Usage Unknown"
+    },
+
+    // UI Tab Bars Funcs
+    "UI Add Tab to Tab Bar": {
+        "prefix": ["FusionUI", "Add", "AddTab", "TabAddTab", "uiAddTab"],
+        "body": ["${1:TabBar1}.AddTab('${2:Tab Name}')"],
+        "description": "Add a tab to a Tab bar"
+    },
+    "UI Insert Tab to Tab Bar": {
+        "prefix": ["FusionUI", "Insert", "InsertTab", "TabInsertTab", "uiInsertTab"],
+        "body": ["${1:TabBar1}.InsertTab(${2:index}, '${3:Tab Name}')"],
+        "description": "Insert a tab to a Tab bar"
+    },
+    "UI Count Tabs in Tab Bar": {
+        "prefix": ["FusionUI", "Count", "CountTabs", "TabCountTabs", "uiCount"],
+        "body": ["${1:TabBar1}.Count()"],
+        "description": "Count tabs in a Tab bar"
+    },
+    "UI Remove Tab in Tab Bar": {
+        "prefix": ["FusionUI", "Remove", "RemoveTab", "TabRemoveTab", "uiRemoveTab"],
+        "body": ["${1:TabBar1}.RemoveTab(${2:index})"],
+        "description": "Remove tab in a Tab bar"
+    },
+    "UI Move Tab in Tab Bar": {
+        "prefix": ["FusionUI", "Move", "MoveTab", "TabMoveTab", "uiMoveTab"],
+        "body": ["${1:TabBar1}.MoveTab(${2:targetIndex}, ${3:newIndex})"],
+        "description": "Move tab in a Tab bar"
+    },
+
+    // UI Trees Funcs
+    "UI Add Top Level Item to Tree": {
+        "prefix": ["FusionUI", "Add", "AddTopLevel", "TreeAddTopLevelItem", "uiAddTopLevelItem"],
+        "body": ["itm = ${1:Tree1}.NewItem()\nitm.Text[0] = '${2:My Text}'\n${1:Tree1}.AddTopLevelItem(itm)"],
+        "description": "Add a Top Level Item to a Tree"
+    },
+    "UI Insert Top Level Item to Tree": {
+        "prefix": ["FusionUI", "Insert", "InsertTopLevel", "TreeInsertTopLevelItem", "uiInsertTopLevelItem"],
+        "body": ["itm = ${1:Tree1}.NewItem()\nitm.Text[0] = '${2:My Text}'\n${1:Tree1}.InsertTopLevelItem(${3:index}, itm)"],
+        "description": "Insert a Top Level Item to a Tree"
+    },
+    "UI Set Tree Header Label": {
+        "prefix": ["FusionUI", "Set", "SetHeader", "TreeSetHeaderLabel", "uiSetHeaderLabel"],
+        "body": ["${1:Tree1}.SetHeaderLabel('${2:My Label}')"],
+        "description": "Set header label for a Tree"
+    },
+    "UI Tree Current Column": {
+        "prefix": ["FusionUI", "Get", "Current", "TreeCurrentColumn", "uiCurrentColumn"],
+        "body": ["${1:Tree1}.CurrentColumn()"],
+        "description": "Get the Currently Selected Column in a Tree"
+    },
+    "UI Tree Sort Column": {
+        "prefix": ["FusionUI", "Sort", "TreeSortColumn", "uiSortColumn"],
+        "body": ["${1:Tree1}.SortColumn(${2:index})"],
+        "description": "Sort a Column in a Tree"
+    },
+    "UI Tree Get Top Level Item Count": {
+        "prefix": ["FusionUI", "Get", "TopLevelItem", "TopLevelItemCount", "TreeTopLevelItemCount", "uiTopLevelItemCount"],
+        "body": ["${1:Tree1}.TopLevelItemCount()"],
+        "description": "Get the Amount of Top Level Items in a Tree"
+    },
+    "UI Tree Get Current Selected Row": {
+        "prefix": ["FusionUI", "Get", "Current", "CurrentItem", "TreeCurrentItem", "uiCurrentItem"],
+        "body": ["${1:Tree1}.CurrentItem()"],
+        "description": "Get the Currently Selected Item(row) in a Tree"
+    },
+    "UI Tree Get Row": {
+        "prefix": ["FusionUI", "Get", "Row", "TopLevelItem", "TreeTopLevelItem", "uiTopLevelItem"],
+        "body": ["${1:Tree1}.TopLevelItem()"],
+        "description": "Get an Item(row) in a Tree"
+    },
+    "UI Tree Get Row & Remove It": {
+        "prefix": ["FusionUI", "Get", "Row", "TopLevelItem", "TakeTopLevelItem", "TreeTakeTopLevelItem", "uiTakeTopLevelItem"],
+        "body": ["${1:Tree1}.TakeTopLevelItem()"],
+        "description": "Take an Item(row) in a Tree"
+    },
+    "UI Tree Invisible Root Item": {
+        "prefix": ["FusionUI", "Invisible", "InvisibleRoot", "TreeInvisibleRootItem", "uiInvisibleRootItem"],
+        "body": ["${1:Tree1}.InvisibleRootItem()"],
+        "description": "Create an Invisible Root Item a Tree - Unknown Usage"
+    },
+    "UI Tree Header Item": {
+        "prefix": ["FusionUI", "Header", "HeaderItem", "TreeHeaderItem", "uiHeaderItem"],
+        "body": ["${1:Tree1}.HeaderItem()"],
+        "description": "Create a header item a Tree - Unknown Usage"
+    },
+    "UI Tree Index of a Top Level Item": {
+        "prefix": ["FusionUI", "Index", "TopLevelItem", "TreeIndexOfTopLevelItem", "uiIndexOfTopLevelItem"],
+        "body": ["${1:Tree1}.IndexOfTopLevelItem(${2:Item})"],
+        "description": "Get the index of a top level item object in a tree"
+    },
+    "UI Tree Get Item Above Top Level Item": {
+        "prefix": ["FusionUI", "Item", "ItemAbove", "TreeItemAbove", "uiItemAbove"],
+        "body": ["${1:Tree1}.ItemAbove(${2:Item})"],
+        "description": "Get the item above a top level item object in a tree"
+    },
+    "UI Tree Get Item at Point": {
+        "prefix": ["FusionUI", "Item", "ItemAt", "TreeItemAt", "uiItemAt"],
+        "body": ["${1:Tree1}.ItemAt(${2:point})"],
+        "description": "Get the item at an index in a tree"
+    },
+    "UI Get Tree Item Size": {
+        "prefix": ["FusionUI", "Rect","TreeVisualItemRect", "Visual", "VisualItem", "uiVisualItemRect"],
+        "body": ["${1:Tree1}.VisualItemRect(${2:itm})"],
+        "description": "Get the dimensions of a row in a tree"
+    },
+    "UI Set Tree Header Labels": {
+        "prefix": ["FusionUI", "Set","SetHeaderLabels", "TreeSetHeaderLabels", "uiSetHeaderLabels"],
+        "body": ["${1:Tree1}.SetHeaderLabels([ '${2:Head 1}', '${3:Head 2}' ])"],
+        "description": "Set the header labels in a tree"
+    },
+    "UI Set Tree Header Item": {
+        "prefix": ["FusionUI", "Set","SetHeaderItem", "TreeSetHeaderItem", "uiSetHeaderItem"],
+        "body": ["${1:Tree1}.SetHeaderItem(${2:itm})"],
+        "description": "Set a header Item in a tree"
+    },
+    "UI Insert Top Level Items to Tree": {
+        "prefix": ["FusionUI", "Insert", "InsertTopLevelItems", "TreeInsertTopLevelItems", "uiInsertTopLevelItems"],
+        "body": ["itm1 = ${1:Tree1}.NewItem()\nitm1.Text[0] = '${2:My Text}'\nitm2 = ${1:Tree1}.NewItem()\nitm2.Text[0] = '${3:My Text 2}'\n${1:Tree1}.InsertTopLevelItems(${4:index}, [ itm1, itm2 ])"],
+        "description": "Insert a list of top level items in a tree"
+    },
+    "UI Add Top Level Items to Tree": {
+        "prefix": ["FusionUI", "Add", "AddTopLevelItems", "TreeAddTopLevelItems", "uiAddTopLevelItems"],
+        "body": ["itm1 = ${1:Tree1}.NewItem()\nitm1.Text[0] = '${2:My Text}'\nitm2 = ${1:Tree1}.NewItem()\nitm2.Text[0] = '${3:My Text 2}'\n${1:Tree1}.AddTopLevelItems([ itm1, itm2 ])"],
+        "description": "Add a list of top level items in a tree"
+    },
+    "UI Get Selected Items in Tree": {
+        "prefix": ["FusionUI", "Get", "SelectedItems", "TreeSelectedItems", "uiSelectedItems"],
+        "body": ["${1:Tree1}.SelectedItems()"],
+        "description": "Get a list of selected items in a tree"
+    },
+    "UI Find Items in Tree": {
+        "prefix": ["FusionUI", "Find", "FindItems", "TreeFindItems", "uiFindItems"],
+        "body": ["${1:Tree1}.FindItems('${2:Search Term}', {${3:Flags}})"],
+        "description": "Get List of Matching items in a tree"
+    },
+    "UI Sort Column Items in Tree": {
+        "prefix": ["FusionUI", "Sort", "SortItems", "TreeSortItems", "uiSortItems"],
+        "body": ["${1:Tree1}.SortItems(${2:col}, '${3|AscendingOrder, DescendingOrder|}')"],
+        "description": "Sort items in a column in a tree"
+    },
+    "UI Scroll to Item in Tree": {
+        "prefix": ["FusionUI", "Scroll", "ScrollToItem", "TreeScrollToItem", "uiScrollToItem"],
+        "body": ["${1:Tree1}.ScrollToItem(${2:itm})"],
+        "description": "Scroll to Item in a tree"
+    },
+    "UI Reset Indentation in Tree": {
+        "prefix": ["FusionUI", "Reset", "ResetIndentation", "TreeResetIndentation", "uiResetIndentation"],
+        "body": ["${1:Tree1}.ResetIndentation()"],
+        "description": "Reset Indentation in a tree"
+    },
+    "UI Sort By Column in Tree": {
+        "prefix": ["FusionUI", "Sort", "SortByColumn", "TreeSortByColumn", "uiSortByColumn"],
+        "body": ["${1:Tree1}.SortByColumn(${2:col}, '${3|AscendingOrder, DescendingOrder|}')"],
+        "description": "Sort by a Column in a tree"
+    },
+
+    // UI Tree Items Funcs
+    "UI Add Child to Tree Item": {
+        "prefix": ["FusionUI", "Add", "AddChild", "TreeItemAddChild", "uiAddChild"],
+        "body": ["itm1 = ${1:Tree1}.NewItem()\nitm1.Text[0] = '${2:Parent}'\nitm2 = ${1:Tree1}.NewItem()\nitm2.Text[0] = '${3:Child}'\n${1:Tree1}.AddTopLevelItem(itm1)\nitm1.AddChild(itm2)"],
+        "description": "Add Child to a Tree Item in a tree"
+    },
+    "UI Insert Child to Tree Item": {
+        "prefix": ["FusionUI", "Insert", "InsertChild", "TreeItemInsertChild", "uiInsertChild"],
+        "body": ["itm1 = ${1:Tree1}.NewItem()\nitm1.Text[0] = '${2:Parent}'\nitm2 = ${1:Tree1}.NewItem()\nitm2.Text[0] = '${3:Child}'\n${1:Tree1}.AddTopLevelItem(itm1)\nitm1.InsertChild(${4:index}, itm2)"],
+        "description": "Insert Child to a Tree Item in a tree"
+    },
+    "UI Remove Child to Tree Item": {
+        "prefix": ["FusionUI", "Remove", "RemoveChild", "TreeItemRemoveChild", "uiRemoveChild"],
+        "body": ["${1:itm1}.RemoveChild(${2:itm2})"],
+        "description": "Remove a Child from a Tree Item in a tree"
+    },
+    "UI Sort Children's Column of Tree Item": {
+        "prefix": ["FusionUI", "Sort", "SortChildren", "TreeItemSortChildren", "uiSortChildren"],
+        "body": ["${1:itm1}.SortChildren(${2:col}, '${3|AscendingOrder, DescendingOrder|}')"],
+        "description": "Sort Children's column of a Tree Item in a tree"
+    },
+    "UI Insert Children in Tree Item": {
+        "prefix": ["FusionUI", "Insert", "InsertChildren", "TreeItemInsertChildren", "uiInsertChildren"],
+        "body": ["${1:itm1}.InsertChildren(${2:index}, [ ${3:itm2}, ${4:itm3} ])"],
+        "description": "Insert Children into a Tree Item in a tree"
+    },
+    "UI Add Children in Tree Item": {
+        "prefix": ["FusionUI", "Add", "AddChildren", "TreeItemAddChildren", "uiAddChildren"],
+        "body": ["${1:itm1}.AddChildren([ ${2:itm2}, ${3:itm3} ])"],
+        "description": "Add Children into a Tree Item in a tree"
+    },
+    "UI Index of Child in Tree Item": {
+        "prefix": ["FusionUI", "Index", "IndexOfChild", "TreeItemIndexOfChild", "uiIndexOfChild"],
+        "body": ["${1:itm1}.IndexOfChild(${2:itm2})"],
+        "description": "Get index of Child in a Tree Item in a tree"
+    },
+    "UI Clone Tree Item": {
+        "prefix": ["FusionUI", "Clone", "CloneItem", "TreeItemClone", "uiClone"],
+        "body": ["${1:itm1}.Clone()"],
+        "description": "Clone a Tree Item in a tree"
+    },
+    "UI Get Parent of Tree Item": {
+        "prefix": ["FusionUI", "Parent", "Get", "GetParent", "TreeItemParent", "uiParent"],
+        "body": ["${1:itm1}.Parent()"],
+        "description": "Get the parent of a Tree Item in a tree"
+    },
+    "UI Get a Child of Tree Item": {
+        "prefix": ["FusionUI", "Child", "Get", "GetChild", "TreeItemChild", "uiChild"],
+        "body": ["${1:itm1}.Child(${2:index})"],
+        "description": "Get a child of a Tree Item in a tree"
+    },
+    "UI Get a Child of Tree Item and Remove It": {
+        "prefix": ["FusionUI", "Child", "Take", "TakeChild", "TreeItemTakeChild", "uiTakeChild"],
+        "body": ["${1:itm1}.TakeChild(${2:index})"],
+        "description": "Get and remove a child of a Tree Item in a tree"
+    },
+    "UI Get Children Count of Tree Item": {
+        "prefix": ["FusionUI", "Child", "Count", "ChildCount", "TreeItemChildCount", "uiChildCount"],
+        "body": ["${1:itm1}.ChildCount()"],
+        "description": "Get Child Count of a Tree Item in a tree"
+    },
+    "UI Get Column Count of Tree Item": {
+        "prefix": ["FusionUI", "Column", "Count", "ColumnCount", "TreeItemColumnCount", "uiColumnCount"],
+        "body": ["${1:itm1}.ColumnCount()"],
+        "description": "Get Column Count of a Tree Item in a tree"
+    },
+    // UI Events
+    // UI Buttons Events
+    "UI Button Clicked": {
+        "prefix": ["FusionUI", "Button", "ButtonClicked", "ButtonEvent", "ButtonClickEvent", "uiButtonClick"],
+        "body": ["def ${1:window}.On.${2:Button1}.Clicked(ev):\n    ${3}"],
+        "description": "Function that runs when a button is clicked"
+    },
+    "UI Button Toggled": {
+        "prefix": ["FusionUI", "Button", "ButtonToggled", "ButtonEvent", "ButtonToggleEvent", "uiButtonToggle"],
+        "body": ["def ${1:window}.On.${2:Button1}.Toggled(ev):\n    ${3}"],
+        "description": "Function that runs when a button is toggled"
+    },
+    "UI Button Pressed": {
+        "prefix": ["FusionUI", "Button", "ButtonPressed", "ButtonEvent", "ButtonPressEvent", "uiButtonPress"],
+        "body": ["def ${1:window}.On.${2:Button1}.Pressed(ev):\n    ${3}"],
+        "description": "Function that runs when a button is pressed"
+    },
+    "UI Button Released": {
+        "prefix": ["FusionUI", "Button", "ButtonReleased", "ButtonEvent", "ButtonReleaseEvent", "uiButtonRelease"],
+        "body": ["def ${1:window}.On.${2:Button1}.Released(ev):\n    ${3}"],
+        "description": "Function that runs when a button is released"
+    },
+    // UI CheckBoxes Events
+    "UI CheckBox Clicked": {
+        "prefix": ["FusionUI", "CheckBox", "CheckBoxClicked", "CheckBoxEvent", "CheckBoxClickEvent", "uiCheckBoxClick"],
+        "body": ["def ${1:window}.On.${2:CheckBox1}.Clicked(ev):\n    ${3}"],
+        "description": "Function that runs when a CheckBox is clicked"
+    },
+    "UI CheckBox Toggled": {
+        "prefix": ["FusionUI", "CheckBox", "CheckBoxToggled", "CheckBoxEvent", "CheckBoxToggleEvent", "uiCheckBoxToggle"],
+        "body": ["def ${1:window}.On.${2:CheckBox1}.Toggled(ev):\n    ${3}"],
+        "description": "Function that runs when a CheckBox is toggled"
+    },
+    "UI CheckBox Pressed": {
+        "prefix": ["FusionUI", "CheckBox", "CheckBoxPressed", "CheckBoxEvent", "CheckBoxPressEvent", "uiCheckBoxPress"],
+        "body": ["def ${1:window}.On.${2:CheckBox1}.Pressed(ev):\n    ${3}"],
+        "description": "Function that runs when a CheckBox is pressed"
+    },
+    "UI CheckBox Released": {
+        "prefix": ["FusionUI", "CheckBox", "CheckBoxReleased", "CheckBoxEvent", "CheckBoxReleaseEvent", "uiCheckBoxRelease"],
+        "body": ["def ${1:window}.On.${2:CheckBox1}.Released(ev):\n    ${3}"],
+        "description": "Function that runs when a CheckBox is released"
+    },
+    // UI ComboBoxes Events
+    "UI ComboBox Current Index Changed": {
+        "prefix": ["FusionUI", "ComboBox", "ComboBoxIndexChanged", "ComboBoxEvent", "ComboBoxIndexChangedEvent", "uiComboBoxCurrentIndexChanged"],
+        "body": ["def ${1:window}.On.${2:ComboBox1}.CurrentIndexChanged(ev):\n    ${3}"],
+        "description": "Function that runs when a ComboBox Current Index is Changed"
+    },
+    "UI ComboBox Current Text Changed": {
+        "prefix": ["FusionUI", "ComboBox", "ComboBoxTextChanged", "ComboBoxEvent", "ComboBoxTextChangedEvent", "uiComboBoxCurrentTextChanged"],
+        "body": ["def ${1:window}.On.${2:ComboBox1}.CurrentTextChanged(ev):\n    ${3}"],
+        "description": "Function that runs when a ComboBox Current Text is Changed"
+    },
+    "UI ComboBox Text Edited": {
+        "prefix": ["FusionUI", "ComboBox", "ComboBoxTextEdited", "ComboBoxEvent", "ComboBoxTextEditedEvent", "uiComboBoxTextEdited"],
+        "body": ["def ${1:window}.On.${2:ComboBox1}.TextEdited(ev):\n    ${3}"],
+        "description": "Function that runs when a ComboBox Text is Edited"
+    },
+    "UI ComboBox Edit Text Changed": {
+        "prefix": ["FusionUI", "ComboBox", "ComboBoxEditTextChanged", "ComboBoxEvent", "ComboBoxEditTextChangedEvent", "uiComboBoxEditTextChanged"],
+        "body": ["def ${1:window}.On.${2:ComboBox1}.EditTextChanged(ev):\n    ${3}"],
+        "description": "Function that runs when a ComboBox Edit Text is Changed"
+    },
+    "UI ComboBox Text Editing Finished": {
+        "prefix": ["FusionUI", "ComboBox", "ComboBoxEditingFinished", "ComboBoxEvent", "ComboBoxEditingFinishedEvent", "uiComboBoxEditingFinished"],
+        "body": ["def ${1:window}.On.${2:ComboBox1}.EditingFinished(ev):\n    ${3}"],
+        "description": "Function that runs when a ComboBox Editing is Finished"
+    },
+    "UI ComboBox Return/Enter Pressed": {
+        "prefix": ["FusionUI", "ComboBox", "ComboBoxReturnPressed", "ComboBoxEvent", "ComboBoxReturnPressedEvent", "uiComboBoxReturnPressed"],
+        "body": ["def ${1:window}.On.${2:ComboBox1}.ReturnPressed(ev):\n    ${3}"],
+        "description": "Function that runs when a ComboBox Return is Pressed"
+    },
+    "UI ComboBox Activated": {
+        "prefix": ["FusionUI", "ComboBox", "ComboBoxActivated", "ComboBoxEvent", "ComboBoxActivatedEvent", "uiComboBoxActivated"],
+        "body": ["def ${1:window}.On.${2:ComboBox1}.Activated(ev):\n    ${3}"],
+        "description": "Function that runs when a ComboBox is Activated"
+    },
+    // UI Spinboxes Events
+    "UI SpinBox Value Changed": {
+        "prefix": ["FusionUI", "SpinBox", "SpinBoxValueChanged", "SpinBoxEvent", "SpinBoxValueChangedEvent", "uiSpinBoxValueChanged"],
+        "body": ["def ${1:window}.On.${2:SpinBox1}.ValueChanged(ev):\n    ${3}"],
+        "description": "Function that runs when a SpinBox Value is Changed"
+    },
+    "UI SpinBox Editing Finished": {
+        "prefix": ["FusionUI", "SpinBox", "SpinBoxEditingFinished", "SpinBoxEvent", "SpinBoxEditingFinishedEvent", "uiSpinBoxEditingFinished"],
+        "body": ["def ${1:window}.On.${2:SpinBox1}.EditingFinished(ev):\n    ${3}"],
+        "description": "Function that runs when a SpinBox Editing is Finished"
+    },
+    // UI Sliders Events
+    "UI Slider Value Changed": {
+        "prefix": ["FusionUI", "Slider", "SliderValueChanged", "SliderEvent", "SliderValueChangedEvent", "uiSliderValueChanged"],
+        "body": ["def ${1:window}.On.${2:Slider1}.ValueChanged(ev):\n    ${3}"],
+        "description": "Function that runs when a Slider Value is Changed"
+    },
+    "UI Slider Slider Moved": {
+        "prefix": ["FusionUI", "Slider", "SliderSliderMoved", "SliderEvent", "SliderSliderMovedEvent", "uiSliderSliderMoved"],
+        "body": ["def ${1:window}.On.${2:Slider1}.SliderMoved(ev):\n    ${3}"],
+        "description": "Function that runs when a Slider is Moved"
+    },
+    "UI Slider Action Triggered": {
+        "prefix": ["FusionUI", "Slider", "SliderActionTriggered", "SliderEvent", "SliderActionTriggeredEvent", "uiSliderActionTriggered"],
+        "body": ["def ${1:window}.On.${2:Slider1}.ActionTriggered(ev):\n    ${3}"],
+        "description": "Function that runs when a Slider Action is Triggered"
+    },
+    "UI Slider Slider Pressed": {
+        "prefix": ["FusionUI", "Slider", "SliderSliderPressed", "SliderEvent", "SliderSliderPressedEvent", "uiSliderSliderPressed"],
+        "body": ["def ${1:window}.On.${2:Slider1}.SliderPressed(ev):\n    ${3}"],
+        "description": "Function that runs when a Slider is Pressed"
+    },
+    "UI Slider Slider Released": {
+        "prefix": ["FusionUI", "Slider", "SliderSliderReleased", "SliderEvent", "SliderSliderReleasedEvent", "uiSliderSliderReleased"],
+        "body": ["def ${1:window}.On.${2:Slider1}.SliderReleased(ev):\n    ${3}"],
+        "description": "Function that runs when a Slider is Released"
+    },
+    "UI Slider Range Changed": {
+        "prefix": ["FusionUI", "Slider", "SliderRangeChanged", "SliderEvent", "SliderRangeChangedEvent", "uiSliderRangeChanged"],
+        "body": ["def ${1:window}.On.${2:Slider1}.RangeChanged(ev):\n    ${3}"],
+        "description": "Function that runs when a Slider Range is Changed"
+    },
+    // UI Line Edits Events
+    "UI LineEdit Text Changed": {
+        "prefix": ["FusionUI", "LineEdit", "LineEditTextChanged", "LineEditEvent", "LineEditTextChangedEvent", "uiLineEditTextChanged"],
+        "body": ["def ${1:window}.On.${2:LineEdit1}.TextChanged(ev):\n    ${3}"],
+        "description": "Function that runs when a LineEdit Text is Changed"
+    },
+    "UI LineEdit Text Edited": {
+        "prefix": ["FusionUI", "LineEdit", "LineEditTextEdited", "LineEditEvent", "LineEditTextEditedEvent", "uiLineEditTextEdited"],
+        "body": ["def ${1:window}.On.${2:LineEdit1}.TextEdited(ev):\n    ${3}"],
+        "description": "Function that runs when a LineEdit Text is Edited"
+    },
+    "UI LineEdit Editing Finished": {
+        "prefix": ["FusionUI", "LineEdit", "LineEditEditingFinished", "LineEditEvent", "LineEditEditingFinishedEvent", "uiLineEditEditingFinished"],
+        "body": ["def ${1:window}.On.${2:LineEdit1}.EditingFinished(ev):\n    ${3}"],
+        "description": "Function that runs when a LineEdit Editing is Finished"
+    },
+    "UI LineEdit Return Pressed": {
+        "prefix": ["FusionUI", "LineEdit", "LineEditReturnPressed", "LineEditEvent", "LineEditReturnPressedEvent", "uiLineEditReturnPressed"],
+        "body": ["def ${1:window}.On.${2:LineEdit1}.ReturnPressed(ev):\n    ${3}"],
+        "description": "Function that runs when a LineEdit Return is Pressed"
+    },
+    "UI LineEdit Selection Changed": {
+        "prefix": ["FusionUI", "LineEdit", "LineEditSelectionChanged", "LineEditEvent", "LineEditSelectionChangedEvent", "uiLineEditSelectionChanged"],
+        "body": ["def ${1:window}.On.${2:LineEdit1}.SelectionChanged(ev):\n    ${3}"],
+        "description": "Function that runs when a LineEdit Selection is Changed"
+    },
+    "UI LineEdit Cursor Position Changed": {
+        "prefix": ["FusionUI", "LineEdit", "LineEditCursorPositionChanged", "LineEditEvent", "LineEditCursorPositionChangedEvent", "uiLineEditCursorPositionChanged"],
+        "body": ["def ${1:window}.On.${2:LineEdit1}.CursorPositionChanged(ev):\n    ${3}"],
+        "description": "Function that runs when a LineEdit Cursor Position is Changed"
+    },
+    // UI Text Edits Events
+    "UI TextEdit Text Changed": {
+        "prefix": ["FusionUI", "TextEdit", "TextEditTextChanged", "TextEditEvent", "TextEditTextChangedEvent", "uiTextEditTextChanged"],
+        "body": ["def ${1:window}.On.${2:TextEdit1}.TextChanged(ev):\n    ${3}"],
+        "description": "Function that runs when a TextEdit Text is Changed"
+    },
+    "UI TextEdit Selection Changed": {
+        "prefix": ["FusionUI", "TextEdit", "TextEditSelectionChanged", "TextEditEvent", "TextEditSelectionChangedEvent", "uiTextEditSelectionChanged"],
+        "body": ["def ${1:window}.On.${2:TextEdit1}.SelectionChanged(ev):\n    ${3}"],
+        "description": "Function that runs when a TextEdit Selection is Changed"
+    },
+    "UI TextEdit Cursor Position Changed": {
+        "prefix": ["FusionUI", "TextEdit", "TextEditCursorPositionChanged", "TextEditEvent", "TextEditCursorPositionChangedEvent", "uiTextEditCursorPositionChanged"],
+        "body": ["def ${1:window}.On.${2:TextEdit1}.CursorPositionChanged(ev):\n    ${3}"],
+        "description": "Function that runs when a TextEdit Cursor Position is Changed"
+    },
+    // UI Color Pickers Events
+    "UI ColorPicker Color Changed": {
+        "prefix": ["FusionUI", "ColorPicker", "ColorPickerColorChanged", "ColorPickerEvent", "ColorPickerColorChangedEvent", "uiColorPickerColorChanged"],
+        "body": ["def ${1:window}.On.${2:ColorPicker1}.ColorChanged(ev):\n    ${3}"],
+        "description": "Function that runs when a ColorPicker Color is Changed"
+    },
+    // UI TabBars Events
+    "UI TabBar Current Changed": {
+        "prefix": ["FusionUI", "TabBar", "TabBarColorChanged", "TabBarEvent", "TabBarColorChangedEvent", "uiTabBarColorChanged"],
+        "body": ["def ${1:window}.On.${2:TabBar1}.CurrentChanged(ev):\n    ${3}"],
+        "description": "Function that runs when a TabBar Current is Changed"
+    },
+    "UI TabBar Close Requested": {
+        "prefix": ["FusionUI", "TabBar", "TabBarCloseRequested", "TabBarEvent", "TabBarCloseRequestedEvent", "uiTabBarCloseRequested"],
+        "body": ["def ${1:window}.On.${2:TabBar1}.CloseRequested(ev):\n    ${3}"],
+        "description": "Function that runs when a TabBar Close is Requested"
+    },
+    "UI TabBar Tab Moved": {
+        "prefix": ["FusionUI", "TabBar", "TabBarTabMoved", "TabBarEvent", "TabBarTabMovedEvent", "uiTabBarTabMoved"],
+        "body": ["def ${1:window}.On.${2:TabBar1}.TabMoved(ev):\n    ${3}"],
+        "description": "Function that runs when a TabBar Tab is Moved"
+    },
+    "UI TabBar TabBar Clicked": {
+        "prefix": ["FusionUI", "TabBar", "TabBarTabBarClicked", "TabBarEvent", "TabBarTabBarClickedEvent", "uiTabBarTabBarClicked"],
+        "body": ["def ${1:window}.On.${2:TabBar1}.TabBarClicked(ev):\n    ${3}"],
+        "description": "Function that runs when a TabBar is Clicked"
+    },
+    "UI TabBar TabBar Double Clicked": {
+        "prefix": ["FusionUI", "TabBar", "TabBarTabBarDoubleClicked", "TabBarEvent", "TabBarTabBarDoubleClickedEvent", "uiTabBarTabBarDoubleClicked"],
+        "body": ["def ${1:window}.On.${2:TabBar1}.TabBarDoubleClicked(ev):\n    ${3}"],
+        "description": "Function that runs when a TabBar is Double Clicked"
+    },
+    // UI Trees Events
+    "UI Tree Current Item Changed": {
+        "prefix": ["FusionUI", "Tree", "TreeCurrentItemChanged", "TreeEvent", "TreeCurrentItemChangedEvent", "uiTreeCurrentItemChanged"],
+        "body": ["def ${1:window}.On.${2:Tree1}.CurrentItemChanged(ev):\n    ${3}"],
+        "description": "Function that runs when a Tree Current Item is Changed"
+    },
+    "UI Tree Item Clicked": {
+        "prefix": ["FusionUI", "Tree", "TreeItemClicked", "TreeEvent", "TreeItemClickedEvent", "uiTreeItemClicked"],
+        "body": ["def ${1:window}.On.${2:Tree1}.ItemClicked(ev):\n    ${3}"],
+        "description": "Function that runs when a Tree Item is Clicked"
+    },
+    "UI Tree Item Pressed": {
+        "prefix": ["FusionUI", "Tree", "TreeItemPressed", "TreeEvent", "TreeItemPressedEvent", "uiTreeItemPressed"],
+        "body": ["def ${1:window}.On.${2:Tree1}.ItemPressed(ev):\n    ${3}"],
+        "description": "Function that runs when a Tree Item is Pressed"
+    },
+    "UI Tree Item Activated": {
+        "prefix": ["FusionUI", "Tree", "TreeItemActivated", "TreeEvent", "TreeItemActivatedEvent", "uiTreeItemActivated"],
+        "body": ["def ${1:window}.On.${2:Tree1}.ItemActivated(ev):\n    ${3}"],
+        "description": "Function that runs when a Tree Item is Activated"
+    },
+    "UI Tree Item Double Clicked": {
+        "prefix": ["FusionUI", "Tree", "TreeItemDoubleClicked", "TreeEvent", "TreeItemDoubleClickedEvent", "uiTreeItemDoubleClicked"],
+        "body": ["def ${1:window}.On.${2:Tree1}.ItemDoubleClicked(ev):\n    ${3}"],
+        "description": "Function that runs when a Tree Item is Double Clicked"
+    },
+    "UI Tree Item Changed": {
+        "prefix": ["FusionUI", "Tree", "TreeItemChanged", "TreeEvent", "TreeItemChangedEvent", "uiTreeItemChanged"],
+        "body": ["def ${1:window}.On.${2:Tree1}.ItemChanged(ev):\n    ${3}"],
+        "description": "Function that runs when a Tree Item is Changed"
+    },
+    "UI Tree Item Entered": {
+        "prefix": ["FusionUI", "Tree", "TreeItemEntered", "TreeEvent", "TreeItemEnteredEvent", "uiTreeItemEntered"],
+        "body": ["def ${1:window}.On.${2:Tree1}.ItemEntered(ev):\n    ${3}"],
+        "description": "Function that runs when a Tree Item is Entered"
+    },
+    "UI Tree Item Expanded": {
+        "prefix": ["FusionUI", "Tree", "TreeItemExpanded", "TreeEvent", "TreeItemExpandedEvent", "uiTreeItemExpanded"],
+        "body": ["def ${1:window}.On.${2:Tree1}.ItemExpanded(ev):\n    ${3}"],
+        "description": "Function that runs when a Tree Item is Expanded"
+    },
+    "UI Tree Item Collapsed": {
+        "prefix": ["FusionUI", "Tree", "TreeItemCollapsed", "TreeEvent", "TreeItemCollapsedEvent", "uiTreeItemCollapsed"],
+        "body": ["def ${1:window}.On.${2:Tree1}.ItemCollapsed(ev):\n    ${3}"],
+        "description": "Function that runs when a Tree Item is Collapsed"
+    },
+    // UI Windows Events
+    "UI Window Closed": {
+        "prefix": ["FusionUI", "Window", "WindowClose", "WindowEvent", "WindowCloseEvent", "uiWindowClose"],
+        "body": ["def ${1:window}.On.${2:Window1}.Close(ev):\n    ${3}"],
+        "description": "Function that runs when a Window is Closed"
+    },
+    "UI Window Shown": {
+        "prefix": ["FusionUI", "Window", "WindowShow", "WindowEvent", "WindowShowEvent", "uiWindowShow"],
+        "body": ["def ${1:window}.On.${2:Window1}.Show(ev):\n    ${3}"],
+        "description": "Function that runs when a Window is Shown"
+    },
+    "UI Window Hidden": {
+        "prefix": ["FusionUI", "Window", "WindowHide", "WindowEvent", "WindowHideEvent", "uiWindowHide"],
+        "body": ["def ${1:window}.On.${2:Window1}.Hide(ev):\n    ${3}"],
+        "description": "Function that runs when a Window is Hidden"
+    },
+    "UI Window Resized": {
+        "prefix": ["FusionUI", "Window", "WindowResize", "WindowEvent", "WindowResizeEvent", "uiWindowResize"],
+        "body": ["def ${1:window}.On.${2:Window1}.Resize(ev):\n    ${3}"],
+        "description": "Function that runs when a Window is Resized"
+    },
+    "UI Window Mouse Pressed": {
+        "prefix": ["FusionUI", "Window", "WindowMousePress", "WindowEvent", "WindowMousePressEvent", "uiWindowMousePress"],
+        "body": ["def ${1:window}.On.${2:Window1}.MousePress(ev):\n    ${3}"],
+        "description": "Function that runs when a Window Mouse is Pressed"
+    },
+    "UI Window Mouse Released": {
+        "prefix": ["FusionUI", "Window", "WindowMouseRelease", "WindowEvent", "WindowMouseReleaseEvent", "uiWindowMouseRelease"],
+        "body": ["def ${1:window}.On.${2:Window1}.MouseRelease(ev):\n    ${3}"],
+        "description": "Function that runs when a Window Mouse is Released"
+    },
+    "UI Window Mouse Double Clicked": {
+        "prefix": ["FusionUI", "Window", "WindowMouseDoubleClick", "WindowEvent", "WindowMouseDoubleClickEvent", "uiWindowMouseDoubleClick"],
+        "body": ["def ${1:window}.On.${2:Window1}.MouseDoubleClick(ev):\n    ${3}"],
+        "description": "Function that runs when a Window Mouse is Double Clicked"
+    },
+    "UI Window Mouse Moved": {
+        "prefix": ["FusionUI", "Window", "WindowMouseMove", "WindowEvent", "WindowMouseMoveEvent", "uiWindowMouseMove"],
+        "body": ["def ${1:window}.On.${2:Window1}.MouseMove(ev):\n    ${3}"],
+        "description": "Function that runs when a Window Mouse is Moved"
+    },
+    "UI Window Key Pressed": {
+        "prefix": ["FusionUI", "Window", "WindowKeyPress", "WindowEvent", "WindowKeyPressEvent", "uiWindowKeyPress"],
+        "body": ["def ${1:window}.On.${2:Window1}.KeyPress(ev):\n    ${3}"],
+        "description": "Function that runs when a Window Key is Pressed"
+    },
+    "UI Window Key Released": {
+        "prefix": ["FusionUI", "Window", "WindowKeyRelease", "WindowEvent", "WindowKeyReleaseEvent", "uiWindowKeyRelease"],
+        "body": ["def ${1:window}.On.${2:Window1}.KeyRelease(ev):\n    ${3}"],
+        "description": "Function that runs when a Window Key is Released"
+    },
+    // UI Events
+    "UI Window Focused In": {
+        "prefix": ["FusionUI", "Window", "WindowFocusIn", "WindowEvent", "WindowFocusInEvent", "uiWindowFocusIn"],
+        "body": ["def ${1:window}.On.${2:Window1}.FocusIn(ev):\n    ${3}"],
+        "description": "Function that runs when a Window Focused In"
+    },
+    "UI Window Focused Out": {
+        "prefix": ["FusionUI", "Window", "WindowFocusOut", "WindowEvent", "WindowFocusOutEvent", "uiWindowFocusOut"],
+        "body": ["def ${1:window}.On.${2:Window1}.FocusOut(ev):\n    ${3}"],
+        "description": "Function that runs when a Window Focused Out"
+    },
+    "UI Window Entered": {
+        "prefix": ["FusionUI", "Window", "WindowEnter", "WindowEvent", "WindowEnterEvent", "uiWindowEnter"],
+        "body": ["def ${1:window}.On.${2:Window1}.Enter(ev):\n    ${3}"],
+        "description": "Function that runs when a Window is Entered"
+    },
+    "UI Window Leave": {
+        "prefix": ["FusionUI", "Window", "WindowLeave", "WindowEvent", "WindowLeaveEvent", "uiWindowLeave"],
+        "body": ["def ${1:window}.On.${2:Window1}.Leave(ev):\n    ${3}"],
+        "description": "Function that runs when a Window is Left"
+    },
+    // UI StyleSheets
+    "UI Button CSS": {
+        "prefix": ["FusionUI", "Button", "CSS", "ButtonCSS", "uiCSSButton"],
+        "body": ["Buttons_CSS = '''\n    QPushButton {\n        border: 1px solid transparent;\n        border-radius: 8px;\n        background-color: rgb(0,0,0);\n        color: white;\n        font-size: 20px;\n        font-weight: 300;\n        font-family: 'Arial';\n    }\n    QPushButton:hover {\n        background-color: rgb(100, 100, 100);\n        color: yellow;\n    }\n    QPushButton:pressed {\n        background-color: rgb(255,255,255);\n        color: black;\n    }\n    QPushButton:!enabled {\n        background-color: rgb(50,50,50);\n        color: rgb(150,150,150);\n    }\n'''"],
+        "description": "Get the Button CSS Variable"
+    },
+    "UI Label CSS": {
+        "prefix": ["FusionUI", "Label", "CSS", "LabelCSS", "uiCSSLabel"],
+        "body": ["Labels_CSS = '''\n    QLabel {\n        color: rgb(255, 255, 255);\n        font-size: 30px;\n        font-weight: 300;\n        font-family: 'Arial';\n    }\n    QLabel:!enabled {\n        color: rgb(150, 150, 150);\n    }\n'''"],
+        "description": "Get the Label CSS Variable"
+    },
+    "UI Line CSS": {
+        "prefix": ["FusionUI", "Line", "CSS", "LineCSS", "uiCSSLine"],
+        "body": ["Lines_CSS = '''\n    QFrame[frameShape='4'] {\n        border: none;\n        background-color: rgb(255, 255, 255);\n        max-height: 2px;\n    }\n    QFrame[frameShape='4']:!enabled {\n        border: none;\n        background-color: rgb(150, 150, 150);\n        max-height: 2px;\n    }\n'''"],
+        "description": "Get the Divider Line CSS Variable"
+    },
+    
+    /*
+        BMD Functions Library
+    */
+
+    "BDM Read Directory": {
+        "prefix": ["read", "BMD", "readdirectory", "readdir", "readfolder", "folder", "directory", "bmdrd"],
+        "body": ["dataTable = bmd.readdir('${1:/PATH/TO/FOLDER/}')  # returns table of information about the folder - does not include subfolders and content\nprint(bmd.writestring(dataTable))"],
+        "description": "Get information about the specified folder"
+    },
+    "BDM Create Directory": {
+        "prefix": ["Create", "BMD", "createdir", "createdirectory", "createfolder", "makefolder", "folder", "directory", "bmdcd"],
+        "body": ["create_successful = bmd.createdir('${1:/PATH/TO/FOLDER/}')  # Create a new folder - returns boolean\nif not create_successful:\n    raise ValueError('Could not create folder')"],
+        "description": "Create a folder on user's computer"
+    },
+    "BDM Remove Directory": {
+        "prefix": ["Remove", "BMD", "Removedir", "Removedirectory", "deletefolder", "removefolder", "folder", "directory", "bmdrd"],
+        "body": ["remove_successful = bmd.removedir('${1:/PATH/TO/FOLDER/}')  # Remove a folder - returns boolean\nif not remove_successful:\n    raise ValueError('Could not remove folder')"],
+        "description": "Remove a folder on user's computer"
+    },
+    "BDM Crash Resolve": {
+        "prefix": ["crash", "BMD", "close", "quit", "forcequit", "crashdavinci", "bmdc"],
+        "body": ["bmd.crash()  # Crash the software and the script"],
+        "description": "Crash Davinci Resolve/Fusion"
+    },
+    "BDM Suspend": {
+        "prefix": ["Suspend", "BMD", "bmds"],
+        "body": ["bmd.suspend()  # Unknown: Inform Asher at asher@fusionpixelstudio.com"],
+        "description": "Effect is unknown to Asher - please inform if you know!"
+    },
+    "BDM noise": {
+        "prefix": ["noise", "BMD", "bmdn"],
+        "body": ["noisy_number = bmd.noise(${1:10})  # Converts number into noise?"],
+        "description": "Changes its output depending on the input number"
+    },
+    "BDM Check File Exists": {
+        "prefix": ["Check", "BMD", "File", "FileExists", "IsFile", "bmdfe"],
+        "body": ["is_file = bmd.fileexists('${1:/PATH/TO/FILE}')  # Returns boolean\nif not is_file:\n    with open('${1:/PATH/TO/FILE}', 'w') as file:\n        file.write('Hello, this is a test file created with Python!\\n')\n    print(f'File created successfully at: ${1:/PATH/TO/FILE}')"],
+        "description": "Check if a specified file exists"
+    },
+    "BDM Check Folder Exists": {
+        "prefix": ["Check", "BMD", "Folder", "FolderExists", "IsFolder", "directory", "dir", "isdir", "direxists", "directoryexists", "bmdde"],
+        "body": ["is_folder = bmd.direxists('${1:/PATH/TO/FOLDER}')  # Returns boolean\nif not is_folder:\n    success = bmd.createdir('${1:/PATH/TO/FOLDER}')\n    if not success:\n        raise ValueError('Could not create directory')\n    print('Directory created successfully')"],
+        "description": "Check if a specified folder exists"
+    },
+    "BDM Execute BG": {
+        "prefix": ["Execute", "BMD", "ExecuteBG", "bmdebg"],
+        "body": ["bmd.executebg()  # Unknown: Inform Asher at asher@fusionpixelstudio.com"],
+        "description": "Effect is unknown to Asher - please inform if you know!"
+    },
+    "BDM Get Current Folder": {
+        "prefix": ["Get", "BMD", "CurrentFolder", "getfolder", "getcurrentdir", "directory", "bmdgcd"],
+        "body": ["curr_folder = bmd.getcurrentdir()  # Get the current directory within the BMD environment"],
+        "description": "Get the current folder"
+    },
+    "BDM Set Current Folder": {
+        "prefix": ["Set", "BMD", "CurrentFolder", "Setfolder", "Setcurrentdir", "directory", "bmdscd"],
+        "body": ["curr_folder_set = bmd.setcurrentdir()  # Set the current directory within the BMD environment"],
+        "description": "Set the current folder"
+    },
+    "BDM Get PID": {
+        "prefix": ["Get", "BMD", "GetPID", "GetID", "bmdgPID"],
+        "body": ["pid = bmd.getpid()  # Get the PID"],
+        "description": "Get the PID"
+    },
+    "BDM To UserData": {
+        "prefix": ["To", "BMD", "UserData", "ToUserData", "bmdtud"],
+        "body": ["success = bmd.touserdata(${1:non_user_data})  # Convert to userdata"],
+        "description": "Convert something to userdata"
+    },
+    "BDM Wait": {
+        "prefix": ["wait", "BMD", "hold", "pause", "bmdp"],
+        "body": ["bmd.wait(${1:1})  # Stop the script for a set amount of seconds"],
+        "description": "Stop the script for a short time"
+    },
+    "BDM Get Resolve Up Time": {
+        "prefix": ["Get", "BMD", "uptime", "getuptime", "bmdgut"],
+        "body": ["uptime_ms = bmd.getuptime()  # Get the computer's uptime in milliseconds\nseconds = uptime_ms / 1000\ndays = int(seconds // 86400)\nrem = seconds % 86400\nhours = int(rem // 3600)\nrem %= 3600\nminutes = int(rem // 60)\nfinal_seconds = rem % 60\nformatted_time = f'{days:02}:{hours:02}:{minutes:02}:{final_seconds:05.2f}'\nprint(formatted_time)"],
+        "description": "Get the uptime for the computer"
+    },
+    "BDM Get Time": {
+        "prefix": ["Get", "BMD", "time", "gettime", "bmdgt"],
+        "body": ["uptime_ms = bmd.gettime()  # Get the current time in milliseconds\nseconds = uptime_ms / 1000\ndays = int(seconds // 86400)\nrem = seconds % 86400\nhours = int(rem // 3600)\nrem %= 3600\nminutes = int(rem // 60)\nfinal_seconds = rem % 60\nformatted_time = f'{days:02}:{hours:02}:{minutes:02}:{final_seconds:05.2f}'\nprint(formatted_time)"],
+        "description": "Get the current time for the computer"
+    },
+    "BDM Strip Name": {
+        "prefix": ["Strip", "BMD", "stripname", "bmdsm"],
+        "body": ["stripped_name = bmd.stripname('${1:string}')  # Get the string back without any formatting"],
+        "description": "Remove punctuation from a string"
+    },
+    "BDM is Valid Name": {
+        "prefix": ["is", "BMD", "validname", "isvalidname", "bmdivn"],
+        "body": ["is_valid = bmd.isvalidname('${1:string}')  # Checks if the string is a valid name"],
+        "description": "Checks if the string is a valid name"
+    },
+    "BDM is Quoteable": {
+        "prefix": ["is", "BMD", "quotable", "isquotable", "bmdiq"],
+        "body": ["is_quotable = bmd.isquotable(${1:something})  # Checks if something is quotable"],
+        "description": "Checks if something is quotable"
+    },
+    "BDM Get Full Path": {
+        "prefix": ["get", "BMD", "fullpath", "path", "getfullpath", "bmdfp"],
+        "body": ["full_path = bmd.fullpath('${1:/PATH/TO/FOLDER/or FILE}')  # Gets the full path to the specified folder/file"],
+        "description": "Gets the full path to the specified folder/file"
+    },
+    "BDM Start Server": {
+        "prefix": ["start", "BMD", "startserver", "server", "bmdss"],
+        "body": ["bmd.startserver('${1:IP}')  # Start a server on the set IP"],
+        "description": "Start a server on the set IP"
+    },
+    "BDM Get App Name": {
+        "prefix": ["get", "BMD", "appname", "getappname", "bmdgan"],
+        "body": ["app_name = bmd.getappname()  # Get which app is opened"],
+        "description": "Get which app is opened"
+    },
+    "BDM Get App UUID": {
+        "prefix": ["get", "BMD", "uuid", "getappuuid", "bmdgu"],
+        "body": ["app_uuid = bmd.getappuuid()  # Get the app's UUID"],
+        "description": "Get the app's unique ID"
+    },
+    "BDM Create UUID": {
+        "prefix": ["Create", "BMD", "uuid", "Createuuid", "bmdcu"],
+        "body": ["uuid = bmd.createuuid()  # Create a new UUID"],
+        "description": "Create a new unique ID"
+    },
+    "BDM Get Clipboard": {
+        "prefix": ["Get", "BMD", "clipboard", "GetClipboard", "bmdgcb"],
+        "body": ["clipboard = bmd.getclipboard()  # Get the user's clipboard"],
+        "description": "Get the user's clipboard"
+    },
+    "BDM Set Clipboard": {
+        "prefix": ["Set", "BMD", "clipboard", "SetClipboard", "bmdscb"],
+        "body": ["bmd.setclipboard('${1:string}')  # Set the user's clipboard"],
+        "description": "Set the user's clipboard"
+    },
+    "BDM Get Script App": {
+        "prefix": ["Get", "BMD", "ScriptApp", "GetScriptApp", "bmdgsa"],
+        "body": ["resolve = bmd.getscriptapp('${1:Resolve}')  # Get the script app"],
+        "description": "Get the script app"
+    },
+    "BDM Defrag File": {
+        "prefix": ["Defrag", "BMD", "File", "DefragFile", "bmddf"],
+        "body": ["bmd.defragfile('${1:/PATH/TO/FILE}')  # Defrag a file"],
+        "description": "Defrag a file"
+    },
+    "BDM Read File": {
+        "prefix": ["Read", "BMD", "File", "ReadFile", "JSON", "toTable", "bmrf"],
+        "body": ["file_tbl = bmd.readfile('${1:/PATH/TO/FILE}')  # Turn a file into a table (needs to be formatted like output of bmd.writestring())"],
+        "description": "Turn a file into a table"
+    },
+    "BDM Write File": {
+        "prefix": ["Write", "BMD", "File", "WriteFile", "JSON", "fromTable", "bmwf"],
+        "body": ["bmd.writefile('${1:/PATH/TO/FILE}', ${2:Content})  # Write a file"],
+        "description": "Write a file; works best if content is a table"
+    },
+    "BDM Read String": {
+        "prefix": ["Read", "BMD", "String", "ReadString", "JSON", "toTable", "bmrs"],
+        "body": ["string_tbl = bmd.readstring('${1:{\"string\": \"yes\"}}')  # Turn into table"],
+        "description": "Creates a table from a string"
+    },
+    "BDM Write String": {
+        "prefix": ["write", "BMD", "writestring", "tabletostring", "bmdws"],
+        "body": ["stringified_table = bmd.writestring(${1:table})  # Convert a table to a string (good for seeing table layouts)\nprint(stringified_table)"],
+        "description": "Convert a table to a readable string"
+    },
+    "BDM Open File External": {
+        "prefix": ["Open", "BMD", "OpenFile", "openFileExplorer", "bmdofe"],
+        "body": ["bmd.openfileexternal('${1:/PATH/TO/FILE}')  # Opens file in file explorer"],
+        "description": "Opens file in file explorer"
+    },
+    "BDM Open URL": {
+        "prefix": ["Open", "BMD", "OpenURL", "openwebsite", "bmdoURL"],
+        "body": ["bmd.openurl('${1:www.website.com}')  # Opens website in default browser"],
+        "description": "Opens website in default browser"
+    },
+    "BDM Set App Title": {
+        "prefix": ["Set", "BMD", "SetTitle", "setapptitle", "bmdsat"],
+        "body": ["bmd.setapptitle('${1:New Title}')  # Changes the app title"],
+        "description": "Changes the app title"
+    },
+    "BDM Translate": {
+        "prefix": ["Set", "BMD", "SetTitle", "setapptitle", "bmdsat"],
+        "body": ["bmd.translate('${1:Maybe a string}')  # Translates something - Asher isn't sure what this does"],
+        "description": "Unknown effects; translates something"
+    },
+    "BDM Get a Table's State Index": {
+        "prefix": ["Get", "BMD", "GetState", "GetStateIndex", "bmdgsi"],
+        "body": ["bmd.getstateindex(${1:tbl})  # Get State Index of a table"],
+        "description": "Unknown effects; gets index"
+    },
+    "BDM Get a Table's Next State": {
+        "prefix": ["Get", "BMD", "GetState", "GetNextState", "bmdns"],
+        "body": ["bmd.nextstate(${1:tbl})  # Get Next State of a table"],
+        "description": "Unknown effects; gets state"
+    },
+    "BDM Get Version Number": {
+        "prefix": ["Get", "BMD", "GetVersion", "VersionNumber", "bmdV"],
+        "body": ["bmd._VERSION  # Get the version number of Davinci"],
+        "description": "Get the version number of the app"
+    },
+    "BDM Settr Context": {
+        "prefix": ["Settr", "BMD", "SettrContext", "bmdsc"],
+        "body": ["bmd.settrcontext()  # Unknown effects"],
+        "description": "Unknown effects"
+    },
+    "BDM UI Dispatcher": {
+        "prefix": ["UI", "BMD", "GetDispatcher", "Dispatcher", "bmdUID"],
+        "body": ["disp = bmd.UIDispatcher(${1:ui})  # The UI Dispatcher for all UIs"],
+        "description": "Get the UI Dispatcher for fusion UIs"
+    },
+    "BDM Exit": {
+        "prefix": ["Exit", "BMD", "Close", "CloseApp", "ExitApp", "bmde"],
+        "body": ["bmd.exit()  # Exit the app"],
+        "description": "Close the app"
+    }
+}
