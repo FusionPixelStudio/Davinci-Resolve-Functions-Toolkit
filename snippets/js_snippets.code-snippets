@@ -5,20 +5,25 @@
 
     "Workflow Integration Setup": {
         "prefix" : ["WorkflowIntegration", "start", "WorkflowStart", "ws", "wi"],
-        "body": ["if (process.platform === 'darwin') {\n\tWorkflowIntegration = require(path.join(__dirname, 'WorkflowIntegration_Mac.node'));\n} else {\n\tWorkflowIntegration = require(path.join(__dirname, 'WorkflowIntegration_Win.node'));\n}\n\nlet isInitialized = WorkflowIntegration.Initialize('com.${1:YourName}.${2:PluginName}');\nif (!isInitialized) {\n\tconsole.error('Failed to initialize Workflow Integration');\n}\nconst resolve = WorkflowIntegration.GetResolve();\nconst projectManager = resolve.GetProjectManager();\nconst mediaStorage = resolve.GetMediaStorage();\nconst project = projectManager.GetCurrentProject();\nconst timeline = project.GetCurrentTimeline();\nconst mediaPool = project.GetMediaPool();\nconst gallery = project.GetGallery();"],
+        "body": ["const path = require('path');\nif (process.platform === 'darwin') {\n\tWorkflowIntegration = require(path.join(__dirname, 'WorkflowIntegration_Mac.node'));\n} else {\n\tWorkflowIntegration = require(path.join(__dirname, 'WorkflowIntegration_Win.node'));\n}\n\nlet isInitialized = WorkflowIntegration.Initialize('com.${1:YourName}.${2:PluginName}');\nif (!isInitialized) {\n\tconsole.error('Failed to initialize Workflow Integration');\n}"],
         "description": "The resolve object"
     },
     "Resolve Setup": {
         "prefix" : ["resolve", "start", "resolveStart", "rs", "dvr"],
-        "body": ["const resolve = WorkflowIntegration.GetResolve();\nconst projectManager = resolve.GetProjectManager();\nconst mediaStorage = resolve.GetMediaStorage();\nconst project = projectManager.GetCurrentProject();\nconst timeline = project.GetCurrentTimeline();\nconst mediaPool = project.GetMediaPool();\nconst gallery = project.GetGallery();"],
+        "body": ["const resolve = WorkflowIntegration.GetResolve();\nconst fusion = resolve.Fusion();\nconst projectManager = resolve.GetProjectManager();\nconst mediaStorage = resolve.GetMediaStorage();\nconst project = projectManager.GetCurrentProject();\nconst timeline = project.GetCurrentTimeline();\nconst mediaPool = project.GetMediaPool();\nconst gallery = project.GetGallery();"],
         "description": "The resolve object"
     },
 
     // The Resolve Object Functions
     "Resolve": {
-        "prefix" : ["app", "app.Get", "Get", "Resolve"],
+        "prefix" : ["app", "Get", "Resolve"],
         "body": ["WorkflowIntegration.GetResolve();"],
         "description": "The resolve object"
+    },
+    "Fusion": {
+        "prefix" : ["app", "Get", "Fusion"],
+        "body": ["${1:resolve}.Fusion();"],
+        "description": "The fusion object"
     },
     "Media Storage": {
         "prefix": ["Get", "Media", "MS", "GMS"],
