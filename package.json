@@ -2,6 +2,7 @@
   "name": "davinci-resolve-function-toolkit",
   "displayName": "Davinci Resolve Function Toolkit",
   "description": "The MOST in depth Davinci Resolve Scripting Toolkit for Lua, Python, and JavaScript. Includes the Davinci Resolve API, Fusion API, BMD Function Library, Fusion UI System, and more!",
+  "repository": "https://github.com/FusionPixelStudio/Davinci-Resolve-Functions-Toolkit",
   "version": "1.0.0",
   "engines": {
     "vscode": "^1.95.1"
