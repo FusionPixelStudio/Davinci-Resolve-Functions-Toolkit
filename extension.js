@@ -95,7 +95,7 @@ async function activate(context) {
   const openWIFolder = vscode.commands.registerCommand('davinci-resolve-function-toolkit.openWIFolder', async function () {
     let path;
     if (process.platform === "darwin") {
-      path = `/Library/Application Support/Blackmagic Design/DaVinci Resolve/Support/Workflow Integration Plugins`;
+      path = `/Library/Application Support/Blackmagic Design/DaVinci Resolve/Workflow Integration Plugins`;
     } else if (process.platform === "win32") {
       path = `C:\\ProgramData\\Blackmagic Design\\DaVinci Resolve\\Support\\Workflow Integration Plugins`;
     } else {
@@ -184,6 +184,7 @@ async function activate(context) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <title>${projName}</title>
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />
     <script type="text/javascript" src="./renderer.js"></script>
 </head>
 <body>
@@ -197,8 +198,143 @@ async function activate(context) {
 </body>
 </html>`
 
-		mainJS = `const {app, BrowserWindow, ipcMain, shell, Menu} = require('electron')
+		mainJS = `// NOTE: Follow the security guide while implementing plugin app https://www.electronjs.org/docs/tutorial/security
+const {app, BrowserWindow, ipcMain, shell, Menu} = require('electron')
 const path = require('path');
+
+const PLUGIN_ID = 'com.${packageID}'
+
+if (process.platform === "darwin") {
+    WorkflowIntegration = require(path.join(__dirname, "WorkflowIntegration_Mac.node"));
+} else {
+    WorkflowIntegration = require(path.join(__dirname, 'WorkflowIntegration_Win.node'));
+}
+
+// Cached objects
+let resolveObj = null;
+let projectManagerObj = null;
+
+// Initialize Resolve interface and returns Resolve object.
+async function initResolveInterface() {
+    // Initialize resolve interface
+    const isSuccess = await WorkflowIntegration.Initialize(PLUGIN_ID);
+    if (!isSuccess) {
+        logToFile('Error: Failed to initialize Resolve interface!');
+        return null;
+    }
+
+    // Get resolve interface object
+    resolveInterfacObj = await WorkflowIntegration.GetResolve();
+    if (!resolveInterfacObj) {
+        logToFile('Error: Failed to get Resolve object!');
+        return null;
+    }
+
+    return resolveInterfacObj
+}
+
+// Cleanup Resolve interface.
+function cleanup() {
+    const isSuccess = WorkflowIntegration.CleanUp();
+    if (!isSuccess) {
+        logToFile('Error: Failed to cleanup Resolve interface!');
+    }
+
+    resolveObj = null;
+    projectManagerObj = null;
+}
+
+// Gets Resolve object.
+async function getResolve() {
+    if (!resolveObj) {
+        resolveObj = await initResolveInterface();
+    }
+
+    return resolveObj;
+}
+
+// Gets project manager object.
+async function getProjectManager() {
+    if (!projectManagerObj) {
+        resolve = await getResolve();
+        if (resolve) {
+            projectManagerObj = await resolve.GetProjectManager();
+            if (!projectManagerObj) {
+                logToFile('Error: Failed to get ProjectManager object!');
+            }
+        }
+    }
+
+    return projectManagerObj;
+}
+
+// Gets current project object.
+async function getCurrentProject() {
+    curProjManager = await getProjectManager();
+    if (curProjManager) {
+        currentProject = await curProjManager.GetCurrentProject();
+        if (!currentProject) {
+            logToFile('Error: Failed to get current project object!');
+        }
+
+        return currentProject;
+    }
+
+    return null;
+}
+
+// Gets media pool object.
+async function getMediaPool() {
+    currentProject = await getCurrentProject();
+    if (currentProject) {
+        mediaPool = await currentProject.GetMediaPool();
+        if (!mediaPool) {
+            logToFile('Error: Failed to get MediaPool object!');
+        }
+
+        return mediaPool;
+    }
+
+    return null;
+}
+
+// Gets the current timeline object
+async function getCurrentTimeline() {
+    currentProject = await getCurrentProject();
+    if (currentProject) {
+        timeline = await currentProject.GetCurrentTimeline();
+        if (!timeline) {
+            logToFile('Error: Failed to get Current Timeline object!')
+        }
+
+        return timeline;
+    }
+
+    return null;
+}
+
+// Gets the current timeline track count
+async function getTrackCount(event, trackType) {
+    if (typeof trackType !== "string" && trackType) {
+        throw new Error("Track Type must be a string!")
+        return null;
+    } else if (!trackType) {
+        throw new Error("Track Type must be provided!")
+        return null;
+    }
+    timeline = await getCurrentTimeline()
+    if (timeline) {
+        return await timeline.GetTrackCount(trackType);
+    }
+
+    return null;
+}
+
+// Register resolve event handler functions.
+function registerResolveEventHandlers() {
+    // Resolve
+    ipcMain.handle('resolve:trackCount', getTrackCount);
+}
 
 const createWindow = () => {
     const win = new BrowserWindow ({
@@ -212,30 +348,45 @@ const createWindow = () => {
         }
     });
 
-    // win.webContents.openDevTools();
+    // Show the main window once the content is ready and close the loading window
+    win.once('ready-to-show', () => {
+        win.show()
+    })
 
-    // hide the menu bar
-    win.setMenuBarVisibility(false);
+    win.webContents.setWindowOpenHandler(({ url }) => {
+        shell.openExternal(url);
+        return { action: 'deny' };
+      });
+    
+    // Hide the menu bar (enable below code to hide menu bar)
+    //win.setMenu(null);
 
     win.on('close', function(e) {
+        cleanup();
         app.quit();
     });
 
-    win.once('ready-to-show', () => win.show())
+    // Load index.html on the window.
+    win.loadFile('index.html');
 
-    win.loadFile("index.html");
+    // Open the DevTools (enable below code to show DevTools)
+    //win.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+app.whenReady().then(() => {
+    registerResolveEventHandlers();
+    createWindow();
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
     // On macOS it is common for applications and their menu bar
     // to stay active until the user quits explicitly with Cmd + Q
     if (process.platform !== 'darwin') {
+        cleanup();
         app.quit();
     }
 });
@@ -244,16 +395,7 @@ app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
-});
-
-
-// Expose Access to Modules
-ipcMain.handle('path-join', (event, ...paths) => path.join(...paths));
-ipcMain.handle('path-basename', (event, filePath) => path.basename(filePath));
-ipcMain.handle('path-dirname', (event, filePath) => path.dirname(filePath));
-ipcMain.handle('path-extname', (event, filePath) => path.extname(filePath));
-
-ipcMain.handle('get-dirname', () => __dirname);`
+});`
 
 		manifestXML = `<?xml version="1.0" encoding="UTF-8"?>
 <BlackmagicDesign>
@@ -281,17 +423,14 @@ ipcMain.handle('get-dirname', () => __dirname);`
 
 		preloadJS = `// All of the Node.js APIs are available in the preload process.
 // It has the same sandbox as a Chrome extension.
-
 const { contextBridge, ipcRenderer } = require('electron/renderer')
 
-contextBridge.exposeInMainWorld('electronAPI', {
-  // Expose path functions
-  pathJoin: (...args) => ipcRenderer.invoke('path-join', ...args),
-  pathBasename: (filePath) => ipcRenderer.invoke('path-basename', filePath),
-  pathDirname: (filePath) => ipcRenderer.invoke('path-dirname', filePath),
-  pathExtname: (filePath) => ipcRenderer.invoke('path-extname', filePath),
-  getDirname: () => ipcRenderer.invoke('get-dirname'),
-});
+const API = {
+  // Resolve
+  trackCount: (trackType) => ipcRenderer.invoke('resolve:trackCount', (trackType)), // Function Found in Main. Can be used in app.js
+}
+
+contextBridge.exposeInMainWorld('appAPI', API);
 
 window.addEventListener('DOMContentLoaded', () => {
   const replaceText = (selector, text) => {
@@ -307,21 +446,21 @@ window.addEventListener('DOMContentLoaded', () => {
 		rendererJS = `// This file is required by the index.html file and will
 // be executed in the renderer process for that window.`
 
-		appJS = `const cssFolderPromise = (async () => {
-    const dirname = await window.electronAPI.getDirname();
-    return window.electronAPI.pathJoin(dirname, 'css/');
-})();
+		appJS = `window.onload = async function () {
+    const trackCount = await window.appAPI.trackCount('subtitle') // Requires await call inside async function
+    console.log(trackCount)
+}`
 
-async function getCSSFolder() {
-    return await cssFolderPromise;
+    stylescss = `*{
+  margin: 0;
+  padding: 0;    
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
-
-async function something() {
-    const cssFolder = await getCSSFolder();
-    console.log(cssFolder);
-}
-
-something();`
+  
+h1{
+  font-size: 2rem;
+  font-weight: 800;
+}`
     }
 
     let WIFolder
@@ -349,6 +488,9 @@ something();`
 			const css = vscode.Uri.file(currentFolder + '/css');
 			vscode.workspace.fs.createDirectory(css);
 			// console.log(css);
+
+      const styles = vscode.Uri.file(currentFolder + '/css/styles.css');
+			vscode.workspace.fs.writeFile(styles, new TextEncoder().encode(stylescss));
 
 			const img = vscode.Uri.file(currentFolder + '/img');
 			vscode.workspace.fs.createDirectory(img);
