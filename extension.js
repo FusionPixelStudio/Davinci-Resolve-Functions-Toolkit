@@ -1,8 +1,10 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
-
 const { exec } = require('child_process');
+const https = require('https');
+const fs = require('fs');
+const path = require('path');
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -57,6 +59,88 @@ async function activate(context) {
       exec(`xdg-open "${folderPath}"`);
     }
   }
+
+/**
+ * Downloads a binary file (e.g., .node) from a URL and saves it locally.
+ * @param {string} url - The file URL.
+ * @param {string} savePath - The path where the file should be saved.
+ */
+function downloadBinaryFile(url, savePath) {
+  return new Promise((resolve, reject) => {
+      // vscode.window.showInformationMessage(`Starting download from: ${url}`);
+
+      const makeRequest = (currentUrl) => {
+          https.get(currentUrl, (response) => {
+              // vscode.window.showInformationMessage(`HTTP Status Code: ${response.statusCode}`);
+
+              // Handle redirect
+              if (response.statusCode === 302 || response.statusCode === 301) {
+                  const newLocation = response.headers.location;
+                  // vscode.window.showInformationMessage(`Redirecting to: ${newLocation}`);
+                  makeRequest(newLocation); // Follow the redirect
+                  return;
+              }
+
+              if (response.statusCode === 200) {
+                  const directory = path.dirname(savePath);
+                  if (!fs.existsSync(directory)) {
+                      fs.mkdirSync(directory, { recursive: true });
+                  }
+
+                  const file = fs.createWriteStream(savePath);
+                  response.pipe(file);
+
+                  file.on('finish', () => {
+                      file.close(() => {
+                          // vscode.window.showInformationMessage(`File downloaded successfully: ${savePath}`);
+                          resolve();
+                      });
+                  });
+
+                  file.on('error', (err) => {
+                      fs.unlinkSync(savePath); // Delete the file on error
+                      // vscode.window.showErrorMessage(`Error writing file: ${err.message}`);
+                      reject(err);
+                  });
+              } else {
+                  // vscode.window.showErrorMessage(`Failed to download file. Status: ${response.statusCode}`);
+                  reject(new Error(`HTTP error: ${response.statusCode}`));
+              }
+          }).on('error', (err) => {
+              // vscode.window.showErrorMessage(`Request error: ${err.message}`);
+              reject(err);
+          });
+      };
+
+      makeRequest(url); // Start the initial request
+  });
+}
+
+  const downloadOther = vscode.commands.registerCommand('davinci-resolve-function-toolkit.downloadOtherOSNode', async function () {
+    let rawpath = vscode.workspace.workspaceFolders
+    if (rawpath) {
+      let path = rawpath[0].uri.toString(true).slice(8)
+
+      if (process.platform === "darwin") {
+        githubRawUrl = 'https://github.com/FusionPixelStudio/Example-Workflow-Integration/raw/refs/heads/main/WorkflowIntegration_Win.node';
+        outputPath = path + '/WorkflowIntegration_Win.node';
+      } else if (process.platform === "win32") {
+        githubRawUrl = 'https://github.com/FusionPixelStudio/Example-Workflow-Integration/raw/refs/heads/main/WorkflowIntegration_Mac.node';
+        outputPath = path + '/WorkflowIntegration_Mac.node';
+      } else {
+        vscode.window.showErrorMessage("Workflow Integrations not yet supported on Linux");
+        return;
+      }
+      
+      await downloadBinaryFile(githubRawUrl, outputPath)
+      .then(() => vscode.window.showInformationMessage('Download completed.'))
+      .catch(err => vscode.window.showErrorMessage(`Download failed: ${err.message || err}`));
+
+    } else {
+      vscode.window.showErrorMessage("No Folder is Open in Explorer!");
+      return;
+    }
+  });
 
   const openScriptsUserFolder = vscode.commands.registerCommand('davinci-resolve-function-toolkit.openScriptsUserFolder', async function () {
     let scriptsPath;
@@ -172,7 +256,7 @@ async function activate(context) {
     })
   });
 
-	const createWorkflow = vscode.commands.registerCommand('davinci-resolve-function-toolkit.createWorkflow', function () {
+	const createWorkflow = vscode.commands.registerCommand('davinci-resolve-function-toolkit.createWorkflow', async function () {
 
     function createProj(userName, projName, description, ver, lic) {
       let packageName = projName.toLowerCase().replace(/\s+/g, '-');
@@ -219,14 +303,14 @@ async function initResolveInterface() {
     // Initialize resolve interface
     const isSuccess = await WorkflowIntegration.Initialize(PLUGIN_ID);
     if (!isSuccess) {
-        logToFile('Error: Failed to initialize Resolve interface!');
+        throw new Error('Error: Failed to initialize Resolve interface!');
         return null;
     }
 
     // Get resolve interface object
     resolveInterfacObj = await WorkflowIntegration.GetResolve();
     if (!resolveInterfacObj) {
-        logToFile('Error: Failed to get Resolve object!');
+        throw new Error('Error: Failed to get Resolve object!');
         return null;
     }
 
@@ -237,7 +321,7 @@ async function initResolveInterface() {
 function cleanup() {
     const isSuccess = WorkflowIntegration.CleanUp();
     if (!isSuccess) {
-        logToFile('Error: Failed to cleanup Resolve interface!');
+        throw new Error('Error: Failed to cleanup Resolve interface!');
     }
 
     resolveObj = null;
@@ -260,7 +344,7 @@ async function getProjectManager() {
         if (resolve) {
             projectManagerObj = await resolve.GetProjectManager();
             if (!projectManagerObj) {
-                logToFile('Error: Failed to get ProjectManager object!');
+                throw new Error('Error: Failed to get ProjectManager object!');
             }
         }
     }
@@ -274,7 +358,7 @@ async function getCurrentProject() {
     if (curProjManager) {
         currentProject = await curProjManager.GetCurrentProject();
         if (!currentProject) {
-            logToFile('Error: Failed to get current project object!');
+            throw new Error('Error: Failed to get current project object!');
         }
 
         return currentProject;
@@ -289,7 +373,7 @@ async function getMediaPool() {
     if (currentProject) {
         mediaPool = await currentProject.GetMediaPool();
         if (!mediaPool) {
-            logToFile('Error: Failed to get MediaPool object!');
+            throw new Error('Error: Failed to get MediaPool object!');
         }
 
         return mediaPool;
@@ -304,7 +388,7 @@ async function getCurrentTimeline() {
     if (currentProject) {
         timeline = await currentProject.GetCurrentTimeline();
         if (!timeline) {
-            logToFile('Error: Failed to get Current Timeline object!')
+            throw new Error('Error: Failed to get Current Timeline object!')
         }
 
         return timeline;
@@ -568,6 +652,7 @@ h1{
 	context.subscriptions.push(openScriptsGlobalFolder);
 	context.subscriptions.push(openWIFolder);
 	context.subscriptions.push(openCurrFolder);
+	context.subscriptions.push(downloadOther);
 }
 
 function getWorkflowContent() {

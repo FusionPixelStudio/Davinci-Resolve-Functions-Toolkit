@@ -50,7 +50,7 @@
     "viewsWelcome": [
       {
         "view": "main-workflow",
-        "contents": "[Create Project](command:davinci-resolve-function-toolkit.createWorkflow)\n[Open WI Folder](command:davinci-resolve-function-toolkit.openWIFolder)\n[Open Curr Folder](command:davinci-resolve-function-toolkit.openCurrFolder)"
+        "contents": "[Create Project](command:davinci-resolve-function-toolkit.createWorkflow)\n[Download Other OS .node](command:davinci-resolve-function-toolkit.downloadOtherOSNode)\n[Open WI Folder](command:davinci-resolve-function-toolkit.openWIFolder)\n[Open Curr Folder](command:davinci-resolve-function-toolkit.openCurrFolder)"
       },
       {
         "view": "main-scripts",
@@ -93,6 +93,10 @@
       {
         "command": "davinci-resolve-function-toolkit.openCurrFolder",
         "title": "Open Current Folder"
+      },
+      {
+        "command": "davinci-resolve-function-toolkit.downloadOtherOSNode",
+        "title": "Download Other OS WorkflowIntegration.node"
       }
     ],
     "snippets": [
