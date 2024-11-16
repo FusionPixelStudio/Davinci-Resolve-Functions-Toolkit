@@ -1,4 +1,4 @@
-# davinci-resolve-function-toolkit README
+# Davinci Resolve ToolKit README
 
 This is the most in depth Snippets and Utility Extension for Davinci Resolve Scripting! Make projects faster with Snippets and Project Creating Automation!
 
