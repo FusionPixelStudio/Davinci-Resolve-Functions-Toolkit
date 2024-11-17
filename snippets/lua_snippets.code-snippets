@@ -12,17 +12,17 @@
 
 	// The Resolve Object Functions
 	"Resolve": {
-        "prefix" : ["app", "app:Get", "Get", "Resolve"],
+        "prefix" : ["Resolve", "GetResolve"],
         "body": ["app:GetResolve()"],
         "description": "The resolve object"
     },
     "Fusion from Resolve": {
-        "prefix": ["Fu", "Fusion", "Get"],
+        "prefix": ["Fusion", "GetFusion"],
         "body": ["${1:resolve}:Fusion()"],
         "description": "The fusion object"
     },
     "Fusion from app": {
-        "prefix": ["app", "app:Get", "Get", "Fu", "Fusion"],
+        "prefix": ["Fusion", "GetFusion"],
         "body": ["app:GetFusion()"],
         "description": "The fusion object"
     },
