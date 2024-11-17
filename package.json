@@ -1,6 +1,7 @@
 {
   "name": "davinci-resolve-function-toolkit",
   "displayName": "Davinci Resolve Toolkit",
+  "version": "1.5.0",
   "publisher": "AsherRoland",
   "description": "The MOST in depth Davinci Resolve Scripting Toolkit for Lua, Python, and JavaScript. Try out the Project Creator Panel!",
   "icon": "images/DaVinci_Resolve_17_logo.png",
@@ -20,7 +21,6 @@
     "email": "info@fusionpixelstudio.com"
   },
   "homepage": "https://github.com/FusionPixelStudio/Davinci-Resolve-Functions-Toolkit/blob/pre-release/README.md",
-  "version": "1.5.0",
   "engines": {
     "vscode": "^1.95.1"
   },
