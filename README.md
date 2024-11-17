@@ -79,7 +79,8 @@ local projectManager = resolve:GetProjectManager()
 
 # Extension Settings
 
-- `davinci-resolve-function-toolkit.ScriptsPath`: Where are your Davinci Resolve Scripts stored?
+- `davinci-resolve-function-toolkit.UserScriptsPath`: Where are your Davinci Resolve User Scripts stored?
+- `davinci-resolve-function-toolkit.GlobalScriptsPath`: Where are your Davinci Resolve Global Scripts stored?
 - `davinci-resolve-function-toolkit.WorkflowIntegrationPath`: Where are your Davinci Resolve Workflow Integration Plugins stored?
 
 ---
