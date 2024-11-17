@@ -1479,7 +1479,7 @@
 	*/
 	
     "Fusion Setup": {
-        "prefix": ["Fusion", "Start", "Setup", "FusionSetup", "F"],
+        "prefix": ["Fusion", "Start", "Setup", "FusionSetup", "fs"],
         "body": ["local fu = fu or app:GetFusion()\nlocal comp = fu.CurrentComp\n"],
         "description": "Setup for all Fusion Scripts"
     },

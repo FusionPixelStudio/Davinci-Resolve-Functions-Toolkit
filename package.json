@@ -2,10 +2,13 @@
   "name": "davinci-resolve-function-toolkit",
   "displayName": "Davinci Resolve Toolkit",
   "publisher": "AsherRoland",
-  "description": "The MOST in depth Davinci Resolve Scripting Toolkit for Lua, Python, and JavaScript. Includes the Davinci Resolve API, Fusion API, BMD Function Library, Fusion UI System, and more!",
+  "description": "The MOST in depth Davinci Resolve Scripting Toolkit for Lua, Python, and JavaScript. Try out the Project Creator Panel!",
   "icon": "images/DaVinci_Resolve_17_logo.png",
+  "keywords": [
+    "Lua, Python, JavaScript, Snippets, Davinci Resolve, Fusion, BMD, Fusion UI, Workflow Integration, Toolkit, Electron, IPC, Davinci Resolve 19+"
+  ],
   "galleryBanner": {
-    "color": "#C80000",
+    "color": "#b3172c",
     "theme": "dark"
   },
   "repository": {
@@ -17,7 +20,7 @@
     "email": "info@fusionpixelstudio.com"
   },
   "homepage": "https://github.com/FusionPixelStudio/Davinci-Resolve-Functions-Toolkit/blob/pre-release/README.md",
-  "version": "1.1.1",
+  "version": "1.5.0",
   "engines": {
     "vscode": "^1.95.1"
   },
@@ -28,6 +31,26 @@
   ],
   "main": "./extension.js",
   "contributes": {
+    "configuration":{
+      "title": "Davinci Resolve Toolkit",
+      "properties": {
+        "davinci-resolve-function-toolkit.UserScriptsPath": {
+          "type": "string",
+          "scope": "machine",
+          "description": "Where are your Davinci Resolve User Scripts stored?"
+        },
+        "davinci-resolve-function-toolkit.GlobalScriptsPath": {
+          "type": "string",
+          "scope": "machine",
+          "description": "Where are your Davinci Resolve Global Scripts stored?"
+        },
+        "davinci-resolve-function-toolkit.WorkflowIntegrationPath": {
+          "type": "string",
+          "scope": "machine",
+          "description": "Where are your Davinci Resolve Workflow Integration Plugins stored?"
+        }
+      }
+    },
     "viewsContainers": {
       "activitybar": [
         {

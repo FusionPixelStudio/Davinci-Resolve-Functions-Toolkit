@@ -5,6 +5,61 @@ const { exec } = require('child_process');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
+
+async function setDefaults() {
+  const config = vscode.workspace.getConfiguration('davinci-resolve-function-toolkit', vscode.ConfigurationTarget.Global);
+
+  const username = os.userInfo().username;
+  let scriptsPath;
+  if (process.platform === "darwin") {
+    scriptsPath = `/Users/${username}/Library/Application Support/Blackmagic Design/DaVinci Resolve/Fusion/Scripts`;
+  } else if (process.platform === "win32") {
+    scriptsPath = `C:\\Users\\${username}\\AppData\\Roaming\\Blackmagic Design\\DaVinci Resolve\\Support\\Fusion\\Scripts`;
+  } else {
+    scriptsPath =  `/home/${username}/.local/share/DaVinciResolve/Fusion/Scripts`
+  }
+
+  let WIpath;
+  if (process.platform === "darwin") {
+    WIpath = `/Library/Application Support/Blackmagic Design/DaVinci Resolve/Workflow Integration Plugins`;
+  } else if (process.platform === "win32") {
+    WIpath = `C:\\ProgramData\\Blackmagic Design\\DaVinci Resolve\\Support\\Workflow Integration Plugins`;
+  } else {
+    WIpath = `Workflow Integrations not available on Linux`
+  }
+
+  let GlobalscriptsPath;
+  if (process.platform === "darwin") {
+    GlobalscriptsPath = `/Library/Application Support/Blackmagic Design/DaVinci Resolve/Fusion/Scripts`;
+  } else if (process.platform === "win32") {
+    GlobalscriptsPath = `C:\\ProgramData\\Blackmagic Design\\DaVinci Resolve\\Fusion\\Scripts`;
+  } else {
+    GlobalscriptsPath =  `/opt/resolve/Fusion/Scripts`
+  }
+
+  let defaultUserScriptsPath = await config.get('UserScriptsPath', "");
+  console.log("Default User Scripts Path:", defaultUserScriptsPath);
+  if (defaultUserScriptsPath === "") {
+    await config.update('UserScriptsPath', scriptsPath, vscode.ConfigurationTarget.Global);
+    defaultUserScriptsPath = await config.get('UserScriptsPath', "");
+    console.log("Default User Scripts Path:", defaultUserScriptsPath);
+  }
+  let defaultGlobalScriptsPath = await config.get('GlobalScriptsPath', "");
+  console.log("Default Global Scripts Path:", defaultGlobalScriptsPath);
+  if (defaultGlobalScriptsPath === "") {
+    await config.update('GlobalScriptsPath', GlobalscriptsPath, vscode.ConfigurationTarget.Global);
+    defaultGlobalScriptsPath = await config.get('GlobalScriptsPath', "");
+    console.log("Default Global Scripts Path:", defaultGlobalScriptsPath);
+  }
+  let defaultWIPath = await config.get('WorkflowIntegrationPath', "");
+  console.log("Default Workflow Integration Path:", defaultWIPath);
+  if (defaultWIPath === "") {    
+    await config.update('WorkflowIntegrationPath', WIpath, vscode.ConfigurationTarget.Global);
+    defaultWIPath = await config.get('WorkflowIntegrationPath', "");
+    console.log("Default Workflow Integration Path:", defaultWIPath);
+  }
+}
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -13,9 +68,11 @@ const path = require('path');
  * @param {vscode.ExtensionContext} context
  */
 async function activate(context) {
-
-  const os = require('os');
-  const username = os.userInfo().username;
+  console.log('Congratulations, your extension "davinci-resolve-function-toolkit" is now active!');
+  
+  await setDefaults()
+  
+  const config = vscode.workspace.getConfiguration('davinci-resolve-function-toolkit', vscode.ConfigurationTarget.Global);
 
   async function fileExists(uri) {
     try {
@@ -60,11 +117,6 @@ async function activate(context) {
     }
   }
 
-/**
- * Downloads a binary file (e.g., .node) from a URL and saves it locally.
- * @param {string} url - The file URL.
- * @param {string} savePath - The path where the file should be saved.
- */
 function downloadBinaryFile(url, savePath) {
   return new Promise((resolve, reject) => {
       // vscode.window.showInformationMessage(`Starting download from: ${url}`);
@@ -144,51 +196,37 @@ function downloadBinaryFile(url, savePath) {
 
   const openScriptsUserFolder = vscode.commands.registerCommand('davinci-resolve-function-toolkit.openScriptsUserFolder', async function () {
     let scriptsPath;
-    if (process.platform === "darwin") {
-      scriptsPath = `/Users/${username}/Library/Application Support/Blackmagic Design/DaVinci Resolve/Fusion/Scripts`;
-    } else if (process.platform === "win32") {
-      scriptsPath = `C:\\Users\\${username}\\AppData\\Roaming\\Blackmagic Design\\DaVinci Resolve\\Support\\Fusion\\Scripts`;
-    } else {
-      scriptsPath =  `/home/${username}/.local/share/DaVinciResolve/Fusion/Scripts`
-    }
+    scriptsPath = await config.get('UserScriptsPath', "");
     const scripts = vscode.Uri.file(scriptsPath)
     const exists = await fileExists(scripts);
     if (!exists) {
-      vscode.window.showErrorMessage("Could Not Find User DVR Scripts Folder!\n" + scriptsPath);
+      vscode.window.showErrorMessage("Could Not Find User DVR Scripts Folder!\nUpdate it in settings!\n" + scriptsPath);
       return;
     }
     openFolderInExplorer(scriptsPath)
   });
   const openScriptsGlobalFolder = vscode.commands.registerCommand('davinci-resolve-function-toolkit.openScriptsGlobalFolder', async function () {
     let scriptsPath;
-    if (process.platform === "darwin") {
-      scriptsPath = `/Library/Application Support/Blackmagic Design/DaVinci Resolve/Fusion/Scripts`;
-    } else if (process.platform === "win32") {
-      scriptsPath = `C:\\ProgramData\\Blackmagic Design\\DaVinci Resolve\\Fusion\\Scripts`;
-    } else {
-      scriptsPath =  `/opt/resolve/Fusion/Scripts`
-    }
+    scriptsPath = await config.get('GlobalScriptsPath', "");
     const scripts = vscode.Uri.file(scriptsPath)
     const exists = await fileExists(scripts);
     if (!exists) {
-      vscode.window.showErrorMessage("Could Not Find Global DVR Scripts Folder!\n" + scriptsPath);
+      vscode.window.showErrorMessage("Could Not Find Global DVR Scripts Folder!\nUpdate it in settings!\n" + scriptsPath);
       return;
     }
     openFolderInExplorer(scriptsPath)
   });
   const openWIFolder = vscode.commands.registerCommand('davinci-resolve-function-toolkit.openWIFolder', async function () {
     let path;
-    if (process.platform === "darwin") {
-      path = `/Library/Application Support/Blackmagic Design/DaVinci Resolve/Workflow Integration Plugins`;
-    } else if (process.platform === "win32") {
-      path = `C:\\ProgramData\\Blackmagic Design\\DaVinci Resolve\\Support\\Workflow Integration Plugins`;
-    } else {
-      path =  `/opt/resolve/Support/Workflow Integration Plugins`
+    path = await config.get('WorkflowIntegrationPath', "");
+    if (path === "Workflow Integrations not available on Linux") {
+      vscode.window.showErrorMessage("Workflow Integrations not available on Linux");
+      return;
     }
     const scripts = vscode.Uri.file(path)
     const exists = await fileExists(scripts);
     if (!exists) {
-      vscode.window.showErrorMessage("Could Not Find Global DVR Scripts Folder!\n" + path);
+      vscode.window.showErrorMessage("Could Not Find Global DVR Workflow Integrations Folder!\nUpdate it in settings!\n" + path);
       return;
     }
     openFolderInExplorer(path)
@@ -213,17 +251,12 @@ function downloadBinaryFile(url, savePath) {
 
   const createScript = vscode.commands.registerCommand('davinci-resolve-function-toolkit.createScript', async function () {
     let scriptsPath;
-    if (process.platform === "darwin") {
-      scriptsPath = `/Users/${username}/Library/Application Support/Blackmagic Design/DaVinci Resolve/Fusion/Scripts`;
-    } else if (process.platform === "win32") {
-      scriptsPath = `C:\\Users\\${username}\\AppData\\Roaming\\Blackmagic Design\\DaVinci Resolve\\Support\\Fusion\\Scripts`;
-    } else {
-      scriptsPath =  `/home/${username}/.local/share/DaVinciResolve/Fusion/Scripts`
-    }
+    scriptsPath = await config.get('UserScriptsPath', "");
+    console.log(scriptsPath)
     const scripts = vscode.Uri.file(scriptsPath)
     const exists = await fileExists(scripts);
     if (!exists) {
-      vscode.window.showErrorMessage("Could Not Find DVR Scripts Folder!\n" + scriptsPath);
+      vscode.window.showErrorMessage("Could Not Find DVR Scripts Folder!\nUpdate it in settings!\n" + scriptsPath);
       return;
     }
 
@@ -255,6 +288,49 @@ function downloadBinaryFile(url, savePath) {
       }
     })
   });
+
+  function cleanResolvePath(path) {
+    // Check if "Support" exists in the path
+    if (path.includes("Support")) {
+      // Find the index of "DaVinci Resolve" and cut off everything after it
+      const marker = "Support";
+      const index = path.indexOf(marker);
+
+      if (index !== -1) {
+          // Return the part of the path up to and including "DaVinci Resolve"
+          return path.substring(0, index + marker.length);
+      }
+    }
+
+    // Find the index of "DaVinci Resolve" and cut off everything after it
+    const marker = "DaVinci Resolve";
+    const index = path.indexOf(marker);
+
+    if (index !== -1) {
+        // Return the part of the path up to and including "DaVinci Resolve"
+        return path.substring(0, index + marker.length);
+    }
+
+    // Return the original path if "DaVinci Resolve" isn't found
+    return path;
+  }
+
+  async function pickFolder() {
+    const options = {
+        canSelectFiles: false,
+        canSelectFolders: true,
+        canSelectMany: false,
+        openLabel: 'Select Folder'
+    };
+
+    const folderUri = await vscode.window.showOpenDialog(options);
+    if (folderUri && folderUri.length > 0) {
+        console.log('Selected folder:', folderUri[0].fsPath);
+        return folderUri[0].fsPath;
+    } else {
+        return null; // No folder selected
+    }
+  }
 
 	const createWorkflow = vscode.commands.registerCommand('davinci-resolve-function-toolkit.createWorkflow', async function () {
 
@@ -549,21 +625,22 @@ h1{
 
     let WIFolder
     let WIName
+    WIFolder = await config.get('WorkflowIntegrationPath', "");
+    if (WIFolder === "Workflow Integrations not available on Linux") {
+      vscode.window.showErrorMessage("Workflow Integrations not available on Linux");
+      return;
+    }
 		if (process.platform === "darwin") {
-			WIFolder = '/Library/Application Support/Blackmagic Design/DaVinci Resolve/Developer/Workflow Integrations/Examples/SamplePlugin/WorkflowIntegration.node'
       WIName = '/WorkflowIntegration_Mac.node'
 		} else if (process.platform === "win32") {
-			WIFolder = 'C:\\ProgramData\\Blackmagic Design\\DaVinci Resolve\\Support\\Developer\\Workflow Integrations\\Examples\\SamplePlugin\\WorkflowIntegration.node'
       WIName = '/WorkflowIntegration_Win.node'
-		} else {
-      vscode.window.showErrorMessage("Workflow Integrations Not Supported on Linux!");
-      return
-    }
-
+		}
+    WIFolder = path.join(await cleanResolvePath(WIFolder), `/Developer/Workflow Integrations/Examples/SamplePlugin/WorkflowIntegration.node`);
+    console.log(WIFolder)
     const WI = vscode.Uri.file(WIFolder);
     fileExists(WI).then(exists => {
       if (!exists) {  
-        vscode.window.showErrorMessage("Workflow Integration File Could Not be Retrieved!\n" + WIFolder);
+        vscode.window.showErrorMessage("Workflow Integration File Could Not be Retrieved!\nContact Asher with details!\n" + WIFolder);
         return
       }
     });
@@ -616,33 +693,38 @@ h1{
       vscode.workspace.fs.copy(WI, NWI);
 		}
 
+    let currentFolder;
 		if (!vscode.workspace.workspaceFolders?.length) {
-			vscode.window.showWarningMessage("Open a Folder to Get Started!");
-		} else {
-      const currentFolder = vscode.workspace.workspaceFolders[0].uri.toString(true).slice(8);
-      let panel = vscode.window.createWebviewPanel(
-        'workflow',
-        'Workflow Integration Setup',
-        vscode.ViewColumn.One,
-        {enableScripts:true}
-      );
-      panel.webview.html = getWorkflowContent();
-      panel.webview.onDidReceiveMessage(message=>{
-        switch(message.command){
-          case 'alert':
-            vscode.window.showInformationMessage(message.text);
-            createProj(message.userName, message.projName, message.description, message.version, message.license);
-            createWorkflowIntegration(currentFolder);
-            vscode.commands.executeCommand('workbench.view.explorer');
-            panel.dispose();
-            return;
-          case 'getDefault':
-            const folder = vscode.workspace.workspaceFolders[0].name
-            panel.webview.postMessage({ command: 'setDefault', username, folder });
-            return;
-        }
-      })
-		}
+			// vscode.window.showWarningMessage("Open a Folder to Get Started!");
+      currentFolder = await pickFolder()
+		} else{
+      currentFolder = vscode.workspace.workspaceFolders[0].uri.toString(true).slice(8);
+    } 
+    const currentURI = vscode.Uri.file(currentFolder);
+    let panel = vscode.window.createWebviewPanel(
+      'workflow',
+      'Workflow Integration Setup',
+      vscode.ViewColumn.One,
+      {enableScripts:true}
+    );
+    panel.webview.html = getWorkflowContent();
+    panel.webview.onDidReceiveMessage(message=>{
+      switch(message.command){
+        case 'alert':
+          vscode.window.showInformationMessage(message.text);
+          createProj(message.userName, message.projName, message.description, message.version, message.license);
+          createWorkflowIntegration(currentFolder);
+          vscode.commands.executeCommand('vscode.openFolder', currentURI, true);
+          vscode.commands.executeCommand('workbench.view.explorer');
+          panel.dispose();
+          return;
+        case 'getDefault':
+          const folder = path.basename(currentURI.fsPath)
+          const username = os.userInfo().username;
+          panel.webview.postMessage({ command: 'setDefault', username, folder });
+          return;
+      }
+    })
 
 	});
 

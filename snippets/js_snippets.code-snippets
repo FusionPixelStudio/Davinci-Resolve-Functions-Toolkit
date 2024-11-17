@@ -14,14 +14,40 @@
         "description": "The resolve object"
     },
 
-    // The Resolve Object Functions
+    // The Workflow Integration Object
     "Resolve": {
-        "prefix" : ["app", "Get", "Resolve"],
+        "prefix" : ["Resolve", "GetResolve"],
         "body": ["WorkflowIntegration.GetResolve();"],
         "description": "The resolve object"
     },
+    "Initialize": {
+        "prefix" : ["Initialize"],
+        "body": ["WorkflowIntegration.Initialize('com.${1:YourName}.${2:PluginName}');"],
+        "description": "Initialize the node to get the object functions"
+    },
+    "Clean Up": {
+        "prefix" : ["Cleanup"],
+        "body": ["WorkflowIntegration.CleanUp();"],
+        "description": "Should be called during plugin app quit"
+    },
+    "Set API Timeout": {
+        "prefix" : ["SetAPITimeout"],
+        "body": ["WorkflowIntegration.SetAPITimeout(${1:valueInSecs});"],
+        "description": "By default, apis dont timeout. In order to enable timeout, set a non-zero positive integer value in the arg 'valueInSecs'. Setting it to 0 will disable timeout. This function will return true if the timeout is set/reset successfully."
+    },
+    "Register Callback": {
+        "prefix" : ["SetAPITimeout"],
+        "body": ["WorkflowIntegration.RegisterCallback(${1|RenderStart, RenderStop|}, ${2:callbackFunc});"],
+        "description": "'callbackName' should be a valid supported callback string name. 'callbackFunc' should be a valid JavaScript function without any arguments."
+    },
+    "Deregister Callback": {
+        "prefix" : ["SetAPITimeout"],
+        "body": ["WorkflowIntegration.DeregisterCallback(${1|RenderStart, RenderStop|});"],
+        "description": "Returns true if input callback name is deregistered successfully, false otherwise"
+    },
+    // The Resolve Object
     "Fusion": {
-        "prefix" : ["app", "Get", "Fusion"],
+        "prefix" : ["Fusion", "GetFusion"],
         "body": ["${1:resolve}.Fusion();"],
         "description": "The fusion object"
     },
@@ -1465,5 +1491,549 @@
         "prefix": ["Get", "GetPostClips", "GetPostClipNodeGraph", "GPCNG"],
         "body": ["${1:colorGroup}.GetPostClipNodeGraph();"],
         "description": "Get the ColorGroup Post-clip graph"
-    }    
+    },
+
+    // The Fusion Object
+    "Ask Quit Fusion": {
+        "prefix": ["AskQuit", "Fusion"],
+        "body": ["${1:fusion}.AskQuit();"],
+        "description": "Ask Fusion to quit"
+    },
+    "Open Fusion Hotkeys": {
+        "prefix": ["CustomizeHotkeys", "Fusion"],
+        "body": ["${1:fusion}.CustomizeHotkeys();"],
+        "description": "Open Fusion Hotkeys"
+    },
+    "Open Fusion Toolbar Customizing": {
+        "prefix": ["CustomizeToolbars", "Fusion"],
+        "body": ["${1:fusion}.CustomizeToolbars();"],
+        "description": "Open the Toolbar Customize menu"
+    },
+    "Get Current Frame Index Fusion": {
+        "prefix": ["GetActiveFrameIndex", "Fusion"],
+        "body": ["${1:fusion}.GetActiveFrameIndex();"],
+        "description": "Get Current Frame Index in Fusion"
+    },
+    "Get Active Window Index Fusion": {
+        "prefix": ["GetActiveWndIndex", "Fusion"],
+        "body": ["${1:fusion}.GetActiveWndIndex();"],
+        "description": "Get Active Window Index in Fusion"
+    },
+    "Get Frame Name Index Fusion": {
+        "prefix": ["GetFrameNameIndex", "Fusion"],
+        "body": ["${1:fusion}.GetFrameNameIndex();"],
+        "description": "Get Frame Name Index in Fusion"
+    },
+    "Get Modifiers Fusion": {
+        "prefix": ["GetModifiers", "Fusion"],
+        "body": ["${1:fusion}.GetModifiers();"],
+        "description": "Get Modifiers in Fusion"
+    },
+    "Get Mouse Buttons Fusion": {
+        "prefix": ["GetMouseButtons", "Fusion"],
+        "body": ["${1:fusion}.GetMouseButtons();"],
+        "description": "Get Mouse Buttons in Fusion"
+    },
+    "Get UI Layout Fusion": {
+        "prefix": ["GetUILayout", "Fusion"],
+        "body": ["${1:fusion}.GetUILayout();"],
+        "description": "Get UI Layout in Fusion"
+    },
+    "Get Window Name Index Fusion": {
+        "prefix": ["GetWndNameIndex", "Fusion"],
+        "body": ["${1:fusion}.GetWndNameIndex();"],
+        "description": "Get Window Name Index in Fusion"
+    },
+    "Create Fusion Comp": {
+        "prefix": ["IFusion_CreateComp", "Fusion"],
+        "body": ["${1:fusion}.IFusion_CreateComp();"],
+        "description": "Create Fusion Comp"
+    },
+    "Do Fusion Action": {
+        "prefix": ["IFusion_DoAction", "Fusion"],
+        "body": ["${1:fusion}.IFusion_DoAction();"],
+        "description": "Do Fusion Action"
+    },
+    "Create Fusion Notification": {
+        "prefix": ["IFusion_Notify", "Fusion"],
+        "body": ["${1:fusion}.IFusion_Notify();"],
+        "description": "Create Fusion Notification"
+    },
+    "Get if Fusion Console": {
+        "prefix": ["IsConsoleShowing", "Fusion"],
+        "body": ["${1:fusion}.IsConsoleShowing();"],
+        "description": "Get if Fusion Console is Showing"
+    },
+    "Get if Fusion UI Visible": {
+        "prefix": ["IsUIVisible", "Fusion"],
+        "body": ["${1:fusion}.IsUIVisible();"],
+        "description": "Get if Fusion UI is Visible"
+    },
+    "Create New Script": {
+        "prefix": ["NewScript", "Fusion"],
+        "body": ["${1:fusion}.NewScript();"],
+        "description": "Create New Script"
+    },
+    "Request Folder from User": {
+        "prefix": ["RequestDir", "Fusion"],
+        "body": ["${1:fusion}.RequestDir();"],
+        "description": "Open File Exploerer for Folders"
+    },
+    "Request File from User": {
+        "prefix": ["RequestFile", "Fusion"],
+        "body": ["${1:fusion}.RequestFile();"],
+        "description": "Open File Exploerer for Files"
+    },
+    "Set Active Fusion Frame": {
+        "prefix": ["SetActiveFrameIndex", "Fusion"],
+        "body": ["${1:fusion}.SetActiveFrameIndex();"],
+        "description": "Set Active Fusion Frame"
+    },
+    "Set Active Fusion Window": {
+        "prefix": ["SetActiveWndIndex", "Fusion"],
+        "body": ["${1:fusion}.SetActiveWndIndex();"],
+        "description": "Set Active Fusion Window"
+    },
+    "Set Fusion UI Layout": {
+        "prefix": ["SetUILayout", "Fusion"],
+        "body": ["${1:fusion}.SetUILayout();"],
+        "description": "Set Fusion UI Layout"
+    },
+    "Show Fusion Actions": {
+        "prefix": ["ShowActions", "Fusion"],
+        "body": ["${1:fusion}.ShowActions();"],
+        "description": "Show Fusion Actions"
+    },
+    "Show Fusion Console": {
+        "prefix": ["ShowConsole", "Fusion"],
+        "body": ["${1:fusion}.ShowConsole();"],
+        "description": "Show Fusion Console"
+    },
+    "Show Fusion Help": {
+        "prefix": ["ShowHelp", "Fusion"],
+        "body": ["${1:fusion}.ShowHelp();"],
+        "description": "Show Fusion Help"
+    },
+    "Show Fusion Menu": {
+        "prefix": ["ShowMenu", "Fusion"],
+        "body": ["${1:fusion}.ShowMenu();"],
+        "description": "Show Fusion Menu"
+    },
+    "Show Fusion UI": {
+        "prefix": ["ShowUI", "Fusion"],
+        "body": ["${1:fusion}.ShowUI();"],
+        "description": "Show Fusion UI"
+    },
+
+    // The Fusion Comp Object 
+    "Get Active Node in a Comp": {
+        "prefix": ["ActiveTool", "ActiveNode", "Comp"],
+        "body": ["${1:comp}.ActiveTool();"],
+        "description": "Get the active tool/node in a Fusion Comp"
+    },
+    "Abort Fusion Comp Render": {
+        "prefix": ["AbortRender", "EndRender", "Comp"],
+        "body": ["${1:comp}.AbortRender();"],
+        "description": "Abort the Fusion Comp Render"
+    },
+    "Abort Fusion Comp Render UI": {
+        "prefix": ["AbortRender", "EndRender", "AbortRenderUI", "EndRenderUI", "Comp"],
+        "body": ["${1:comp}.AbortRenderUI();"],
+        "description": "Abort the Fusion Comp Render UI"
+    },
+    "Add Media to Fusion Comp": {
+        "prefix": ["AddMedia", "Comp"],
+        "body": ["${1:comp}.AddMedia();"],
+        "description": "Add Media to Fusion Comp"
+    },
+    "Add Setting Action to Fusion Comp": {
+        "prefix": ["AddSettingAction", "Comp"],
+        "body": ["${1:comp}.AddSettingAction();"],
+        "description": "Add Setting Action to Fusion Comp"
+    },
+    "Add Tool to Fusion Comp": {
+        "prefix": ["AddTool", "AddNode", "Comp"],
+        "body": ["${1:comp}.AddTool();"],
+        "description": "Add Tool to Fusion Comp"
+    },
+    "Add Tool Action to Fusion Comp": {
+        "prefix": ["AddToolAction", "AddNodeAction", "Comp"],
+        "body": ["${1:comp}.AddToolAction();"],
+        "description": "Add Tool Action to Fusion Comp"
+    },
+    "Ask Fusion Comp Render Settings": {
+        "prefix": ["AskRenderSettings", "RenderSettings", "Ask", "Comp"],
+        "body": ["${1:comp}.AskRenderSettings();"],
+        "description": "Ask Fusion Comp Render Settings"
+    },
+    "Ask Fusion Comp User": {
+        "prefix": ["AskUser", "Ask", "Comp"],
+        "body": ["${1:comp}.AskUser();"],
+        "description": "Ask Fusion Comp User"
+    },
+    "Auto Pos Fusion Comp": {
+        "prefix": ["AutoPos", "Auto", "Comp"],
+        "body": ["${1:comp}.AutoPos();"],
+        "description": "Auto Pos Fusion Comp"
+    },
+    "Choose Action in Fusion Comp": {
+        "prefix": ["ChooseAction", "Choose", "Comp"],
+        "body": ["${1:comp}.ChooseAction();"],
+        "description": "Choose Action in Fusion Comp"
+    },
+    "Choose Tool in Fusion Comp": {
+        "prefix": ["ChooseTool", "Choose", "Comp"],
+        "body": ["${1:comp}.ChooseTool();"],
+        "description": "Choose Tool in Fusion Comp"
+    },
+    "Clear a Fusion Comp Undo": {
+        "prefix": ["ClearUndo", "Clear", "Comp"],
+        "body": ["${1:comp}.ClearUndo();"],
+        "description": "Clear a Fusion Comp Undo"
+    },
+    "Close a Fusion Comp": {
+        "prefix": ["Close", "CloseComp", "Comp"],
+        "body": ["${1:comp}.Close();"],
+        "description": "Close a Fusion Comp"
+    },
+    "Copy to Clipboard in a Fusion Comp": {
+        "prefix": ["Copy", "CopyComp", "Comp"],
+        "body": ["${1:comp}.Copy();"],
+        "description": "Copy to clipboard in a Fusion Comp"
+    },
+    "Copy Tool Settings to Clipboard in a Fusion Comp": {
+        "prefix": ["Copy", "CopySettings", "Comp"],
+        "body": ["${1:comp}.CopySettings();"],
+        "description": "Copy Tool Settings to Clipboard in a Fusion Comp"
+    },
+    "Get the Current Frame in a Fusion Comp": {
+        "prefix": ["CurrentFrame", "Current", "Comp"],
+        "body": ["${1:comp}.CurrentFrame();"],
+        "description": "Get the Current Frame in a Fusion Comp"
+    },
+    "Get the Current Time in a Fusion Comp": {
+        "prefix": ["CurrentTime", "Current", "Comp"],
+        "body": ["${1:comp}.CurrentTime();"],
+        "description": "Get the Current Time in a Fusion Comp"
+    },
+    "DF Tool in a Fusion Comp": {
+        "prefix": ["DFTool", "Current", "Comp"],
+        "body": ["${1:comp}.DFTool();"],
+        "description": "Effects Exactly Unknown"
+    },
+    "Disable Selected Nodes in a Fusion Comp": {
+        "prefix": ["DisableSelectedTools", "Disable", "Comp"],
+        "body": ["${1:comp}.DisableSelectedTools();"],
+        "description": "Disable Selected Tools/Nodes in a Fusion Comp"
+    },
+    "Custom Undo Endpoint in a Fusion Comp": {
+        "prefix": ["EndUndo", "End", "Undo", "Comp", "eu"],
+        "body": ["${1:comp}.EndUndo();"],
+        "description": "The Endpoint for a Custom Undo in a Fusion Comp"
+    },
+    "Execute Code in a Fusion Comp": {
+        "prefix": ["Execute", "Comp"],
+        "body": ["${1:comp}.Execute();"],
+        "description": "Execute Code as a string in a Fusion Comp"
+    },
+    "Expand Zone in a Fusion Comp": {
+        "prefix": ["ExpandZone", "Comp"],
+        "body": ["${1:comp}.ExpandZone();"],
+        "description": "Expand the Zone in a Fusion Comp"
+    },
+    "Export a Fusion Comp": {
+        "prefix": ["Export", "Comp"],
+        "body": ["${1:comp}.Export();"],
+        "description": "Export a Fusion Comp"
+    },
+    "Find a Tool a Fusion Comp": {
+        "prefix": ["FindTool", "Comp"],
+        "body": ["${1:comp}.FindTool();"],
+        "description": "Find a Tool a Fusion Comp"
+    },
+    "Find a Tool by ID a Fusion Comp": {
+        "prefix": ["FindToolByID", "Comp"],
+        "body": ["${1:comp}.FindToolByID();"],
+        "description": "Find a Tool by ID a Fusion Comp"
+    },
+    "Get a Fusion Comp's Path": {
+        "prefix": ["GetCompPathMap", "Comp"],
+        "body": ["${1:comp}.GetCompPathMap();"],
+        "description": "Get a Fusion Comp's Path"
+    },
+    "Get a Fusion Comp's Console History": {
+        "prefix": ["GetConsoleHistory", "Comp"],
+        "body": ["${1:comp}.GetConsoleHistory();"],
+        "description": "Get a Fusion Comp's Console History"
+    },
+    "Get Data in a Fusion Comp": {
+        "prefix": ["GetData", "Comp"],
+        "body": ["${1:comp}.GetData();"],
+        "description": "Get Data in a Fusion Comp"
+    },
+    "Get Frame List in a Fusion Comp": {
+        "prefix": ["GetFrameList", "Comp"],
+        "body": ["${1:comp}.GetFrameList();"],
+        "description": "Get Frame List in a Fusion Comp"
+    },
+    "Get Next Key Time in a Fusion Comp": {
+        "prefix": ["GetNextKeyTime", "Comp"],
+        "body": ["${1:comp}.GetNextKeyTime();"],
+        "description": "Get Next Key Time in a Fusion Comp"
+    },
+    "Get Prefs in a Fusion Comp": {
+        "prefix": ["GetPrefs", "Comp"],
+        "body": ["${1:comp}.GetPrefs();"],
+        "description": "Get Prefs in a Fusion Comp"
+    },
+    "Get Prev Key Time in a Fusion Comp": {
+        "prefix": ["GetPrevKeyTime", "Comp"],
+        "body": ["${1:comp}.GetPrevKeyTime();"],
+        "description": "Get Prev Key Time in a Fusion Comp"
+    },
+    "Get Preview List in a Fusion Comp": {
+        "prefix": ["GetPreviewList", "Comp"],
+        "body": ["${1:comp}.GetPreviewList();"],
+        "description": "Get Preview List in a Fusion Comp"
+    },
+    "Get Redo Stack in a Fusion Comp": {
+        "prefix": ["GetRedoStack", "Comp"],
+        "body": ["${1:comp}.GetRedoStack();"],
+        "description": "Get Redo Stack in a Fusion Comp"
+    },
+    "Get Tool List in a Fusion Comp": {
+        "prefix": ["GetToolList", "Comp"],
+        "body": ["${1:comp}.GetToolList();"],
+        "description": "Get Tool List in a Fusion Comp"
+    },
+    "Get Undo Stack in a Fusion Comp": {
+        "prefix": ["GetUndoStack", "Comp"],
+        "body": ["${1:comp}.GetUndoStack();"],
+        "description": "Get Undo Stack in a Fusion Comp"
+    },
+    "Get View List in a Fusion Comp": {
+        "prefix": ["GetViewList", "Comp"],
+        "body": ["${1:comp}.GetViewList();"],
+        "description": "Get View List in a Fusion Comp"
+    },
+    "Get Heartbeat of a Fusion Comp": {
+        "prefix": ["Heartbeat", "Comp"],
+        "body": ["${1:comp}.Heartbeat();"],
+        "description": "Get Heartbeat of a Fusion Comp"
+    },
+    "Check Fusion Comp Locked": {
+        "prefix": ["IsLocked", "Comp"],
+        "body": ["${1:comp}.IsLocked();"],
+        "description": "Check if a Fusion Comp is locked"
+    },
+    "Check Fusion Comp Playing": {
+        "prefix": ["IsPlaying", "Comp"],
+        "body": ["${1:comp}.IsPlaying();"],
+        "description": "Check Fusion Comp Playing"
+    },
+    "Check Fusion Comp Read Only": {
+        "prefix": ["IsReadOnly", "Comp"],
+        "body": ["${1:comp}.IsReadOnly();"],
+        "description": "Check if a Fusion Comp is Read Only"
+    },
+    "Check Fusion Comp Rendering": {
+        "prefix": ["IsRendering", "Comp"],
+        "body": ["${1:comp}.IsRendering();"],
+        "description": "Check if a Fusion Comp is Rendering"
+    },
+    "Check Fusion Comp View Showing": {
+        "prefix": ["IsViewShowing", "Comp"],
+        "body": ["${1:comp}.IsViewShowing();"],
+        "description": "Check if a Fusion Comp View is Showing"
+    },
+    "Check Fusion Comp Zone Expanded": {
+        "prefix": ["IsZoneExpanded", "Comp"],
+        "body": ["${1:comp}.IsZoneExpanded();"],
+        "description": "Check if a Fusion Comp Zone is Expanded"
+    },
+    "Lock Fusion Comp": {
+        "prefix": ["Lock", "Comp"],
+        "body": ["${1:comp}.Lock();"],
+        "description": "Lock a Fusion Comp"
+    },
+    "Loop Fusion Comp": {
+        "prefix": ["Loop", "Comp"],
+        "body": ["${1:comp}.Loop();"],
+        "description": "Loop a Fusion Comp"
+    },
+    "Get Map Path in Fusion Comp": {
+        "prefix": ["MapPath", "Comp"],
+        "body": ["${1:comp}.MapPath();"],
+        "description": "Get a Map Path in Fusion Comp"
+    },
+    "Get Map Path Segments in Fusion Comp": {
+        "prefix": ["MapPathSegments", "Comp"],
+        "body": ["${1:comp}.MapPathSegments();"],
+        "description": "Get a Map Path in Segments in Fusion Comp"
+    },
+    "Abort Net Render in Fusion Comp": {
+        "prefix": ["NetRenderAbort", "Comp"],
+        "body": ["${1:comp}.NetRenderAbort();"],
+        "description": "Abort a Net Render in Fusion Comp"
+    },
+    "End Net Render in Fusion Comp": {
+        "prefix": ["NetRenderEnd", "Comp"],
+        "body": ["${1:comp}.NetRenderEnd();"],
+        "description": "End a Net Render in Fusion Comp"
+    },
+    "Start Net Render in Fusion Comp": {
+        "prefix": ["NetRenderStart", "Comp"],
+        "body": ["${1:comp}.NetRenderStart();"],
+        "description": "Start a Net Render in Fusion Comp"
+    },
+    "Get Net Render Time in Fusion Comp": {
+        "prefix": ["NetRenderTime", "Comp"],
+        "body": ["${1:comp}.NetRenderTime();"],
+        "description": "Get Net Render Time in Fusion Comp"
+    },
+    "Paste in Fusion Comp": {
+        "prefix": ["Paste", "Comp"],
+        "body": ["${1:comp}.Paste();"],
+        "description": "Paste in a Fusion Comp"
+    },
+    "Play a Fusion Comp": {
+        "prefix": ["Play", "Comp"],
+        "body": ["${1:comp}.Play();"],
+        "description": "Play a Fusion Comp"
+    },
+    "Print from Fusion Comp": {
+        "prefix": ["Print", "Comp"],
+        "body": ["${1:comp}.Print();"],
+        "description": "Print from Fusion Comp"
+    },
+    "Redo in Fusion Comp": {
+        "prefix": ["Redo", "Comp"],
+        "body": ["${1:comp}.Redo();"],
+        "description": "Redo in a Fusion Comp"
+    },
+    "Render Fusion Comp": {
+        "prefix": ["Render", "Comp"],
+        "body": ["${1:comp}.Render();"],
+        "description": "Render a Fusion Comp"
+    },
+    "Reset Fusion Comp": {
+        "prefix": ["Reset", "Comp"],
+        "body": ["${1:comp}.Reset();"],
+        "description": "Reset a Fusion Comp"
+    },
+    "Get Reverse Map Path Fusion Comp": {
+        "prefix": ["ReverseMapPath", "Comp"],
+        "body": ["${1:comp}.ReverseMapPath();"],
+        "description": "Get a Reverse Map Path Fusion Comp"
+    },
+    "Run Script File in Fusion Comp": {
+        "prefix": ["RunScript", "Comp"],
+        "body": ["${1:comp}.RunScript();"],
+        "description": "Run a Script File in Fusion Comp"
+    },
+    "Save Fusion Comp": {
+        "prefix": ["Save", "Comp"],
+        "body": ["${1:comp}.Save();"],
+        "description": "Save a Fusion Comp"
+    },
+    "Save As Fusion Comp": {
+        "prefix": ["SaveAs", "Comp"],
+        "body": ["${1:comp}.SaveAs();"],
+        "description": "Save a Fusion Comp As..."
+    },
+    "Save Copy As Fusion Comp": {
+        "prefix": ["SaveCopyAs", "Comp"],
+        "body": ["${1:comp}.SaveCopyAs();"],
+        "description": "Save a Fusion Comp Copy As..."
+    },
+    "Save Version Fusion Comp": {
+        "prefix": ["SaveVersion", "Comp"],
+        "body": ["${1:comp}.SaveVersion();"],
+        "description": "Save a Fusion Comp Version"
+    },
+    "Set Active Node in Fusion Comp": {
+        "prefix": ["SetActiveTool", "Comp"],
+        "body": ["${1:comp}.SetActiveTool();"],
+        "description": "Set the Active Node in Fusion Comp"
+    },
+    "Set Data in Fusion Comp": {
+        "prefix": ["SetData", "Comp"],
+        "body": ["${1:comp}.SetData();"],
+        "description": "Set Data in Fusion Comp"
+    },
+    "Set Prefs in Fusion Comp": {
+        "prefix": ["SetPrefs", "Comp"],
+        "body": ["${1:comp}.SetPrefs();"],
+        "description": "Set Prefs in Fusion Comp"
+    },
+    "Set Fusion Comp Read Only": {
+        "prefix": ["SetReadOnly", "Comp"],
+        "body": ["${1:comp}.SetReadOnly();"],
+        "description": "Set Fusion Comp as Read Only"
+    },
+    "Show Host Controls in Fusion Comp": {
+        "prefix": ["ShowHostControls", "Comp"],
+        "body": ["${1:comp}.ShowHostControls();"],
+        "description": "Show Host Controls in Fusion Comp"
+    },
+    "Show View in Fusion Comp": {
+        "prefix": ["ShowView", "Comp"],
+        "body": ["${1:comp}.ShowView();"],
+        "description": "Show View in Fusion Comp"
+    },
+    "Start Undo in Fusion Comp": {
+        "prefix": ["StartUndo", "Comp"],
+        "body": ["${1:comp}.StartUndo();"],
+        "description": "Start an Undo in Fusion Comp"
+    },
+    "Stop Fusion Comp": {
+        "prefix": ["Stop", "Comp"],
+        "body": ["${1:comp}.Stop();"],
+        "description": "Stop a Fusion Comp"
+    },
+    "Test Get Frames in Fusion Comp": {
+        "prefix": ["TestGetFrames", "Comp"],
+        "body": ["${1:comp}.TestGetFrames();"],
+        "description": "Test Get Frames in Fusion Comp"
+    },
+    "Get The Flow in Fusion Comp": {
+        "prefix": ["TheFlow", "Comp"],
+        "body": ["${1:comp}.TheFlow();"],
+        "description": "Get The Flow in Fusion Comp"
+    },
+    "Undo in Fusion Comp": {
+        "prefix": ["Undo", "Comp"],
+        "body": ["${1:comp}.Undo();"],
+        "description": "Cause an Undo in Fusion Comp"
+    },
+    "Unlock Fusion Comp": {
+        "prefix": ["Unlock", "Comp"],
+        "body": ["${1:comp}.Unlock();"],
+        "description": "Unlock Fusion Comp"
+    },
+    "Update Fusion Comp Mode": {
+        "prefix": ["UpdateMode", "Comp"],
+        "body": ["${1:comp}.UpdateMode();"],
+        "description": "Update Fusion Comp Mode"
+    },
+    "Update Fusion Comp State": {
+        "prefix": ["UpdateState", "Comp"],
+        "body": ["${1:comp}.UpdateState();"],
+        "description": "Update Fusion Comp State"
+    },
+    "Update Fusion Comp Views": {
+        "prefix": ["UpdateViews", "Comp"],
+        "body": ["${1:comp}.UpdateViews();"],
+        "description": "Update Fusion Comp Views"
+    },
+    "Update Fusion Comp XPos": {
+        "prefix": ["XPos", "Comp"],
+        "body": ["${1:comp}.XPos();"],
+        "description": "Update Fusion Comp XPos"
+    },
+    "Update Fusion Comp YPos": {
+        "prefix": ["YPos", "Comp"],
+        "body": ["${1:comp}.YPos();"],
+        "description": "Update Fusion Comp YPos"
+    },
 }
