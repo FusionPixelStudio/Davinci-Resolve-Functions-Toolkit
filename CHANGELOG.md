@@ -15,6 +15,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+## [1.5.2] - 2024-18-11
+
+### Added
+
+### Changed
+
+- Fixed Mac bug when getting Workflow Integration Node
+
+### Removed
+
 ## [1.5.0] - 2024-17-11
 
 ### Added

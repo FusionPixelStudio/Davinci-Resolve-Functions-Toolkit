@@ -100,6 +100,10 @@ Either [Fusion](https://www.blackmagicdesign.com/products/fusion/) and/or [Davin
 
 # Release Notes
 
+### 1.5.2
+
+- Fixed Mac bug when getting Workflow Integration Node
+
 ### 1.5.0
 
 - Added Settings for Script And Workflow Integration Paths - auto sets when extension loads

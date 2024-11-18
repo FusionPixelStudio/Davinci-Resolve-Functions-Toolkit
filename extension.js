@@ -290,28 +290,22 @@ function downloadBinaryFile(url, savePath) {
   });
 
   function cleanResolvePath(path) {
-    // Check if "Support" exists in the path
-    if (path.includes("Support")) {
-      // Find the index of "DaVinci Resolve" and cut off everything after it
+    if (process.platform !== "darwin") {
       const marker = "Support";
       const index = path.indexOf(marker);
 
       if (index !== -1) {
-          // Return the part of the path up to and including "DaVinci Resolve"
           return path.substring(0, index + marker.length);
       }
     }
 
-    // Find the index of "DaVinci Resolve" and cut off everything after it
     const marker = "DaVinci Resolve";
     const index = path.indexOf(marker);
 
     if (index !== -1) {
-        // Return the part of the path up to and including "DaVinci Resolve"
         return path.substring(0, index + marker.length);
     }
 
-    // Return the original path if "DaVinci Resolve" isn't found
     return path;
   }
 
@@ -635,7 +629,10 @@ h1{
 		} else if (process.platform === "win32") {
       WIName = '/WorkflowIntegration_Win.node'
 		}
-    WIFolder = path.join(await cleanResolvePath(WIFolder), `/Developer/Workflow Integrations/Examples/SamplePlugin/WorkflowIntegration.node`);
+    // /Library/Application Support/Blackmagic Design/DaVinci Resolve
+    // /Library/Application Support/Blackmagic Design/DaVinci Resolve/Developer/Workflow Integrations/Examples/SamplePlugin
+    const cutPath = await cleanResolvePath(WIFolder)
+    WIFolder = path.join(cutPath, `/Developer/Workflow Integrations/Examples/SamplePlugin/WorkflowIntegration.node`);
     console.log(WIFolder)
     const WI = vscode.Uri.file(WIFolder);
     fileExists(WI).then(exists => {
